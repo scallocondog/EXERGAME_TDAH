@@ -1,0 +1,83 @@
+# ---------- Node (servidor y mando) ----------
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+dist/
+.cache/
+
+# Variables de entorno y secretos
+.env
+.env.*
+!.env.example
+
+# Certificados HTTPS locales (cada quien genera los suyos)
+server/certs/*
+!server/certs/.gitkeep
+!server/certs/README.md
+*.pem
+*.key
+*.crt
+*.pfx
+
+# ---------- Unity ----------
+unity/[Ll]ibrary/
+unity/[Tt]emp/
+unity/[Oo]bj/
+unity/[Bb]uild/
+unity/[Bb]uilds/
+unity/[Ll]ogs/
+unity/[Uu]ser[Ss]ettings/
+unity/[Mm]emoryCaptures/
+unity/[Rr]ecordings/
+
+# Archivos generados por Unity
+unity/Assets/AssetStoreTools*
+unity/Assets/Plugins/Editor/JetBrains*
+unity/.vs/
+unity/.gradle/
+unity/ExportedObj/
+unity/*.unitypackage
+unity/*.apk
+unity/*.aab
+unity/*.app
+unity/*.exe
+unity/*.pdb
+unity/*.mdb
+unity/sysinfo.txt
+unity/crashlytics-build.properties
+
+# Soluciones y proyectos generados por Unity
+unity/*.csproj
+unity/*.unityproj
+unity/*.sln
+unity/*.suo
+unity/*.tmp
+unity/*.user
+unity/*.userprefs
+unity/*.booproj
+unity/*.svd
+unity/*.pidb.meta
+unity/*.pdb.meta
+unity/*.mdb.meta
+
+# ---------- Datos locales del juego ----------
+# Puntajes y progreso: son locales de cada PC (RF-17, RNF-04)
+saves/
+*.save
+puntajes*.json
+
+# ---------- Editores y sistema ----------
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------- Temporales del equipo ----------
+*.bak
+*.orig
+/tmp/
+scratch/
