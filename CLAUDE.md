@@ -49,8 +49,8 @@ Detalle ampliado: [docs/equipo-y-responsabilidades.md](docs/equipo-y-responsabil
 ```
 MoviMente/
 ├── controller/          Página web del mando (HTML/CSS/JS vanilla, sin framework)
-│   ├── public/          index.html, estilos, iconos, audio
-│   └── src/             sensores, conexión WS, calibración, vibración, UI del mando
+│   ├── public/          index.html, styles.css y js/ — el servidor sirve esta carpeta
+│   └── tests/           lógica pura del mando, sin navegador
 ├── server/              Node.js + Socket.io (salas, emparejamiento, relay, validación)
 │   ├── src/             rooms/, relay/, validation/
 │   └── certs/           certificados locales HTTPS (NO se commitean)
@@ -66,6 +66,10 @@ minijuego consume gestos ya reconocidos; nunca lee sensores crudos.
 
 Capas y diagrama: [docs/arquitectura.md](docs/arquitectura.md)
 
+Postura del mando, calibración y gestos por minijuego:
+[docs/gestos.md](docs/gestos.md). Swing y sacudir nunca van en el mismo
+minijuego.
+
 ---
 
 ## 4. Stack y versiones
@@ -73,12 +77,16 @@ Capas y diagrama: [docs/arquitectura.md](docs/arquitectura.md)
 | Parte | Tecnología | Nota |
 | --- | --- | --- |
 | Mando | HTML + CSS + JS vanilla (ES2022) | Sin framework. `DeviceOrientationEvent` / `DeviceMotionEvent`. |
-| Servidor | Node.js 20+ LTS, Express, Socket.io 4.x | HTTPS obligatorio: sin él el navegador no entrega los sensores. |
-| Juego | Unity 2022 LTS, C#, cliente WebSocket (`NativeWebSocket` o equivalente) | Build para Windows. |
+| Servidor | Node.js 20+ LTS, Express 5, Socket.io 4.x (mando), `ws` 8 (Unity), `qrcode` | HTTPS obligatorio: sin él el navegador no entrega los sensores. |
+| Juego | Unity **6000.3.24f1** (Unity 6.3 LTS), C#, cliente WebSocket (`NativeWebSocket`) en `/unity` | Build para Windows. |
 | QR | Generado por el servidor | Apunta a `https://<ip-lan>:<puerto>/?room=<código>`. |
 
 No se agregan dependencias sin acuerdo del equipo. Cada dependencia nueva se
 justifica en el PR: qué resuelve y por qué no se hace a mano.
+
+Aprobadas (servidor): `express`, `socket.io`, `ws`, `qrcode`; `socket.io-client`
+solo como devDependency para pruebas. Las versiones quedan fijadas en
+`server/package-lock.json`, que sí se commitea.
 
 ---
 
@@ -231,15 +239,16 @@ No es "detalle de UI": es el motivo del proyecto (RNF-05, RNF-06).
 cd server && npm install
 npm run dev                 # HTTPS local + Socket.io; imprime la URL y el QR de la LAN
 
-# Mando (lo sirve el servidor; esto es solo para editar en caliente)
-cd controller && npm run dev
+# Mando (no tiene servidor propio: lo sirve server/ desde controller/public/)
+cd controller && npm test   # código de sala y calibración
 
 # Pruebas
-npm test                    # servidor y validación de mensajes
-npm run test:latency        # RNF-01
+cd server && npm test       # salas, relay y transporte
+npm run test:validation     # RF-04: rangos, malformados y frecuencia (tests/validation/)
+npm run test:latency        # RNF-01: latencia del relay en memoria (tests/latency/)
 
 # Unity
-# Abrir unity/ desde Unity Hub con 2022 LTS. No abrir con otra versión.
+# Abrir unity/ desde Unity Hub con 6000.3.24f1. No abrir con otra versión.
 ```
 
 Para probar en celular: PC y celular en la **misma red Wi-Fi**, y aceptar el

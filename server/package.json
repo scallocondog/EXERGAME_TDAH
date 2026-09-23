@@ -1,0 +1,28 @@
+{
+  "name": "movimente-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Servidor de salas y relay de MoviMente (mando ↔ Unity)",
+  "type": "module",
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "node --test",
+    "test:validation": "node --test ../tests/validation/*.test.js",
+    "test:latency": "node --test ../tests/latency/*.test.js",
+    "sim": "node sim-unity.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "qrcode": "^1.5.4",
+    "socket.io": "^4.8.3",
+    "ws": "^8.21.3"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.8.3"
+  }
+}

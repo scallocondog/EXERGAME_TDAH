@@ -3,7 +3,16 @@
 Contrato entre mando, servidor y Unity. **Cambiarlo requiere acuerdo de los tres
 integrantes**, y el cambio se documenta aquí en el mismo PR que lo implementa.
 
-- Transporte: Socket.io 4.x sobre HTTPS/WSS.
+- Transporte (mismo servidor y puerto, dos canales):
+  - **Mando:** Socket.io 4.x sobre HTTPS/WSS. Todo mensaje va por el evento
+    estándar `message`: `socket.send(obj)` para enviar y `socket.on('message')`
+    para recibir. `motion` se envía con `socket.volatile.send(obj)` para que un
+    dato atrasado se descarte en vez de acumularse.
+  - **Unity:** WebSocket puro (NativeWebSocket) en `wss://<ip-lan>:<puerto>/unity`.
+    Un mensaje por frame de texto, con el JSON serializado.
+  - Los dos canales llevan **el mismo JSON** y pasan por **el mismo relay y la
+    misma validación**. El rol lo fija el primer mensaje: `create_room` → juego,
+    `join` → mando.
 - Codificación: JSON UTF-8.
 - Campo `t` (type) obligatorio en todo mensaje.
 - Campo `room` obligatorio en todo mensaje que envía el mando.
@@ -43,7 +52,8 @@ Respuesta del servidor: `joined` o `error`.
 | `ori.gamma` | número | −90 a 90 | Inclinación izquierda/derecha |
 | `acc.x/y/z` | número | −60 a 60 (m/s²) | Aceleración incluyendo gravedad |
 
-**Frecuencia:** 30–60 Hz. El servidor descarta lo que supere 80 Hz por sala.
+**Frecuencia:** 30–60 Hz. El mando limita el envío a unos 60 Hz; el servidor
+descarta lo que supere 80 Hz por mando.
 
 ### `button` — eventos discretos (RF-08, RF-19)
 
@@ -67,7 +77,7 @@ Respuesta del servidor: `joined` o `error`.
 | --- | --- | --- |
 | `joined` | `{ "t": "joined", "room": "A7K2", "slot": 1 }` | Emparejamiento correcto (`slot` 1 o 2, RF-20) |
 | `error` | `{ "t": "error", "code": "room_not_found" }` | `room_not_found`, `room_full`, `bad_message` |
-| `haptic` | `{ "t": "haptic", "pattern": "hit" }` | Acierto o error en el juego (RF-18); `hit` \| `miss` |
+| `haptic` | `{ "t": "haptic", "pattern": "hit" }` | Lo que el juego quiere que el jugador sienta: `hit` acierto, `miss` error (RF-18), `tap` el foco se movió en un menú (RF-08) |
 | `state` | `{ "t": "state", "value": "paused" }` | `playing` \| `paused` \| `disconnected` (RF-07) |
 
 ---
@@ -81,12 +91,24 @@ Respuesta del servidor: `joined` o `error`.
 | `button` | Servidor → Unity | Igual, con `slot` |
 | `calibrate` | Servidor → Unity | Igual, con `slot` |
 | `pad_state` | Servidor → Unity | `{ "t": "pad_state", "slot": 1, "value": "connected" }` — `connected` \| `disconnected` (RF-07, CU-08) |
-| `haptic` | Unity → Servidor | `{ "t": "haptic", "slot": 1, "pattern": "hit" }` |
+| `haptic` | Unity → Servidor | `{ "t": "haptic", "slot": 1, "pattern": "hit" }` — `hit` \| `miss` \| `tap` |
 | `state` | Unity → Servidor | `{ "t": "state", "slot": 1, "value": "paused" }` |
+
+**Por qué `tap` viaja por la red y no lo decide el mando:** quien sabe que el foco
+cambió es Unity, con sus umbrales y su enfriamiento; el mando solo manda ángulos.
+Además, así el golpecito llega junto con el movimiento que se ve en la TV, que es
+con lo que tiene que coincidir. El mando ya lo soporta: `haptics.js` tiene el
+patrón y `main.js` vibra con lo que llegue en `haptic`.
 
 ---
 
 ## 4. Validación en el servidor (RF-04, responsabilidad de Misael)
+
+Primero el relay exige una forma mínima (`server/src/relay/message-shape.js`):
+en `motion`, `seq` entero ≥ 0, `ts` entero y los seis valores de `ori` y `acc`
+numéricos y finitos (`NaN` e `Infinity` viajan como `null` en JSON y se
+rechazan); en `button`, una `action` conocida. Después corre la validación de
+`server/src/validation/`.
 
 Un mensaje se **descarta y se registra** si:
 
@@ -118,3 +140,5 @@ mando, para no inundar la red.
 | Fecha | Versión | Cambio | Acordado por |
 | --- | --- | --- | --- |
 | 2026-09-22 | v1 | Versión inicial del contrato | Santiago, Piero, Misael |
+| 2026-09-22 | v1.1 | Evento `message` y `volatile` en el mando, tope de ~60 Hz en el mando, canal WebSocket puro `/unity` para Unity con el mismo JSON y la misma validación, forma mínima en el relay. Los mensajes no cambian: `join` sigue con `"v": 1` | Santiago, Piero, Misael |
+| 2026-09-22 | v1.2 | Se agrega el patrón `tap` a `haptic`, para el golpecito al mover el foco en los menús (RF-08). Es aditivo: el campo `v` del `join` sigue siendo 1 y nada de lo anterior cambia | Piero, Santiago — **falta Misael** |
