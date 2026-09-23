@@ -33,6 +33,8 @@ namespace MoviMente.Games
 
         public MinigameDefinition Definition { get; }
         public Difficulty Difficulty { get; }
+        // Mandos que juegan esta partida: a ellos va la vibración y el estado.
+        public IReadOnlyCollection<int> Slots => requiredSlots;
         public GameState State { get; private set; } = GameState.Instructions;
         public float ElapsedSeconds { get; private set; }
         public float RemainingSeconds => Math.Max(0f, profile.DurationSeconds - ElapsedSeconds);
