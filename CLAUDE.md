@@ -66,6 +66,10 @@ minijuego consume gestos ya reconocidos; nunca lee sensores crudos.
 
 Capas y diagrama: [docs/arquitectura.md](docs/arquitectura.md)
 
+Postura del mando, calibración y gestos por minijuego:
+[docs/gestos.md](docs/gestos.md). Swing y sacudir nunca van en el mismo
+minijuego.
+
 ---
 
 ## 4. Stack y versiones
