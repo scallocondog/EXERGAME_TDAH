@@ -1,0 +1,16 @@
+{
+    "name": "MoviMente.Games.Core",
+    "rootNamespace": "MoviMente.Games",
+    "references": [
+        "MoviMente.Gestures"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}
