@@ -79,6 +79,21 @@ namespace MoviMente.Games.AtrapaLoCorrecto.Tests
         }
 
         [Test]
+        public void LaCategoriaPedida_SeConoceAntesDeEmpezar()
+        {
+            var definition = AtrapaLoCorrectoGame.CreateDefinition(() => new Random(5), r => rules = r);
+            session = new GameSession(definition, Difficulty.Easy, _ => TiltAxes.Neutral);
+            int beforeStart = rules.TargetCategory;
+
+            session.BeginCountdown();
+            session.Tick(GameSession.CountdownSeconds + 5f);
+
+            Assert.That(session.State, Is.EqualTo(GameState.Playing));
+            Assert.That(rules.TargetCategory, Is.EqualTo(beforeStart));
+            Assert.That(rules.Items.All(i => !i.IsTarget || i.Category == beforeStart), Is.True);
+        }
+
+        [Test]
         public void LaCanastaSigueLaInclinacionYNoSaleDelCampo()
         {
             Start();
