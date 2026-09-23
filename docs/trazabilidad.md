@@ -7,13 +7,13 @@ Estado: ⬜ pendiente · 🟨 en progreso · ✅ hecho y probado.
 
 | ID | Requisito | Responsable | Dónde vive | Prueba | Estado |
 | --- | --- | --- | --- | --- | --- |
-| RF-01 | Sala con código y QR | Piero | `server/src/rooms/`, `server/src/index.js` | CU-01 (`relay.test.js`) | 🟨 servidor listo; falta mostrarlo en Unity |
+| RF-01 | Sala con código y QR | Piero | `server/src/rooms/`, `server/src/index.js`, `unity/.../Net/` | CU-01 (`relay.test.js`, `GameLinkTests`) | 🟨 servidor y Unity listos (QR en `RoomQrLoader`); falta la pantalla de sala de UI |
 | RF-02 | Conexión por QR sin instalar | Santiago | `controller/` | CU-02 | ⬜ |
 | RF-03 | Permiso de sensores | Santiago | `controller/src/sensors.js` | CU-03 | ⬜ |
 | RF-04 | Envío de orientación y aceleración | Piero | `controller/src/`, `server/src/relay/` | CU-02 (`relay.test.js`, `socketio-transport.test.js`) | 🟨 relay listo; faltan mando y validación |
 | RF-05 | Calibración y recentrado | Santiago (mando) / Piero (Unity) | `controller/src/`, `unity/.../Gestures/` | CU-03, CU-07 (`GestureRecognizerTests`) | 🟨 lado Unity listo; falta mando |
 | RF-06 | Reconocimiento de 5 gestos | Piero | `unity/.../Gestures/` | CU-06 (`GestureRecognizerTests`) | 🟨 probado con datos simulados; falta ajustar umbrales con celular real |
-| RF-07 | Estado de conexión y reconexión | Piero | `unity/.../Net/`, `server/src/relay/` | CU-08 (`relay.test.js`) | 🟨 servidor listo; falta pausa en Unity |
+| RF-07 | Estado de conexión y reconexión | Piero | `unity/.../Net/`, `server/src/relay/` | CU-08 (`relay.test.js`, `GameLinkTests`) | 🟨 servidor y cliente Unity listos; falta conectar `pad_state` con la pausa de `GameSession` |
 | RF-08 | Menús navegados desde el mando | Santiago | `unity/Assets/UI/` | CU-04 | ⬜ |
 | RF-09 | Elegir minijuego y dificultad | Piero | `unity/.../Games/Core/` | CU-05 (`MinigameCatalogTests`) | 🟨 catálogo y perfiles listos; falta el menú en Unity |
 | RF-10 | Instrucciones visuales y de audio | Santiago | `unity/Assets/UI/` | CU-06 | ⬜ |
