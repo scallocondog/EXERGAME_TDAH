@@ -15,7 +15,7 @@ Estado: ⬜ pendiente · 🟨 en progreso · ✅ hecho y probado.
 | RF-06 | Reconocimiento de 5 gestos | Piero | `unity/.../Gestures/` | CU-06 (`GestureRecognizerTests`) | 🟨 probado con datos simulados; falta ajustar umbrales con celular real |
 | RF-07 | Estado de conexión y reconexión | Piero | `unity/.../Net/`, `server/src/relay/` | CU-08 (`relay.test.js`) | 🟨 servidor listo; falta pausa en Unity |
 | RF-08 | Menús navegados desde el mando | Santiago | `unity/Assets/UI/` | CU-04 | ⬜ |
-| RF-09 | Elegir minijuego y dificultad | Piero | `unity/.../Games/` | CU-05 | ⬜ |
+| RF-09 | Elegir minijuego y dificultad | Piero | `unity/.../Games/Core/` | CU-05 (`MinigameCatalogTests`) | 🟨 catálogo y perfiles listos; falta el menú en Unity |
 | RF-10 | Instrucciones visuales y de audio | Santiago | `unity/Assets/UI/` | CU-06 | ⬜ |
 | RF-11 | Atrapa lo correcto | Piero | `unity/.../Games/AtrapaLoCorrecto/` | CU-06 | ⬜ |
 | RF-12 | Sigue la secuencia | Piero | `unity/.../Games/SigueLaSecuencia/` | CU-06 | ⬜ |
@@ -25,7 +25,7 @@ Estado: ⬜ pendiente · 🟨 en progreso · ✅ hecho y probado.
 | RF-16 | Resumen con puntaje y estrellas | Santiago | `unity/Assets/UI/` | CU-09 | ⬜ |
 | RF-17 | Guardado local de puntajes | Misael | `unity/.../Storage/` | CU-09 | ⬜ |
 | RF-18 | Vibración en aciertos y errores | Santiago | `controller/src/haptics.js` | CU-06 | ⬜ |
-| RF-19 | Pausar, reanudar, reintentar, salir | Piero | `unity/.../Games/`, `controller/` | CU-06 | ⬜ |
+| RF-19 | Pausar, reanudar, reintentar, salir | Piero | `unity/.../Games/Core/`, `controller/` | CU-06 (`GameSessionTests`) | 🟨 lógica lista; faltan botón del mando y UI de pausa |
 | RF-20 | Dos mandos (deseable) | Piero | `server/src/rooms/`, `unity/.../Net/` | CU-02 (`room-registry.test.js`) | 🟨 slots 1 y 2 en servidor; falta Unity |
 
 ## Requisitos no funcionales
@@ -39,5 +39,5 @@ Estado: ⬜ pendiente · 🟨 en progreso · ✅ hecho y probado.
 | RNF-05 | Usabilidad TDAH | Santiago | Checklist de la sección 10 de CLAUDE.md | ⬜ |
 | RNF-06 | Accesibilidad sin leer | Santiago | Prueba con audio y sin texto | ⬜ |
 | RNF-07 | Desconexión no pierde la partida | Misael | Apagar Wi-Fi a mitad de partida | ⬜ |
-| RNF-08 | Minijuegos independientes | Piero | Agregar un minijuego de prueba sin tocar Net ni Gestures | ⬜ |
+| RNF-08 | Minijuegos independientes | Piero | Agregar un minijuego de prueba sin tocar Net ni Gestures (`FakeRules` en `Games/Core/Tests`) | 🟨 base lista; se confirma con el primer minijuego real |
 | RNF-09 | Alcance ético | Misael | Revisión de todo texto visible al jugador | ⬜ |

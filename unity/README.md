@@ -42,6 +42,41 @@ Supuesto de postura: celular en vertical, pantalla arriba e inclinado hacia el
 jugador. Si un eje sale al revés en la prueba real, se corrige con `InvertX` /
 `InvertY`, sin tocar código.
 
+## Base de minijuegos (`Scripts/Games/Core`, RF-09, RF-19, RNF-08)
+
+C# puro, igual que Gestures. Un minijuego nuevo es una clase de reglas y un
+registro en el catálogo:
+
+```csharp
+class AtrapaRules : MinigameRules
+{
+    public override void OnGesture(GestureEvent g) { /* ... */ Context.Report(TrialOutcome.Hit, g.Slot, 0.6f); }
+    public override void OnTick(float dt) { float x = Context.GetTilt(1).X; /* mover la canasta */ }
+}
+
+catalog.Register(new MinigameDefinition("atrapa", "Game_AtrapaLoCorrecto", () => new AtrapaRules(),
+    easy:   new DifficultyProfile(180f, GestureType.TiltLeft, GestureType.TiltRight),
+    medium: new DifficultyProfile(240f, GestureType.TiltLeft, GestureType.TiltRight),
+    hard:   new DifficultyProfile(300f, GestureType.TiltLeft, GestureType.TiltRight)));
+```
+
+El catálogo rechaza partidas de menos de 3 o más de 5 minutos (RNF-05) y
+minijuegos que mezclen swing y sacudir.
+
+`GameSession` maneja lo común a todos: instrucciones → cuenta regresiva de 3 s →
+juego → fin. Además:
+
+- **Pausa (RF-19):** reanudar vuelve con cuenta regresiva; reintentar empieza
+  de cero; salir deja la partida en `Abandoned` y `ShouldSaveScore` en `false`.
+- **Desconexión (RF-07, CU-08):** `SetPadConnected(slot, false)` pausa y al
+  reconectar retoma con el tiempo intacto. Una pausa del jugador no se reanuda
+  sola al reconectar.
+- **Filtro:** las reglas solo reciben gestos mientras se juega, de los mandos
+  de la partida y del tipo que permite la dificultad.
+- **Salidas:** `StateChanged` para la UI (Santiago) y `TrialReported`
+  (acierto, error u omisión, con tiempo de reacción) para métricas (Misael) y
+  vibración.
+
 ## Reglas
 
 - Un minijuego **consume gestos ya reconocidos**; nunca lee sensores crudos (RNF-08).
