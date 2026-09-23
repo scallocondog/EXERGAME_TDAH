@@ -116,7 +116,7 @@ export class Relay {
     }
 
     const shape = checkShape(msg);
-    const verdict = shape.ok ? this.#validate(msg) : shape;
+    const verdict = shape.ok ? this.#validate(msg, padId) : shape;
     if (!verdict.ok) return this.#rejectPadMessage(entry, verdict.reason ?? 'no pasó la validación');
 
     this.#watchdog.touch(padId, this.#now());

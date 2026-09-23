@@ -40,6 +40,12 @@ namespace MoviMente.Net
 
         public void SendState(int slot, string value) => Send(GameLink.StateMessage(slot, value));
 
+        private void Awake()
+        {
+            // Permitir certificados autofirmados en desarrollo local
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+        }
+
         private void Start() => Connect();
 
         private void OnDestroy()
@@ -52,7 +58,13 @@ namespace MoviMente.Net
         private async void Connect()
         {
             SetStatus(ConnectionStatus.Connecting);
-            var current = new WebSocket(serverUrl);
+            string url = serverUrl;
+            if (url.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+                url = "wss://" + url.Substring("https://".Length);
+            else if (url.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
+                url = "ws://" + url.Substring("http://".Length);
+
+            var current = new WebSocket(url);
             socket = current;
 
             current.OnOpen += () =>

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: MoviMente.Gestures.Unity::MoviMente.Gestures.GestureSettingsAsset
   Values:
     InvertX: 0
-    InvertY: 0
+    InvertY: 1
     TiltDeadzoneDegrees: 4
     TiltEnterDegrees: 20
     TiltExitDegrees: 10

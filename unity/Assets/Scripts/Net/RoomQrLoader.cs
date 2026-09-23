@@ -35,9 +35,15 @@ namespace MoviMente.Net
 
         private void OnRoomClosed() => SetQr(null);
 
+        private class BypassCertificateHandler : CertificateHandler
+        {
+            protected override bool ValidateCertificate(byte[] certificateData) => true;
+        }
+
         private IEnumerator Download(string roomCode)
         {
             using UnityWebRequest request = UnityWebRequestTexture.GetTexture(ServerUrls.Qr(connection.ServerUrl, roomCode));
+            request.certificateHandler = new BypassCertificateHandler();
             yield return request.SendWebRequest();
 
             if (request.result != UnityWebRequest.Result.Success)

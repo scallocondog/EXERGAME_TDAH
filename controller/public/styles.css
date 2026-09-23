@@ -1,0 +1,283 @@
+/* RNF-05, RNF-06: pantallas sin distractores, texto grande, colores calmados */
+:root {
+  --bg: #12303b;
+  --bg-soft: #1b4150;
+  --text: #f3f8f9;
+  --text-soft: #b6cbd2;
+  --accent: #58cfa6;
+  --accent-press: #46b48e;
+  --accent-text: #0b2730;
+  --warn: #efc05f;
+  --alert: #e79a86;
+  --ring-track: #24596b;
+
+  --radius: 22px;
+  --gap: clamp(16px, 4vw, 28px);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: clamp(18px, 4.5vw, 24px);
+  line-height: 1.4;
+  /* El jugador mira la TV, no el celular: nada de gestos accidentales */
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+}
+
+#app {
+  height: 100%;
+}
+
+/* Una instrucción a la vez: solo hay una pantalla visible (RNF-05) */
+.screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap);
+  height: 100%;
+  padding: calc(var(--gap) * 2) var(--gap) var(--gap);
+  text-align: center;
+}
+
+.screen[hidden] {
+  display: none;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(26px, 7vw, 38px);
+  font-weight: 700;
+}
+
+h2 {
+  margin: 0;
+  font-size: clamp(24px, 6vw, 32px);
+}
+
+.icon {
+  margin: 0;
+  font-size: clamp(56px, 16vw, 96px);
+  line-height: 1;
+}
+
+.help {
+  margin: 0;
+  max-width: 22ch;
+  color: var(--text-soft);
+}
+
+.steps {
+  margin: 0;
+  padding-left: 1.2em;
+  max-width: 24ch;
+  text-align: left;
+  color: var(--text-soft);
+}
+
+.steps li + li {
+  margin-top: 0.5em;
+}
+
+.notice {
+  margin: 0;
+  min-height: 1.5em;
+  color: var(--warn);
+}
+
+/* Botones grandes: se pulsan sin mirar el celular (RNF-06) */
+.button {
+  border: none;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-text);
+  font: inherit;
+  font-weight: 700;
+  padding: 0.8em 1.4em;
+  cursor: pointer;
+  transition: transform 0.08s ease, background-color 0.12s ease;
+}
+
+.button:active {
+  background: var(--accent-press);
+  transform: scale(0.98);
+}
+
+.button--main {
+  width: min(100%, 420px);
+  min-height: 3.2em;
+  font-size: clamp(20px, 5.5vw, 26px);
+}
+
+.button--soft {
+  background: var(--bg-soft);
+  color: var(--text);
+}
+
+.button--soft:active {
+  background: #235268;
+}
+
+.button--small {
+  flex: 1;
+  background: var(--bg-soft);
+  color: var(--text);
+  font-size: clamp(16px, 4vw, 20px);
+  padding: 0.7em 0.5em;
+}
+
+.button--small:active {
+  background: #235268;
+}
+
+.code-input {
+  width: min(100%, 320px);
+  border: 3px solid var(--ring-track);
+  border-radius: var(--radius);
+  background: var(--bg-soft);
+  color: var(--text);
+  font: inherit;
+  font-size: clamp(36px, 12vw, 56px);
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-align: center;
+  text-indent: 0.25em;
+  padding: 0.35em 0.2em;
+  text-transform: uppercase;
+}
+
+.code-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* CU-03: el anillo muestra cuánto falta del reposo de 2 segundos */
+.ring {
+  position: relative;
+  width: min(60vw, 220px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+
+.ring svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.ring__track,
+.ring__fill {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round;
+}
+
+.ring__track {
+  stroke: var(--ring-track);
+}
+
+.ring__fill {
+  stroke: var(--accent);
+  stroke-dasharray: 327;
+  stroke-dashoffset: 327;
+  transition: stroke-dashoffset 0.12s linear;
+}
+
+.ring__icon {
+  position: absolute;
+  font-size: clamp(44px, 13vw, 72px);
+}
+
+/* Pantalla de juego: el botón de confirmar ocupa casi todo (RF-08) */
+.screen--pad {
+  justify-content: flex-start;
+  gap: var(--gap);
+  padding-top: calc(var(--gap) * 2.4);
+}
+
+.pad-top {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.button--confirm {
+  width: 100%;
+  flex: 1;
+  font-size: clamp(30px, 9vw, 44px);
+  letter-spacing: 0.02em;
+}
+
+/* RF-07: el estado de la conexión nunca desaparece */
+.status {
+  position: fixed;
+  top: calc(env(safe-area-inset-top) + 8px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: clamp(13px, 3.4vw, 16px);
+  color: var(--text-soft);
+  pointer-events: none;
+}
+
+.status__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--warn);
+}
+
+.status--on .status__dot {
+  background: var(--accent);
+}
+
+.status--off .status__dot {
+  background: var(--alert);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap);
+  padding: var(--gap);
+  text-align: center;
+  background: rgba(18, 48, 59, 0.97);
+}
+
+.overlay[hidden] {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .ring__fill {
+    transition: none;
+  }
+}
