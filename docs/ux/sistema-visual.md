@@ -94,7 +94,9 @@ Reglas de navegación, para quien lo implemente en Unity:
   con TDAH deja el foco encima de cosas que no quiere elegir.
 - El foco nunca se pierde: al entrar a una pantalla hay uno puesto, y en los
   extremos se queda quieto en vez de dar la vuelta.
-- Al mover el foco, el mando vibra `tap` (ya está en `haptics.js`).
+- Al mover el foco, el mando vibra `tap`. **Lo manda Unity**, con
+  `{ "t": "haptic", "slot": n, "pattern": "tap" }`: el mando no sabe cuándo
+  cambió el foco, solo manda ángulos. El patrón ya existe en `haptics.js`.
 
 ---
 
