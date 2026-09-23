@@ -4,8 +4,9 @@ Dueños: **Piero Mejía** (`Scripts/Net`, `Scripts/Gestures`, `Scripts/Games`),
 **Santiago Callocondo** (`Assets/UI`), **Misael Marrón** (`Scripts/Metrics`,
 `Scripts/Storage`).
 
-Unity **2022 LTS**. No abrir con otra versión: Unity reescribe archivos del
-proyecto y ensucia el diff para todos.
+Unity **6000.3.24f1** (Unity 6.3 LTS, soporte hasta diciembre de 2027). No
+abrir con otra versión, ni siquiera otro parche de 6000.3: Unity reescribe
+archivos del proyecto y ensucia el diff para todos.
 
 ## Estructura prevista
 
@@ -24,6 +25,30 @@ unity/Assets/
 └── Art/
 ```
 
+## Red y diagnóstico (`Scripts/Net`, `Scripts/Diagnostics`, RF-01, RF-07)
+
+- `ServerConnection`: WebSocket a `/unity` (NativeWebSocket 2.0.7), crea la
+  sala al conectar y reintenta con 0,5 / 1 / 2 / 4 / 5 s. Si se reconecta, la
+  sala es nueva y los mandos tienen que volver a escanear.
+- `GameLink`: interpreta los mensajes del servidor (`room_created`, `pad_state`,
+  `motion`, `button`, `calibrate`) y arma los salientes (`haptic`, `state`).
+- `RoomQrLoader`: baja el QR de `GET /qr/<código>` y lo pone en un `RawImage`.
+- `PadInputHub` (`Gestures/Unity`): un reconocedor por mando. De aquí leen
+  menús y minijuegos. Usa `Assets/Settings/Gestures/GestureSettings.asset`,
+  que se edita en el Inspector incluso durante el Play.
+
+**Escena `Scenes/Diagnostico`**, para probar con el celular real y afinar
+umbrales:
+
+1. `cd server && npm run dev` (necesita el canal `/unity` de RF-04).
+2. Abrir `Diagnostico` y dar Play. Aparecen el código y el QR.
+3. Escanear con el celular, calibrar y mover: se ven los Hz que llegan, la
+   inclinación en X/Y, si está estable y cada gesto detectado.
+
+La URL del servidor se cambia en el componente `ServerConnection`
+(`ws://localhost:3443/unity` por defecto; `wss://` si el servidor tiene
+certificados de mkcert).
+
 ## Gestos (`Scripts/Gestures`, RF-05, RF-06)
 
 C# puro (`noEngineReferences`): no depende de UnityEngine ni de la red, y se
@@ -38,9 +63,53 @@ pad.Calibrate();                                   // mensaje calibrate o botón
 float x = pad.Tilt.X;                              // -1..1, para mecánicas continuas
 ```
 
-Supuesto de postura: celular en vertical, pantalla arriba e inclinado hacia el
-jugador. Si un eje sale al revés en la prueba real, se corrige con `InvertX` /
-`InvertY`, sin tocar código.
+Postura acordada: celular en vertical como un Wiimote, pantalla arriba e
+inclinada unos 30° hacia el jugador. Qué gestos usa cada minijuego y cómo se
+calibra: [docs/gestos.md](../docs/gestos.md). Si un eje sale al revés en la
+prueba real, se corrige con `InvertX` / `InvertY`, sin tocar código.
+
+## Base de minijuegos (`Scripts/Games/Core`, RF-09, RF-19, RNF-08)
+
+C# puro, igual que Gestures. Un minijuego nuevo es una clase de reglas y un
+registro en el catálogo:
+
+```csharp
+class AtrapaRules : MinigameRules
+{
+    public override void OnGesture(GestureEvent g) { /* ... */ Context.Report(TrialOutcome.Hit, g.Slot, 0.6f); }
+    public override void OnTick(float dt) { float x = Context.GetTilt(1).X; /* mover la canasta */ }
+}
+
+catalog.Register(new MinigameDefinition("atrapa", "Game_AtrapaLoCorrecto", () => new AtrapaRules(),
+    easy:   new DifficultyProfile(180f, GestureType.TiltLeft, GestureType.TiltRight),
+    medium: new DifficultyProfile(240f, GestureType.TiltLeft, GestureType.TiltRight),
+    hard:   new DifficultyProfile(300f, GestureType.TiltLeft, GestureType.TiltRight)));
+```
+
+El catálogo rechaza partidas de menos de 3 o más de 5 minutos (RNF-05) y
+minijuegos que mezclen swing y sacudir.
+
+Ejemplo real: `Games/AtrapaLoCorrecto` (RF-11). La canasta sigue a
+`Tilt.X` por posición (inclinar del todo la lleva al borde); caen objetos de 3
+categorías y solo cuentan los de la pedida. Atrapar uno pedido es acierto,
+atrapar un distractor es error, dejar caer uno pedido es omisión y dejar pasar
+un distractor no se reporta. El tiempo de reacción va desde que aparece el
+objeto hasta que la canasta queda debajo. La escena recibe las reglas de cada
+partida por `onRulesCreated` y solo dibuja `BasketX` e `Items`.
+
+`GameSession` maneja lo común a todos: instrucciones → cuenta regresiva de 3 s →
+juego → fin. Además:
+
+- **Pausa (RF-19):** reanudar vuelve con cuenta regresiva; reintentar empieza
+  de cero; salir deja la partida en `Abandoned` y `ShouldSaveScore` en `false`.
+- **Desconexión (RF-07, CU-08):** `SetPadConnected(slot, false)` pausa y al
+  reconectar retoma con el tiempo intacto. Una pausa del jugador no se reanuda
+  sola al reconectar.
+- **Filtro:** las reglas solo reciben gestos mientras se juega, de los mandos
+  de la partida y del tipo que permite la dificultad.
+- **Salidas:** `StateChanged` para la UI (Santiago) y `TrialReported`
+  (acierto, error u omisión, con tiempo de reacción) para métricas (Misael) y
+  vibración.
 
 ## Reglas
 

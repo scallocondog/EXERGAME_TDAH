@@ -1,4 +1,4 @@
-// RF-01, RF-04: arranque del servidor (HTTPS + Express + Socket.io)
+// RF-01, RF-04: arranque del servidor (HTTPS + Express + Socket.io + WebSocket de Unity)
 import { existsSync, readFileSync } from 'node:fs';
 import { createServer as createHttpServer } from 'node:http';
 import { createServer as createHttpsServer } from 'node:https';
@@ -9,7 +9,9 @@ import { Server } from 'socket.io';
 import { findLanAddresses } from './lan-address.js';
 import { Relay } from './relay/relay.js';
 import { attachSocketIo } from './relay/socketio-transport.js';
+import { attachUnityWebSocket, UNITY_WS_PATH } from './relay/ws-transport.js';
 import { RoomRegistry } from './rooms/room-registry.js';
+import { createValidator, RateLimiter } from './validation/index.js';
 
 const PORT = Number(process.env.PORT ?? 3443);
 const SWEEP_INTERVAL_MS = 250;
@@ -23,7 +25,9 @@ const origin = `${credentials ? 'https' : 'http'}://${hostIp}:${PORT}`;
 const joinUrl = (room) => `${origin}/?room=${room}`;
 
 const registry = new RoomRegistry();
-const relay = new Relay({ registry, joinUrl, onRoomCreated: printRoomQr });
+const rateLimiter = new RateLimiter();
+const validate = createValidator({ rateLimiter });
+const relay = new Relay({ registry, joinUrl, validate, onRoomCreated: printRoomQr });
 
 const app = express();
 app.use(express.static(CONTROLLER_DIR));
@@ -37,11 +41,24 @@ app.get('/qr/:room', async (req, res) => {
 });
 
 const server = credentials ? createHttpsServer(credentials, app) : createHttpServer(app);
-attachSocketIo(new Server(server), relay);
+// destroyUpgrade: false para que Socket.io no corte el upgrade de /unity.
+attachSocketIo(new Server(server, { destroyUpgrade: false }), relay);
+attachUnityWebSocket(server, relay);
+
+const UNITY_PORT = Number(process.env.UNITY_PORT ?? 3444);
+if (credentials) {
+  const unityHttpServer = createHttpServer(app);
+  attachUnityWebSocket(unityHttpServer, relay);
+  unityHttpServer.listen(UNITY_PORT, '0.0.0.0', () => {
+    console.log(`Unity en PC también puede conectarse a: ws://localhost:${UNITY_PORT}${UNITY_WS_PATH}`);
+  });
+}
+
 setInterval(() => relay.sweep(), SWEEP_INTERVAL_MS);
 
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`MoviMente escuchando en ${origin}`);
+  console.log(`Unity se conecta a ${origin.replace(/^http/, 'ws')}${UNITY_WS_PATH}`);
   if (!credentials) {
     console.warn(
       'AVISO: no hay key.pem y cert.pem en server/certs/, se sirve por HTTP.\n' +

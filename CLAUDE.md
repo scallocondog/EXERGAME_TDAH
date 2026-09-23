@@ -66,6 +66,10 @@ minijuego consume gestos ya reconocidos; nunca lee sensores crudos.
 
 Capas y diagrama: [docs/arquitectura.md](docs/arquitectura.md)
 
+Postura del mando, calibración y gestos por minijuego:
+[docs/gestos.md](docs/gestos.md). Swing y sacudir nunca van en el mismo
+minijuego.
+
 ---
 
 ## 4. Stack y versiones
@@ -73,12 +77,16 @@ Capas y diagrama: [docs/arquitectura.md](docs/arquitectura.md)
 | Parte | Tecnología | Nota |
 | --- | --- | --- |
 | Mando | HTML + CSS + JS vanilla (ES2022) | Sin framework. `DeviceOrientationEvent` / `DeviceMotionEvent`. |
-| Servidor | Node.js 20+ LTS, Express, Socket.io 4.x | HTTPS obligatorio: sin él el navegador no entrega los sensores. |
-| Juego | Unity 2022 LTS, C#, cliente WebSocket (`NativeWebSocket` o equivalente) | Build para Windows. |
+| Servidor | Node.js 20+ LTS, Express 5, Socket.io 4.x (mando), `ws` 8 (Unity), `qrcode` | HTTPS obligatorio: sin él el navegador no entrega los sensores. |
+| Juego | Unity **6000.3.24f1** (Unity 6.3 LTS), C#, cliente WebSocket (`NativeWebSocket`) en `/unity` | Build para Windows. |
 | QR | Generado por el servidor | Apunta a `https://<ip-lan>:<puerto>/?room=<código>`. |
 
 No se agregan dependencias sin acuerdo del equipo. Cada dependencia nueva se
 justifica en el PR: qué resuelve y por qué no se hace a mano.
+
+Aprobadas (servidor): `express`, `socket.io`, `ws`, `qrcode`; `socket.io-client`
+solo como devDependency para pruebas. Las versiones quedan fijadas en
+`server/package-lock.json`, que sí se commitea.
 
 ---
 
@@ -239,7 +247,7 @@ cd server && npm test       # salas, relay y transporte
 npm run test:latency        # RNF-01 — pendiente de implementar
 
 # Unity
-# Abrir unity/ desde Unity Hub con 2022 LTS. No abrir con otra versión.
+# Abrir unity/ desde Unity Hub con 6000.3.24f1. No abrir con otra versión.
 ```
 
 Para probar en celular: PC y celular en la **misma red Wi-Fi**, y aceptar el

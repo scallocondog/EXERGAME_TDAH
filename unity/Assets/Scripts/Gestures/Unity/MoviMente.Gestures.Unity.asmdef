@@ -1,0 +1,17 @@
+{
+    "name": "MoviMente.Gestures.Unity",
+    "rootNamespace": "MoviMente.Gestures",
+    "references": [
+        "MoviMente.Gestures",
+        "MoviMente.Net"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

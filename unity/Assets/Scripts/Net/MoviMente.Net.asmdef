@@ -1,0 +1,18 @@
+{
+    "name": "MoviMente.Net",
+    "rootNamespace": "MoviMente.Net",
+    "references": [
+        "MoviMente.Gestures",
+        "colyseus.nativewebsocket",
+        "UnityEngine.UI"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
