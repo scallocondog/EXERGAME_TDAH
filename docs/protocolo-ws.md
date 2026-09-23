@@ -77,7 +77,7 @@ descarta lo que supere 80 Hz por mando.
 | --- | --- | --- |
 | `joined` | `{ "t": "joined", "room": "A7K2", "slot": 1 }` | Emparejamiento correcto (`slot` 1 o 2, RF-20) |
 | `error` | `{ "t": "error", "code": "room_not_found" }` | `room_not_found`, `room_full`, `bad_message` |
-| `haptic` | `{ "t": "haptic", "pattern": "hit" }` | Acierto o error en el juego (RF-18); `hit` \| `miss` |
+| `haptic` | `{ "t": "haptic", "pattern": "hit" }` | Lo que el juego quiere que el jugador sienta: `hit` acierto, `miss` error (RF-18), `tap` el foco se movió en un menú (RF-08) |
 | `state` | `{ "t": "state", "value": "paused" }` | `playing` \| `paused` \| `disconnected` (RF-07) |
 
 ---
@@ -91,8 +91,14 @@ descarta lo que supere 80 Hz por mando.
 | `button` | Servidor → Unity | Igual, con `slot` |
 | `calibrate` | Servidor → Unity | Igual, con `slot` |
 | `pad_state` | Servidor → Unity | `{ "t": "pad_state", "slot": 1, "value": "connected" }` — `connected` \| `disconnected` (RF-07, CU-08) |
-| `haptic` | Unity → Servidor | `{ "t": "haptic", "slot": 1, "pattern": "hit" }` |
+| `haptic` | Unity → Servidor | `{ "t": "haptic", "slot": 1, "pattern": "hit" }` — `hit` \| `miss` \| `tap` |
 | `state` | Unity → Servidor | `{ "t": "state", "slot": 1, "value": "paused" }` |
+
+**Por qué `tap` viaja por la red y no lo decide el mando:** quien sabe que el foco
+cambió es Unity, con sus umbrales y su enfriamiento; el mando solo manda ángulos.
+Además, así el golpecito llega junto con el movimiento que se ve en la TV, que es
+con lo que tiene que coincidir. El mando ya lo soporta: `haptics.js` tiene el
+patrón y `main.js` vibra con lo que llegue en `haptic`.
 
 ---
 
@@ -135,3 +141,4 @@ mando, para no inundar la red.
 | --- | --- | --- | --- |
 | 2026-09-22 | v1 | Versión inicial del contrato | Santiago, Piero, Misael |
 | 2026-09-22 | v1.1 | Evento `message` y `volatile` en el mando, tope de ~60 Hz en el mando, canal WebSocket puro `/unity` para Unity con el mismo JSON y la misma validación, forma mínima en el relay. Los mensajes no cambian: `join` sigue con `"v": 1` | Santiago, Piero, Misael |
+| 2026-09-22 | v1.2 | Se agrega el patrón `tap` a `haptic`, para el golpecito al mover el foco en los menús (RF-08). Es aditivo: el campo `v` del `join` sigue siendo 1 y nada de lo anterior cambia | Piero, Santiago — **falta Misael** |
