@@ -244,7 +244,8 @@ cd controller && npm test   # código de sala y calibración
 
 # Pruebas
 cd server && npm test       # salas, relay y transporte
-npm run test:latency        # RNF-01 — pendiente de implementar
+npm run test:validation     # RF-04: rangos, malformados y frecuencia (tests/validation/)
+npm run test:latency        # RNF-01: latencia del relay en memoria (tests/latency/)
 
 # Unity
 # Abrir unity/ desde Unity Hub con 6000.3.24f1. No abrir con otra versión.
