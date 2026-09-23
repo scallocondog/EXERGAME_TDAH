@@ -38,9 +38,10 @@ pad.Calibrate();                                   // mensaje calibrate o botón
 float x = pad.Tilt.X;                              // -1..1, para mecánicas continuas
 ```
 
-Supuesto de postura: celular en vertical, pantalla arriba e inclinado hacia el
-jugador. Si un eje sale al revés en la prueba real, se corrige con `InvertX` /
-`InvertY`, sin tocar código.
+Postura acordada: celular en vertical como un Wiimote, pantalla arriba e
+inclinada unos 30° hacia el jugador. Qué gestos usa cada minijuego y cómo se
+calibra: [docs/gestos.md](../docs/gestos.md). Si un eje sale al revés en la
+prueba real, se corrige con `InvertX` / `InvertY`, sin tocar código.
 
 ## Reglas
 
