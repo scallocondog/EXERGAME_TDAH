@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Maqueta de pantallas · MoviMente</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <!-- Maqueta de las pantallas de la TV (RF-08, RF-10, RF-16). No es el juego:
+         sirve para revisar el diseño antes de construirlo en Unity UI. -->
+    <div class="viewport">
+      <div class="stage" id="stage">
+        <!-- 1 · Sala y QR (RF-01) -->
+        <section class="screen" data-screen="sala">
+          <div class="safe sala">
+            <div class="qr" id="qr" aria-hidden="true"></div>
+            <div class="sala__texto">
+              <h1 class="title">Conecta tu celular</h1>
+              <p class="room-code">TCXG</p>
+              <p class="support">Escanea el código con la cámara</p>
+            </div>
+          </div>
+          <p class="chip chip--wait" id="pad-chip">Esperando mando…</p>
+        </section>
+
+        <!-- 2 · Elegir juego (RF-08, RF-09) -->
+        <section class="screen" data-screen="menu">
+          <div class="safe column">
+            <h1 class="title">Elige un juego</h1>
+            <div class="cards">
+              <button class="card" data-focus data-go="dificultad" type="button">
+                <span class="card__icon" aria-hidden="true">🧺</span>
+                <span class="card__name">Atrapa lo correcto</span>
+                <span class="card__hint">Inclina para atrapar</span>
+              </button>
+              <button class="card" data-focus data-go="dificultad" type="button">
+                <span class="card__icon" aria-hidden="true">🔁</span>
+                <span class="card__name">Sigue la secuencia</span>
+                <span class="card__hint">Repite los gestos</span>
+              </button>
+              <button class="card" data-focus data-go="dificultad" type="button">
+                <span class="card__icon" aria-hidden="true">⚔️</span>
+                <span class="card__name">Corta sin fallar</span>
+                <span class="card__hint">Mueve rápido el brazo</span>
+              </button>
+              <button class="card" data-focus data-go="dificultad" type="button">
+                <span class="card__icon" aria-hidden="true">🪁</span>
+                <span class="card__name">Equilibrio</span>
+                <span class="card__hint">Mantén el celular quieto</span>
+              </button>
+            </div>
+          </div>
+          <p class="pad-hint"><b>Inclina</b> para elegir · <b>Botón</b> para entrar</p>
+        </section>
+
+        <!-- 3 · Dificultad (RF-09) -->
+        <section class="screen" data-screen="dificultad">
+          <div class="safe column">
+            <h1 class="title">¿Qué tan rápido?</h1>
+            <div class="cards cards--three">
+              <button class="card" data-focus data-go="instrucciones" type="button">
+                <span class="card__icon" aria-hidden="true">🐢</span>
+                <span class="card__name">Fácil</span>
+              </button>
+              <button class="card" data-focus data-go="instrucciones" type="button">
+                <span class="card__icon" aria-hidden="true">🐇</span>
+                <span class="card__name">Medio</span>
+              </button>
+              <button class="card" data-focus data-go="instrucciones" type="button">
+                <span class="card__icon" aria-hidden="true">⚡</span>
+                <span class="card__name">Difícil</span>
+              </button>
+            </div>
+          </div>
+          <p class="pad-hint"><b>Inclina</b> para elegir · <b>Botón</b> para entrar</p>
+        </section>
+
+        <!-- 4 · Instrucciones (RF-10): una frase, la demostración y el audio -->
+        <section class="screen" data-screen="instrucciones">
+          <div class="safe column">
+            <div class="demo" aria-hidden="true">
+              <div class="demo__phone"><span class="demo__screen"></span></div>
+            </div>
+            <h1 class="instruction">Inclina para mover la canasta</h1>
+            <p class="speaker" aria-hidden="true">🔊</p>
+            <button class="btn" data-focus data-go="cuenta" type="button">
+              Toca el botón para empezar
+            </button>
+          </div>
+        </section>
+
+        <!-- 5 · Cuenta regresiva -->
+        <section class="screen" data-screen="cuenta">
+          <div class="safe column">
+            <p class="countdown" id="countdown">3</p>
+            <p class="support">Inclina para mover la canasta</p>
+          </div>
+        </section>
+
+        <!-- 6 · Partida y HUD (RF-15) -->
+        <section class="screen" data-screen="partida">
+          <div class="flash" id="flash"></div>
+
+          <div class="hud">
+            <div class="hud__time">
+              <span class="hud__label">Tiempo</span>
+              <span class="hud__value" id="hud-time">3:00</span>
+              <span class="bar"><span class="bar__fill" id="hud-bar"></span></span>
+            </div>
+            <div class="hud__score">
+              <span class="hud__label">Puntaje</span>
+              <span class="hud__value" id="hud-score">120</span>
+            </div>
+          </div>
+
+          <div class="scene">
+            <span class="fruit fruit--a" aria-hidden="true">🍎</span>
+            <span class="fruit fruit--b" aria-hidden="true">🍌</span>
+            <span class="fruit fruit--c" aria-hidden="true">🧦</span>
+            <span class="basket" id="basket" aria-hidden="true">🧺</span>
+            <span class="popup" id="popup">+10</span>
+          </div>
+
+          <p class="streak" id="streak">3 seguidos</p>
+
+          <!-- Capa de pausa (RF-19): el juego sigue viéndose detrás -->
+          <div class="layer" data-layer="pausa">
+            <h2 class="title">Juego en pausa</h2>
+            <div class="options">
+              <button class="option" data-focus data-action="resume" type="button">
+                Seguir jugando
+              </button>
+              <button class="option" data-focus data-action="restart" type="button">
+                Volver a empezar
+              </button>
+              <button class="option" data-focus data-action="exit" type="button">
+                Salir
+                <span class="option__note">no se guarda el puntaje</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Capa de mando desconectado (RF-07, CU-08): espera, no castiga -->
+          <div class="layer" data-layer="sin-mando">
+            <p class="layer__icon" aria-hidden="true">📡</p>
+            <h2 class="title">Esperando tu mando…</h2>
+            <p class="support">Revisa que el celular siga en la página del mando</p>
+          </div>
+        </section>
+
+        <!-- 7 · Resultados (RF-16, RF-17) -->
+        <section class="screen" data-screen="resultados">
+          <div class="safe column">
+            <p class="stars" id="stars" aria-hidden="true">
+              <span class="star">★</span><span class="star">★</span><span class="star">★</span>
+            </p>
+            <h1 class="title">¡Muy bien!</h1>
+            <p class="score">340</p>
+            <p class="record">¡Nuevo récord! Antes: 280</p>
+            <p class="metrics">18 aciertos · respondiste en 0,6 s</p>
+            <div class="options options--row">
+              <button class="option" data-focus data-go="cuenta" type="button">Jugar otra vez</button>
+              <button class="option" data-focus data-go="menu" type="button">Elegir otro juego</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Fuera de la pantalla del juego: controles de la maqueta -->
+    <nav class="chrome">
+      <span class="chrome__title">Maqueta · no es el juego</span>
+      <span class="chrome__buttons" id="chrome-buttons"></span>
+      <span class="chrome__keys">
+        <b>← →</b> inclinar · <b>Enter</b> confirmar · <b>P</b> pausa · <b>A</b> acierto ·
+        <b>E</b> error · <b>D</b> sin mando
+      </span>
+    </nav>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

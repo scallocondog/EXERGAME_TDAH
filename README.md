@@ -47,6 +47,7 @@ en red local y es lo que permite al navegador entregar los sensores.
 | [docs/arquitectura.md](docs/arquitectura.md) | Capas, módulos y decisiones |
 | [docs/protocolo-ws.md](docs/protocolo-ws.md) | Contrato de mensajes entre mando, servidor y Unity |
 | [docs/equipo-y-responsabilidades.md](docs/equipo-y-responsabilidades.md) | Quién hace qué y quién es dueño de cada carpeta |
+| [docs/ux/sistema-visual.md](docs/ux/sistema-visual.md) | Diseño de las pantallas del juego, con maqueta navegable |
 | [docs/trazabilidad.md](docs/trazabilidad.md) | Estado de cada requisito |
 | [docs/plan-de-pruebas.md](docs/plan-de-pruebas.md) | Pruebas por caso de uso |
 
