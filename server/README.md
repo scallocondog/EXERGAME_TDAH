@@ -19,6 +19,37 @@ server/
 └── certs/                certificados locales (NO se commitean)
 ```
 
+## Cómo levantarlo
+
+```bash
+cd server
+npm install
+npm run dev      # reinicia solo al guardar
+npm test         # pruebas de salas, relay y Socket.io
+```
+
+Variables opcionales:
+
+| Variable | Por defecto | Para qué |
+| --- | --- | --- |
+| `PORT` | `3443` | Puerto HTTPS del servidor |
+| `HOST_IP` | primera IP privada detectada | IP que va en la URL del QR; fijarla si la PC tiene varias (VPN, VirtualBox) |
+
+Sin `certs/key.pem` y `certs/cert.pem` arranca por HTTP y avisa: sirve para
+probar con Unity en la misma PC, pero el celular no entregará los sensores.
+
+Cada vez que el juego crea una sala, la terminal imprime la URL y el QR. Unity
+puede descargar el QR como imagen en `GET /qr/<código>` (404 si la sala no existe).
+
+## Transporte
+
+Socket.io, **un solo evento: `message`** (`socket.send(obj)` en ambos lados).
+El contenido es el JSON de [protocolo-ws.md](../docs/protocolo-ws.md) con su
+campo `t`. Unity puede mandar el JSON como texto: el servidor lo parsea.
+
+El rol de cada conexión lo decide su primer mensaje: `create_room` → juego,
+`join` → mando.
+
 ## Reglas
 
 - El servidor **no interpreta gestos** ni guarda estado de juego: valida,
