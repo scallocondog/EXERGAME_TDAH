@@ -1,5 +1,6 @@
 // RF-04, RF-07, RF-20: retransmisión mando ↔ Unity y detección de desconexión
 import { normalizeRoomCode } from '../rooms/room-code.js';
+import { checkShape } from './message-shape.js';
 import { PadWatchdog } from './pad-watchdog.js';
 
 export const PAD_TIMEOUT_MS = 2000;
@@ -9,8 +10,8 @@ const PAD_STREAM_TYPES = new Set(['motion', 'button', 'calibrate']);
 const HAPTIC_PATTERNS = new Set(['hit', 'miss']);
 const PAD_STATES = new Set(['playing', 'paused', 'disconnected']);
 
-// Mientras no exista server/src/validation/ (Misael) todo mensaje con forma
-// correcta pasa; los rangos de protocolo-ws.md §4 se aplican allí.
+// validate() lo aporta server/src/validation/ (Misael): rangos y frecuencia de
+// protocolo-ws.md §4. Corre después de checkShape, sea cual sea el canal.
 const acceptAll = () => ({ ok: true });
 
 // El relay no conoce el transporte: recibe conexiones { id, send(msg) } y
@@ -112,7 +113,8 @@ export class Relay {
       return this.#rejectPadMessage(entry, `room "${msg.room}" no coincide con ${found.room.code}`);
     }
 
-    const verdict = this.#validate(msg);
+    const shape = checkShape(msg);
+    const verdict = shape.ok ? this.#validate(msg) : shape;
     if (!verdict.ok) return this.#rejectPadMessage(entry, verdict.reason ?? 'no pasó la validación');
 
     this.#watchdog.touch(padId, this.#now());

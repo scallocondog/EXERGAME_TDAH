@@ -58,7 +58,8 @@ test('juego y mando se emparejan y el movimiento llega al juego', async () => {
 
   const motion = nextMessage(game, 'motion');
   // Unity puede mandar el JSON como texto: el transporte lo acepta igual.
-  pad.send(JSON.stringify({ t: 'motion', room, seq: 1, ts: 1, ori: {}, acc: {} }));
+  const reading = { ori: { alpha: 0, beta: 30, gamma: 0 }, acc: { x: 0, y: 9.8, z: 0 } };
+  pad.send(JSON.stringify({ t: 'motion', room, seq: 1, ts: 1, ...reading }));
   assert.equal((await motion).slot, 1);
 
   const haptic = nextMessage(pad, 'haptic');
