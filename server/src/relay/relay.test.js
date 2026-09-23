@@ -174,6 +174,17 @@ test('RF-18: la háptica y el estado del juego llegan al mando del slot indicado
   assert.deepEqual(last(pad1), { t: 'state', value: 'paused' });
 });
 
+test('RF-08: tap llega al mando y un patrón desconocido no', () => {
+  const { room } = openRoom();
+  const pad = joinPad('pad', room);
+
+  relay.receive('game', { t: 'haptic', slot: 1, pattern: 'tap' });
+  assert.deepEqual(last(pad), { t: 'haptic', pattern: 'tap' });
+
+  relay.receive('game', { t: 'haptic', slot: 1, pattern: 'buzz' });
+  assert.deepEqual(last(pad), { t: 'haptic', pattern: 'tap' });
+});
+
 test('CU-08: 2 s sin mensajes marcan el mando como desconectado y un mensaje nuevo lo reconecta', () => {
   const { game, room } = openRoom();
   joinPad('pad', room);

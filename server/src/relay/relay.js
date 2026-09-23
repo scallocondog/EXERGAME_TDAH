@@ -7,7 +7,9 @@ export const PAD_TIMEOUT_MS = 2000;
 const ERROR_INTERVAL_MS = 1000;
 
 const PAD_STREAM_TYPES = new Set(['motion', 'button', 'calibrate']);
-const HAPTIC_PATTERNS = new Set(['hit', 'miss']);
+// tap: el foco se movió en un menú (RF-08). Lo decide Unity, que es quien
+// aplica el enfriamiento de 350 ms; el relay solo lo deja pasar.
+const HAPTIC_PATTERNS = new Set(['hit', 'miss', 'tap']);
 const PAD_STATES = new Set(['playing', 'paused', 'disconnected']);
 
 // validate() lo aporta server/src/validation/ (Misael): rangos y frecuencia de
