@@ -14,6 +14,7 @@ import { RoomRegistry } from './rooms/room-registry.js';
 import { createValidator, RateLimiter } from './validation/index.js';
 
 const PORT = Number(process.env.PORT ?? 3443);
+const UNITY_PORT = Number(process.env.UNITY_PORT ?? 3444);
 const SWEEP_INTERVAL_MS = 250;
 const CERT_DIR = fileURLToPath(new URL('../certs/', import.meta.url));
 const CONTROLLER_DIR = fileURLToPath(new URL('../../controller/public/', import.meta.url));
@@ -45,20 +46,17 @@ const server = credentials ? createHttpsServer(credentials, app) : createHttpSer
 attachSocketIo(new Server(server, { destroyUpgrade: false }), relay);
 attachUnityWebSocket(server, relay);
 
-const UNITY_PORT = Number(process.env.UNITY_PORT ?? 3444);
-if (credentials) {
-  const unityHttpServer = createHttpServer(app);
-  attachUnityWebSocket(unityHttpServer, relay);
-  unityHttpServer.listen(UNITY_PORT, '0.0.0.0', () => {
-    console.log(`Unity en PC también puede conectarse a: ws://localhost:${UNITY_PORT}${UNITY_WS_PATH}`);
-  });
-}
+// Unity corre en la misma PC que el servidor: por loopback no necesita
+// certificado ni queda un puerto sin cifrar abierto a la red.
+const unityServer = createHttpServer(app);
+attachUnityWebSocket(unityServer, relay);
+unityServer.listen(UNITY_PORT, '127.0.0.1');
 
 setInterval(() => relay.sweep(), SWEEP_INTERVAL_MS);
 
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`MoviMente escuchando en ${origin}`);
-  console.log(`Unity se conecta a ${origin.replace(/^http/, 'ws')}${UNITY_WS_PATH}`);
+  console.log(`Unity se conecta a ws://127.0.0.1:${UNITY_PORT}${UNITY_WS_PATH}`);
   if (!credentials) {
     console.warn(
       'AVISO: no hay key.pem y cert.pem en server/certs/, se sirve por HTTP.\n' +

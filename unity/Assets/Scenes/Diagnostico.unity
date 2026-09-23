@@ -321,7 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d43eeb6b9e1624a43876501c00545350, type: 3}
   m_Name: 
   m_EditorClassIdentifier: MoviMente.Net::MoviMente.Net.ServerConnection
-  serverUrl: ws://localhost:3444/unity
+  serverUrl: ws://127.0.0.1:3444/unity
 --- !u!4 &86975483
 Transform:
   m_ObjectHideFlags: 0

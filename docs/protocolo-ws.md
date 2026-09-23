@@ -3,12 +3,14 @@
 Contrato entre mando, servidor y Unity. **Cambiarlo requiere acuerdo de los tres
 integrantes**, y el cambio se documenta aquí en el mismo PR que lo implementa.
 
-- Transporte (mismo servidor y puerto, dos canales):
+- Transporte (mismo servidor, dos canales):
   - **Mando:** Socket.io 4.x sobre HTTPS/WSS. Todo mensaje va por el evento
     estándar `message`: `socket.send(obj)` para enviar y `socket.on('message')`
     para recibir. `motion` se envía con `socket.volatile.send(obj)` para que un
     dato atrasado se descarte en vez de acumularse.
-  - **Unity:** WebSocket puro (NativeWebSocket) en `wss://<ip-lan>:<puerto>/unity`.
+  - **Unity:** WebSocket puro (NativeWebSocket) en `ws://127.0.0.1:3444/unity`,
+    un puerto local que el servidor abre solo en `127.0.0.1` (Unity y el
+    servidor corren en la misma PC).
     Un mensaje por frame de texto, con el JSON serializado.
   - Los dos canales llevan **el mismo JSON** y pasan por **el mismo relay y la
     misma validación**. El rol lo fija el primer mensaje: `create_room` → juego,
@@ -141,4 +143,4 @@ mando, para no inundar la red.
 | --- | --- | --- | --- |
 | 2026-09-22 | v1 | Versión inicial del contrato | Santiago, Piero, Misael |
 | 2026-09-22 | v1.1 | Evento `message` y `volatile` en el mando, tope de ~60 Hz en el mando, canal WebSocket puro `/unity` para Unity con el mismo JSON y la misma validación, forma mínima en el relay. Los mensajes no cambian: `join` sigue con `"v": 1` | Santiago, Piero, Misael |
-| 2026-09-22 | v1.2 | Se agrega el patrón `tap` a `haptic`, para el golpecito al mover el foco en los menús (RF-08). Es aditivo: el campo `v` del `join` sigue siendo 1 y nada de lo anterior cambia | Piero, Santiago — **falta Misael** |
+| 2026-09-22 | v1.2 | Se agrega el patrón `tap` a `haptic`, para el golpecito al mover el foco en los menús (RF-08). Es aditivo: el campo `v` del `join` sigue siendo 1 y nada de lo anterior cambia | Piero, Santiago, Misael |
