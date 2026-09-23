@@ -119,6 +119,35 @@ test('RF-04: un mensaje rechazado por la validación no llega al juego', () => {
   assert.deepEqual(last(pad), { t: 'error', code: 'bad_message' });
 });
 
+test('RF-04: motion con NaN, null, texto o campos faltantes no llega al juego', () => {
+  const { game, room } = openRoom();
+  joinPad('pad', room);
+  const before = game.inbox.length;
+
+  const broken = [
+    { ori: { ...MOTION.ori, gamma: Number.NaN } },
+    { ori: { ...MOTION.ori, beta: null } },
+    { acc: { ...MOTION.acc, x: '0.1' } },
+    { acc: undefined },
+    { seq: -1 },
+    { seq: 1.5 },
+    { ts: '1737590000123' },
+  ];
+  for (const patch of broken) relay.receive('pad', { ...MOTION, room, ...patch });
+
+  assert.equal(game.inbox.length, before);
+});
+
+test('RF-04: button con una acción desconocida no llega al juego', () => {
+  const { game, room } = openRoom();
+  joinPad('pad', room);
+  const before = game.inbox.length;
+
+  relay.receive('pad', { t: 'button', room, action: 'jump' });
+  relay.receive('pad', { t: 'button', room });
+  assert.equal(game.inbox.length, before);
+});
+
 test('bad_message se envía como máximo una vez por segundo', () => {
   const { room } = openRoom();
   const pad = joinPad('pad', room);

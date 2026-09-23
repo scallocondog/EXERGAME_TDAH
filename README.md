@@ -25,7 +25,7 @@ flowchart LR
 
 ## Cómo se ejecuta
 
-Requiere Node.js 20+, Unity 2022 LTS, y PC y celular en la **misma red Wi-Fi**.
+Requiere Node.js 20+, Unity 6000.3.24f1 (6.3 LTS), y PC y celular en la **misma red Wi-Fi**.
 
 ```bash
 cd server && npm install && npm run dev   # levanta HTTPS + Socket.io e imprime la URL de la LAN

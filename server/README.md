@@ -14,7 +14,7 @@ server/
 ├── src/
 │   ├── index.js          arranque: HTTPS + Express + Socket.io, imprime URL y QR
 │   ├── rooms/            códigos de sala, emparejamiento, slots 1 y 2 (RF-01, RF-20)
-│   ├── relay/            retransmisión mando ↔ Unity, detección de desconexión (RF-04, RF-07)
+│   ├── relay/            retransmisión mando ↔ Unity, canales Socket.io y /unity, desconexión (RF-04, RF-07)
 │   └── validation/       rangos, frecuencia, mensajes malformados
 └── certs/                certificados locales (NO se commitean)
 ```
@@ -43,12 +43,20 @@ puede descargar el QR como imagen en `GET /qr/<código>` (404 si la sala no exis
 
 ## Transporte
 
-Socket.io, **un solo evento: `message`** (`socket.send(obj)` en ambos lados).
-El contenido es el JSON de [protocolo-ws.md](../docs/protocolo-ws.md) con su
-campo `t`. Unity puede mandar el JSON como texto: el servidor lo parsea.
+Dos canales en el mismo puerto, con el mismo JSON de
+[protocolo-ws.md](../docs/protocolo-ws.md) y el mismo relay:
+
+- **Mando:** Socket.io, un solo evento: `message` (`socket.send(obj)`).
+- **Unity:** WebSocket puro en `/unity` (un JSON por frame de texto). Si Unity
+  se atrasa, los `motion` viejos se descartan en vez de acumularse.
 
 El rol de cada conexión lo decide su primer mensaje: `create_room` → juego,
 `join` → mando.
+
+Con HTTPS, Unity se conecta por `wss://` y **tiene que confiar en el
+certificado**: con `mkcert -install` sí; con uno autofirmado de OpenSSL, no.
+Para desarrollar solo en la PC, sin celular, basta arrancar sin certificados y
+conectar Unity a `ws://localhost:3443/unity`.
 
 ## Reglas
 

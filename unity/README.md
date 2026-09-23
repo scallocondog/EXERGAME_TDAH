@@ -4,8 +4,9 @@ Dueños: **Piero Mejía** (`Scripts/Net`, `Scripts/Gestures`, `Scripts/Games`),
 **Santiago Callocondo** (`Assets/UI`), **Misael Marrón** (`Scripts/Metrics`,
 `Scripts/Storage`).
 
-Unity **2022 LTS**. No abrir con otra versión: Unity reescribe archivos del
-proyecto y ensucia el diff para todos.
+Unity **6000.3.24f1** (Unity 6.3 LTS, soporte hasta diciembre de 2027). No
+abrir con otra versión, ni siquiera otro parche de 6000.3: Unity reescribe
+archivos del proyecto y ensucia el diff para todos.
 
 ## Estructura prevista
 
