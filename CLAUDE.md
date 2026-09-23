@@ -49,8 +49,8 @@ Detalle ampliado: [docs/equipo-y-responsabilidades.md](docs/equipo-y-responsabil
 ```
 MoviMente/
 ├── controller/          Página web del mando (HTML/CSS/JS vanilla, sin framework)
-│   ├── public/          index.html, estilos, iconos, audio
-│   └── src/             sensores, conexión WS, calibración, vibración, UI del mando
+│   ├── public/          index.html, styles.css y js/ — el servidor sirve esta carpeta
+│   └── tests/           lógica pura del mando, sin navegador
 ├── server/              Node.js + Socket.io (salas, emparejamiento, relay, validación)
 │   ├── src/             rooms/, relay/, validation/
 │   └── certs/           certificados locales HTTPS (NO se commitean)
@@ -231,12 +231,12 @@ No es "detalle de UI": es el motivo del proyecto (RNF-05, RNF-06).
 cd server && npm install
 npm run dev                 # HTTPS local + Socket.io; imprime la URL y el QR de la LAN
 
-# Mando (lo sirve el servidor; esto es solo para editar en caliente)
-cd controller && npm run dev
+# Mando (no tiene servidor propio: lo sirve server/ desde controller/public/)
+cd controller && npm test   # código de sala y calibración
 
 # Pruebas
-npm test                    # servidor y validación de mensajes
-npm run test:latency        # RNF-01
+cd server && npm test       # salas, relay y transporte
+npm run test:latency        # RNF-01 — pendiente de implementar
 
 # Unity
 # Abrir unity/ desde Unity Hub con 2022 LTS. No abrir con otra versión.

@@ -8,13 +8,13 @@ Estado: ⬜ pendiente · 🟨 en progreso · ✅ hecho y probado.
 | ID | Requisito | Responsable | Dónde vive | Prueba | Estado |
 | --- | --- | --- | --- | --- | --- |
 | RF-01 | Sala con código y QR | Piero | `server/src/rooms/`, `server/src/index.js` | CU-01 (`relay.test.js`) | 🟨 servidor listo; falta mostrarlo en Unity |
-| RF-02 | Conexión por QR sin instalar | Santiago | `controller/` | CU-02 | ⬜ |
-| RF-03 | Permiso de sensores | Santiago | `controller/src/sensors.js` | CU-03 | ⬜ |
-| RF-04 | Envío de orientación y aceleración | Piero | `controller/src/`, `server/src/relay/` | CU-02 (`relay.test.js`, `socketio-transport.test.js`) | 🟨 relay listo; faltan mando y validación |
-| RF-05 | Calibración y recentrado | Santiago (mando) / Piero (Unity) | `controller/src/`, `unity/.../Gestures/` | CU-03, CU-07 (`GestureRecognizerTests`) | 🟨 lado Unity listo; falta mando |
+| RF-02 | Conexión por QR sin instalar | Santiago | `controller/public/` | CU-02 (`room-code.test.js`) | 🟨 mando listo; falta probarlo desde un celular |
+| RF-03 | Permiso de sensores | Santiago | `controller/public/js/sensors.js` | CU-03 | 🟨 implementado; falta probar el permiso en un iPhone real |
+| RF-04 | Envío de orientación y aceleración | Piero | `controller/public/js/`, `server/src/relay/` | CU-02 (`relay.test.js`, `socketio-transport.test.js`) | 🟨 mando y relay listos; falta la validación de Misael |
+| RF-05 | Calibración y recentrado | Santiago (mando) / Piero (Unity) | `controller/public/js/calibration.js`, `unity/.../Gestures/` | CU-03, CU-07 (`calibration.test.js`, `GestureRecognizerTests`) | 🟨 las dos mitades listas; falta probarlas juntas |
 | RF-06 | Reconocimiento de 5 gestos | Piero | `unity/.../Gestures/` | CU-06 (`GestureRecognizerTests`) | 🟨 probado con datos simulados; falta ajustar umbrales con celular real |
-| RF-07 | Estado de conexión y reconexión | Piero | `unity/.../Net/`, `server/src/relay/` | CU-08 (`relay.test.js`) | 🟨 servidor listo; falta pausa en Unity |
-| RF-08 | Menús navegados desde el mando | Santiago | `unity/Assets/UI/` | CU-04 | ⬜ |
+| RF-07 | Estado de conexión y reconexión | Piero | `unity/.../Net/`, `server/src/relay/`, `controller/public/js/connection.js` | CU-08 (`relay.test.js`) | 🟨 servidor y mando listos; falta la pausa en Unity |
+| RF-08 | Menús navegados desde el mando | Santiago | `controller/public/js/main.js`, `unity/Assets/UI/` | CU-04 | 🟨 el mando ya manda inclinación y confirmar; faltan los menús en Unity |
 | RF-09 | Elegir minijuego y dificultad | Piero | `unity/.../Games/` | CU-05 | ⬜ |
 | RF-10 | Instrucciones visuales y de audio | Santiago | `unity/Assets/UI/` | CU-06 | ⬜ |
 | RF-11 | Atrapa lo correcto | Piero | `unity/.../Games/AtrapaLoCorrecto/` | CU-06 | ⬜ |
@@ -24,9 +24,9 @@ Estado: ⬜ pendiente · 🟨 en progreso · ✅ hecho y probado.
 | RF-15 | Métricas por partida | Misael | `unity/.../Metrics/` | CU-06 | ⬜ |
 | RF-16 | Resumen con puntaje y estrellas | Santiago | `unity/Assets/UI/` | CU-09 | ⬜ |
 | RF-17 | Guardado local de puntajes | Misael | `unity/.../Storage/` | CU-09 | ⬜ |
-| RF-18 | Vibración en aciertos y errores | Santiago | `controller/src/haptics.js` | CU-06 | ⬜ |
-| RF-19 | Pausar, reanudar, reintentar, salir | Piero | `unity/.../Games/`, `controller/` | CU-06 | ⬜ |
-| RF-20 | Dos mandos (deseable) | Piero | `server/src/rooms/`, `unity/.../Net/` | CU-02 (`room-registry.test.js`) | 🟨 slots 1 y 2 en servidor; falta Unity |
+| RF-18 | Vibración en aciertos y errores | Santiago | `controller/public/js/haptics.js` | CU-06 | 🟨 el mando vibra al recibir `haptic`; falta que el juego lo mande |
+| RF-19 | Pausar, reanudar, reintentar, salir | Piero | `unity/.../Games/`, `controller/public/js/main.js` | CU-06 | 🟨 el botón de pausa del mando ya avisa; falta la lógica en Unity |
+| RF-20 | Dos mandos (deseable) | Piero | `server/src/rooms/`, `unity/.../Net/` | CU-02 (`room-registry.test.js`) | 🟨 slots 1 y 2 en servidor y mando; falta Unity |
 
 ## Requisitos no funcionales
 
@@ -36,7 +36,7 @@ Estado: ⬜ pendiente · 🟨 en progreso · ✅ hecho y probado.
 | RNF-02 | 60 fps (30 mínimo) | Piero | Unity Profiler en la escena más pesada | ⬜ |
 | RNF-03 | Chrome Android y Safari iOS | Misael | Prueba manual en ambos dispositivos | ⬜ |
 | RNF-04 | HTTPS, sin datos personales | Misael | Revisión de PR + inspección de red | ⬜ |
-| RNF-05 | Usabilidad TDAH | Santiago | Checklist de la sección 10 de CLAUDE.md | ⬜ |
+| RNF-05 | Usabilidad TDAH | Santiago | Checklist de la sección 10 de CLAUDE.md | 🟨 aplicado en el mando; falta el juego |
 | RNF-06 | Accesibilidad sin leer | Santiago | Prueba con audio y sin texto | ⬜ |
 | RNF-07 | Desconexión no pierde la partida | Misael | Apagar Wi-Fi a mitad de partida | ⬜ |
 | RNF-08 | Minijuegos independientes | Piero | Agregar un minijuego de prueba sin tocar Net ni Gestures | ⬜ |
