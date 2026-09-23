@@ -11,8 +11,8 @@ Estado: ⬜ pendiente · 🟨 en progreso · ✅ hecho y probado.
 | RF-02 | Conexión por QR sin instalar | Santiago | `controller/` | CU-02 | ⬜ |
 | RF-03 | Permiso de sensores | Santiago | `controller/src/sensors.js` | CU-03 | ⬜ |
 | RF-04 | Envío de orientación y aceleración | Piero | `controller/src/`, `server/src/relay/` | CU-02 (`relay.test.js`, `socketio-transport.test.js`) | 🟨 relay listo; faltan mando y validación |
-| RF-05 | Calibración y recentrado | Santiago (mando) / Piero (Unity) | `controller/src/`, `unity/.../Gestures/` | CU-03, CU-07 | ⬜ |
-| RF-06 | Reconocimiento de 5 gestos | Piero | `unity/.../Gestures/` | CU-06 | ⬜ |
+| RF-05 | Calibración y recentrado | Santiago (mando) / Piero (Unity) | `controller/src/`, `unity/.../Gestures/` | CU-03, CU-07 (`GestureRecognizerTests`) | 🟨 lado Unity listo; falta mando |
+| RF-06 | Reconocimiento de 5 gestos | Piero | `unity/.../Gestures/` | CU-06 (`GestureRecognizerTests`) | 🟨 probado con datos simulados; falta ajustar umbrales con celular real |
 | RF-07 | Estado de conexión y reconexión | Piero | `unity/.../Net/`, `server/src/relay/` | CU-08 (`relay.test.js`) | 🟨 servidor listo; falta pausa en Unity |
 | RF-08 | Menús navegados desde el mando | Santiago | `unity/Assets/UI/` | CU-04 | ⬜ |
 | RF-09 | Elegir minijuego y dificultad | Piero | `unity/.../Games/` | CU-05 | ⬜ |

@@ -24,6 +24,24 @@ unity/Assets/
 └── Art/
 ```
 
+## Gestos (`Scripts/Gestures`, RF-05, RF-06)
+
+C# puro (`noEngineReferences`): no depende de UnityEngine ni de la red, y se
+prueba sin abrir escenas (`Gestures/Tests`, Test Runner → EditMode).
+
+```csharp
+var settings = new GestureSettings();              // umbrales; editables en vivo
+var pad = new GestureRecognizer(slot: 1, settings);
+pad.GestureDetected += e => Debug.Log(e);          // TiltLeft/Right/Forward/Back, Swing, Shake, Steady
+pad.Process(sample);                               // por cada mensaje motion
+pad.Calibrate();                                   // mensaje calibrate o botón recenter
+float x = pad.Tilt.X;                              // -1..1, para mecánicas continuas
+```
+
+Supuesto de postura: celular en vertical, pantalla arriba e inclinado hacia el
+jugador. Si un eje sale al revés en la prueba real, se corrige con `InvertX` /
+`InvertY`, sin tocar código.
+
 ## Reglas
 
 - Un minijuego **consume gestos ya reconocidos**; nunca lee sensores crudos (RNF-08).
