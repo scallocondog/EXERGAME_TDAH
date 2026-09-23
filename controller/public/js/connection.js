@@ -48,8 +48,12 @@ export class Connection {
   }
 
   // RF-04: una lectura de sensores ya combinada por sensors.js
+  // Va como volatile: un dato de movimiento atrasado no sirve de nada, es mejor
+  // perderlo que hacer cola detrás de una reconexión (RNF-01).
   sendMotion({ ts, ori, acc }) {
-    this.#send({ t: 'motion', room: this.#room, seq: this.#seq++, ts, ori, acc });
+    if (!this.#socket?.connected) return;
+    const msg = { t: 'motion', room: this.#room, seq: this.#seq++, ts, ori, acc };
+    this.#socket.volatile.send(msg);
   }
 
   // RF-08, RF-19, CU-07: confirmar, recentrar o pausar
