@@ -32,6 +32,10 @@ namespace MoviMente.Diagnostics
 
             switch (session.State)
             {
+                case GameState.Instructions when !AllPadsConnected(systems, session):
+                    GUI.Label(center, "Escanea el código con tu celular", big);
+                    DrawJoinHint(systems, width);
+                    break;
                 case GameState.Instructions:
                     GUI.Label(center, "¡Prepárate!", big);
                     GUI.Label(below, "Toca el botón del mando para empezar", text);
@@ -51,6 +55,15 @@ namespace MoviMente.Diagnostics
                     GUI.Label(center, "¡Muy bien!", big);
                     break;
             }
+        }
+
+        private static bool AllPadsConnected(CoreSystems systems, GameSession session)
+        {
+            foreach (int slot in session.Slots)
+            {
+                if (!systems.Connection.Link.IsPadConnected(slot)) return false;
+            }
+            return true;
         }
 
         private void DrawJoinHint(CoreSystems systems, float width)
