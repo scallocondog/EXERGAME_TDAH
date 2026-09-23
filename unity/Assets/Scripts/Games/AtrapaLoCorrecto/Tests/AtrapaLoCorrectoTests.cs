@@ -165,11 +165,12 @@ namespace MoviMente.Games.AtrapaLoCorrecto.Tests
             Start();
             WaitForItem(target: true);
             float[] before = rules.Items.Select(i => i.Y).ToArray();
+            int reportedBefore = trials.Count;
             session.PauseByPlayer();
             Run(10f);
 
             Assert.That(rules.Items.Select(i => i.Y).ToArray(), Is.EqualTo(before));
-            Assert.That(trials, Is.Empty);
+            Assert.That(trials.Count, Is.EqualTo(reportedBefore));
         }
 
         [Test]
