@@ -17,7 +17,7 @@ Estado: ⬜ pendiente · 🟨 en progreso · ✅ hecho y probado.
 | RF-08 | Menús navegados desde el mando | Santiago | `unity/Assets/UI/` | CU-04 | ⬜ |
 | RF-09 | Elegir minijuego y dificultad | Piero | `unity/.../Games/Core/` | CU-05 (`MinigameCatalogTests`) | 🟨 catálogo y perfiles listos; falta el menú en Unity |
 | RF-10 | Instrucciones visuales y de audio | Santiago | `unity/Assets/UI/` | CU-06 | ⬜ |
-| RF-11 | Atrapa lo correcto | Piero | `unity/.../Games/AtrapaLoCorrecto/` | CU-06 | ⬜ |
+| RF-11 | Atrapa lo correcto | Piero | `unity/.../Games/AtrapaLoCorrecto/` | CU-06 (`AtrapaLoCorrectoTests`) | 🟨 reglas listas; faltan la escena 3D y los íconos de categorías |
 | RF-12 | Sigue la secuencia | Piero | `unity/.../Games/SigueLaSecuencia/` | CU-06 | ⬜ |
 | RF-13 | Corta sin fallar | Piero | `unity/.../Games/CortaSinFallar/` | CU-06 | ⬜ |
 | RF-14 | Equilibrio (opcional) | Piero | `unity/.../Games/Equilibrio/` | CU-06 | ⬜ |

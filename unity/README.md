@@ -65,6 +65,14 @@ catalog.Register(new MinigameDefinition("atrapa", "Game_AtrapaLoCorrecto", () =>
 El catálogo rechaza partidas de menos de 3 o más de 5 minutos (RNF-05) y
 minijuegos que mezclen swing y sacudir.
 
+Ejemplo real: `Games/AtrapaLoCorrecto` (RF-11). La canasta sigue a
+`Tilt.X` por posición (inclinar del todo la lleva al borde); caen objetos de 3
+categorías y solo cuentan los de la pedida. Atrapar uno pedido es acierto,
+atrapar un distractor es error, dejar caer uno pedido es omisión y dejar pasar
+un distractor no se reporta. El tiempo de reacción va desde que aparece el
+objeto hasta que la canasta queda debajo. La escena recibe las reglas de cada
+partida por `onRulesCreated` y solo dibuja `BasketX` e `Items`.
+
 `GameSession` maneja lo común a todos: instrucciones → cuenta regresiva de 3 s →
 juego → fin. Además:
 
