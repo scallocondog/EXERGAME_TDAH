@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be96946bb2f9d8a45b833eb17ab3c01d, type: 3}
+  m_Name: GestureSettings
+  m_EditorClassIdentifier: MoviMente.Gestures.Unity::MoviMente.Gestures.GestureSettingsAsset
+  Values:
+    InvertX: 0
+    InvertY: 0
+    TiltDeadzoneDegrees: 4
+    TiltEnterDegrees: 20
+    TiltExitDegrees: 10
+    TiltMaxDegrees: 40
+    CalibrationWindowMs: 300
+    GravityTimeConstantSeconds: 0.25
+    SwingThreshold: 14
+    SwingMaxAcceleration: 35
+    SwingCooldownMs: 350
+    ShakeThreshold: 8
+    ShakeMaxAcceleration: 25
+    ShakeMinPeaks: 3
+    ShakeWindowMs: 800
+    ShakeCooldownMs: 600
+    SteadyMaxLinearAcceleration: 1.2
+    SteadyMaxAngleDelta: 5
+    SteadyHoldMs: 1500

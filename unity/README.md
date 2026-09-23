@@ -24,6 +24,30 @@ unity/Assets/
 └── Art/
 ```
 
+## Red y diagnóstico (`Scripts/Net`, `Scripts/Diagnostics`, RF-01, RF-07)
+
+- `ServerConnection`: WebSocket a `/unity` (NativeWebSocket 2.0.7), crea la
+  sala al conectar y reintenta con 0,5 / 1 / 2 / 4 / 5 s. Si se reconecta, la
+  sala es nueva y los mandos tienen que volver a escanear.
+- `GameLink`: interpreta los mensajes del servidor (`room_created`, `pad_state`,
+  `motion`, `button`, `calibrate`) y arma los salientes (`haptic`, `state`).
+- `RoomQrLoader`: baja el QR de `GET /qr/<código>` y lo pone en un `RawImage`.
+- `PadInputHub` (`Gestures/Unity`): un reconocedor por mando. De aquí leen
+  menús y minijuegos. Usa `Assets/Settings/Gestures/GestureSettings.asset`,
+  que se edita en el Inspector incluso durante el Play.
+
+**Escena `Scenes/Diagnostico`**, para probar con el celular real y afinar
+umbrales:
+
+1. `cd server && npm run dev` (necesita el canal `/unity` de RF-04).
+2. Abrir `Diagnostico` y dar Play. Aparecen el código y el QR.
+3. Escanear con el celular, calibrar y mover: se ven los Hz que llegan, la
+   inclinación en X/Y, si está estable y cada gesto detectado.
+
+La URL del servidor se cambia en el componente `ServerConnection`
+(`ws://localhost:3443/unity` por defecto; `wss://` si el servidor tiene
+certificados de mkcert).
+
 ## Gestos (`Scripts/Gestures`, RF-05, RF-06)
 
 C# puro (`noEngineReferences`): no depende de UnityEngine ni de la red, y se
