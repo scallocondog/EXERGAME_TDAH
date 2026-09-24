@@ -9,9 +9,13 @@ namespace MoviMente.Games.AtrapaLoCorrecto
     public sealed class AtrapaView : MonoBehaviour
     {
         // Cada categoría es forma + color, para no depender solo del color (RNF-06).
+        // Son el respaldo si falta el modelo de esa categoría.
         private static readonly PrimitiveType[] CategoryShapes =
             { PrimitiveType.Sphere, PrimitiveType.Cube, PrimitiveType.Capsule };
 
+        // docs/ux/sistema-visual.md §8: naranja, pez y uvas, y el cuenco como canasta.
+        [SerializeField] private GameObject[] categoryModels;
+        [SerializeField] private GameObject basketModel;
         [SerializeField] private Difficulty difficulty = Difficulty.Easy;
         [SerializeField] private float fieldHalfWidth = 6f;
         [SerializeField] private float fieldHeight = 7f;
@@ -33,6 +37,8 @@ namespace MoviMente.Games.AtrapaLoCorrecto
         [SerializeField] private float errorFlashSeconds = 0.1f;
 
         private readonly Dictionary<int, GameObject> itemViews = new Dictionary<int, GameObject>();
+        // Copias de los materiales del modelo de la canasta, para teñirlas en el destello.
+        private readonly List<Material> basketModelMaterials = new List<Material>();
         private Material[] categoryMaterials;
         private Material basketMaterial;
         private Material floorMaterial;
@@ -64,14 +70,17 @@ namespace MoviMente.Games.AtrapaLoCorrecto
             {
                 if (material != null) Destroy(material);
             }
+            foreach (Material material in basketModelMaterials) Destroy(material);
         }
 
         private void Update()
         {
             if (rules == null) return;
 
+            float basketWidth = rules.BasketHalfWidth * 2f * fieldHalfWidth;
             basket.localPosition = new Vector3(rules.BasketX * fieldHalfWidth, 0f, 0f);
-            basket.localScale = new Vector3(rules.BasketHalfWidth * 2f * fieldHalfWidth, 0.4f, 1.2f);
+            // El cuenco se escala parejo para no deformarse; el bloque de respaldo, solo a lo ancho.
+            basket.localScale = basketModel != null ? Vector3.one * basketWidth : new Vector3(basketWidth, 0.4f, 1.2f);
             foreach (FallingItem item in rules.Items)
             {
                 if (itemViews.TryGetValue(item.Id, out GameObject view))
@@ -79,7 +88,14 @@ namespace MoviMente.Games.AtrapaLoCorrecto
                     view.transform.localPosition = new Vector3(item.X * fieldHalfWidth, item.Y * fieldHeight + itemSize, 0f);
                 }
             }
-            basketMaterial.color = Time.time < flashUntil ? flashColor : basketColor;
+            TintBasket(Time.time < flashUntil);
+        }
+
+        // El modelo trae su color en la textura: en reposo va sin teñir.
+        private void TintBasket(bool flashing)
+        {
+            basketMaterial.color = flashing ? flashColor : basketColor;
+            foreach (Material material in basketModelMaterials) material.color = flashing ? flashColor : Color.white;
         }
 
         // Las reglas cambian en cada partida y al reintentar.
@@ -133,8 +149,17 @@ namespace MoviMente.Games.AtrapaLoCorrecto
             panelMaterial = new Material(lit) { color = panelColor };
         }
 
-        private Transform CreateBasket() =>
-            CreateBlock("Canasta", basketMaterial, Vector3.zero, Vector3.one);
+        private Transform CreateBasket()
+        {
+            if (basketModel == null) return CreateBlock("Canasta", basketMaterial, Vector3.zero, Vector3.one);
+
+            GameObject view = CreateModel(basketModel, "Canasta");
+            foreach (Renderer renderer in view.GetComponentsInChildren<Renderer>())
+            {
+                basketModelMaterials.AddRange(renderer.materials);
+            }
+            return view.transform;
+        }
 
         // Marca el ancho por el que se mueve la canasta, sin nada que distraiga (RNF-05).
         private void CreateFloor() =>
@@ -170,12 +195,43 @@ namespace MoviMente.Games.AtrapaLoCorrecto
 
         private GameObject CreateShape(int category, string objectName)
         {
+            GameObject model = categoryModels != null && category < categoryModels.Length ? categoryModels[category] : null;
+            if (model != null) return CreateModel(model, objectName);
+
             GameObject shape = GameObject.CreatePrimitive(CategoryShapes[category % CategoryShapes.Length]);
             shape.name = objectName;
             Destroy(shape.GetComponent<Collider>());
             shape.transform.SetParent(transform, false);
             shape.GetComponent<Renderer>().sharedMaterial = categoryMaterials[category % categoryMaterials.Length];
             return shape;
+        }
+
+        // Envuelve el modelo en un objeto vacío, centrado y de lado 1 como las
+        // primitivas, así quien lo usa lo mueve y lo escala sin mirar el FBX.
+        private GameObject CreateModel(GameObject model, string objectName)
+        {
+            var holder = new GameObject(objectName);
+            holder.transform.SetParent(transform, false);
+            GameObject view = Instantiate(model, holder.transform, false);
+
+            Bounds bounds = LocalBounds(holder.transform, view);
+            float largestSide = Mathf.Max(bounds.size.x, bounds.size.y, bounds.size.z);
+            float scale = largestSide > 0f ? 1f / largestSide : 1f;
+            view.transform.localScale *= scale;
+            view.transform.localPosition -= bounds.center * scale;
+            return holder;
+        }
+
+        private static Bounds LocalBounds(Transform space, GameObject view)
+        {
+            Renderer[] renderers = view.GetComponentsInChildren<Renderer>();
+            if (renderers.Length == 0) return new Bounds(Vector3.zero, Vector3.one);
+
+            Bounds world = renderers[0].bounds;
+            for (int i = 1; i < renderers.Length; i++) world.Encapsulate(renderers[i].bounds);
+            Vector3 scale = space.lossyScale;
+            return new Bounds(space.InverseTransformPoint(world.center),
+                new Vector3(world.size.x / scale.x, world.size.y / scale.y, world.size.z / scale.z));
         }
     }
 }
