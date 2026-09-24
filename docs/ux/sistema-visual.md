@@ -206,6 +206,28 @@ Volumen parejo entre pantallas y ningún sonido que sobresalte (RNF-05).
 
 ## 8. Assets
 
+### Modelos de Atrapa lo correcto (RF-11)
+
+`unity/Assets/Art/AtrapaLoCorrecto/Modelos/`, del [Food Kit 2.0 de
+Kenney](https://kenney.nl/assets/food-kit), licencia CC0 (`License.txt` al lado).
+
+| Categoría | Modelo | Color | Silueta |
+| --- | --- | --- | --- |
+| 0 | `Naranja.fbx` | naranja | redonda |
+| 1 | `Pez.fbx` | azul grisáceo | alargada |
+| 2 | `Uvas.fbx` | lila | racimo |
+| Canasta | `Canasta.fbx` | blanca | cuenco |
+
+Cada categoría se distingue por la silueta **y** por el color, nunca solo por el
+color (RNF-06). Los cuatro comparten la textura `Textures/colormap.png`.
+
+La escena no usa los FBX directo sino los prefabs de `AtrapaLoCorrecto/Prefabs/`,
+que les ponen la orientación: el pez viene de fábrica con el largo hacia la
+cámara y va girado 90° para verse de costado. Si un modelo se ve mal desde la
+TV, se corrige en su prefab, sin tocar código. `AtrapaView` los centra y los
+lleva al mismo tamaño que las formas primitivas, que siguen de respaldo si falta
+algún modelo.
+
 ### Audio (RNF-06)
 
 `unity/Assets/Audio/`. Todo en WAV mono de 44,1 kHz.
