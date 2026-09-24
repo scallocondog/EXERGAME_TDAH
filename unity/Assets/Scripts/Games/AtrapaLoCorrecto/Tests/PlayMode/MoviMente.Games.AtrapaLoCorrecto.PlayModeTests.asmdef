@@ -1,0 +1,25 @@
+{
+    "name": "MoviMente.Games.AtrapaLoCorrecto.PlayModeTests",
+    "rootNamespace": "MoviMente.Games.AtrapaLoCorrecto.Tests",
+    "references": [
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "MoviMente.Games.Core",
+        "MoviMente.Games.Unity",
+        "MoviMente.Games.AtrapaLoCorrecto",
+        "MoviMente.Games.AtrapaLoCorrecto.Unity"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

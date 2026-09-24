@@ -1,10 +1,8 @@
 {
-    "name": "MoviMente.Diagnostics",
-    "rootNamespace": "MoviMente.Diagnostics",
+    "name": "MoviMente.Games.AtrapaLoCorrecto.Unity",
+    "rootNamespace": "MoviMente.Games.AtrapaLoCorrecto",
     "references": [
-        "MoviMente.Gestures",
-        "MoviMente.Gestures.Unity",
-        "MoviMente.Net",
+        "MoviMente.Games.AtrapaLoCorrecto",
         "MoviMente.Games.Core",
         "MoviMente.Games.Unity"
     ],

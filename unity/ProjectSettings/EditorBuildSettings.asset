@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Diagnostico.unity
     guid: 2a3a7c258c166004c8af09053e90aede
+  - enabled: 1
+    path: Assets/Scenes/Game_AtrapaLoCorrecto.unity
+    guid: 1bad13f50005ca54f9e692e4c5781924
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

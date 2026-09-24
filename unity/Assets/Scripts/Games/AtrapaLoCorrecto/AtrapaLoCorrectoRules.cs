@@ -23,6 +23,8 @@ namespace MoviMente.Games.AtrapaLoCorrecto
         public AtrapaLoCorrectoRules(Random random)
         {
             this.random = random ?? throw new ArgumentNullException(nameof(random));
+            // Se conoce desde antes de empezar: la pantalla de instrucciones la muestra (RF-10).
+            TargetCategory = random.Next(CategoryCount);
         }
 
         public event Action<FallingItem> ItemSpawned;
@@ -30,7 +32,7 @@ namespace MoviMente.Games.AtrapaLoCorrecto
         public event Action<FallingItem, bool> ItemResolved;
 
         // Una sola instrucción por partida (RNF-05): la categoría no cambia.
-        public int TargetCategory { get; private set; }
+        public int TargetCategory { get; }
         public float BasketX { get; private set; }
         public float BasketHalfWidth => tuning.BasketHalfWidth;
         public IReadOnlyList<FallingItem> Items => items;
@@ -38,7 +40,6 @@ namespace MoviMente.Games.AtrapaLoCorrecto
         public override void OnStart()
         {
             tuning = AtrapaTuning.For(Context.Difficulty);
-            TargetCategory = random.Next(CategoryCount);
             nextSpawnAt = Context.ElapsedSeconds + FirstSpawnDelaySeconds;
         }
 
