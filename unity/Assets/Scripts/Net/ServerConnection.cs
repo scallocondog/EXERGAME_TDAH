@@ -18,8 +18,8 @@ namespace MoviMente.Net
         // Los mismos tiempos que usa el mando (protocolo-ws.md §5).
         private static readonly float[] RetryDelaysSeconds = { 0.5f, 1f, 2f, 4f, 5f };
 
-        [Tooltip("ws://localhost:3443/unity para desarrollar en la PC; wss:// con certificado de mkcert.")]
-        [SerializeField] private string serverUrl = "ws://localhost:3443/unity";
+        [Tooltip("Puerto local del servidor, sin certificado: Unity y el servidor corren en la misma PC.")]
+        [SerializeField] private string serverUrl = "ws://127.0.0.1:3444/unity";
 
         private WebSocket socket;
         private int attempt;
@@ -40,12 +40,6 @@ namespace MoviMente.Net
 
         public void SendState(int slot, string value) => Send(GameLink.StateMessage(slot, value));
 
-        private void Awake()
-        {
-            // Permitir certificados autofirmados en desarrollo local
-            System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-        }
-
         private void Start() => Connect();
 
         private void OnDestroy()
@@ -58,13 +52,7 @@ namespace MoviMente.Net
         private async void Connect()
         {
             SetStatus(ConnectionStatus.Connecting);
-            string url = serverUrl;
-            if (url.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
-                url = "wss://" + url.Substring("https://".Length);
-            else if (url.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
-                url = "ws://" + url.Substring("http://".Length);
-
-            var current = new WebSocket(url);
+            var current = new WebSocket(ServerUrls.WebSocket(serverUrl));
             socket = current;
 
             current.OnOpen += () =>

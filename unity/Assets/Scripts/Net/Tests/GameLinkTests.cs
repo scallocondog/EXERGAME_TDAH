@@ -109,11 +109,20 @@ namespace MoviMente.Net.Tests
             Assert.That(GameLink.StateMessage(1, PadScreenState.Paused), Is.EqualTo("{\"t\":\"state\",\"slot\":1,\"value\":\"paused\"}"));
         }
 
-        [TestCase("ws://localhost:3443/unity", "A7K2", "http://localhost:3443/qr/A7K2")]
+        [TestCase("ws://localhost:3444/unity", "A7K2", "http://localhost:3444/qr/A7K2")]
         [TestCase("wss://192.168.1.10:3443/unity", "A7K2", "https://192.168.1.10:3443/qr/A7K2")]
-        public void UrlDelQr_SeDerivaDelWebSocket(string webSocketUrl, string room, string expected)
+        [TestCase("https://192.168.1.10:3443/unity", "A7K2", "https://192.168.1.10:3443/qr/A7K2")]
+        public void UrlDelQr_SeDerivaDeLaUrlDelServidor(string serverUrl, string room, string expected)
         {
-            Assert.That(ServerUrls.Qr(webSocketUrl, room), Is.EqualTo(expected));
+            Assert.That(ServerUrls.Qr(serverUrl, room), Is.EqualTo(expected));
+        }
+
+        [TestCase("ws://localhost:3444/unity", "ws://localhost:3444/unity")]
+        [TestCase("http://localhost:3444/unity", "ws://localhost:3444/unity")]
+        [TestCase("https://192.168.1.10:3443/unity", "wss://192.168.1.10:3443/unity")]
+        public void UrlDelWebSocket_AceptaHttpOWs(string serverUrl, string expected)
+        {
+            Assert.That(ServerUrls.WebSocket(serverUrl), Is.EqualTo(expected));
         }
     }
 }

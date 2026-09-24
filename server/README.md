@@ -32,7 +32,8 @@ Variables opcionales:
 
 | Variable | Por defecto | Para qué |
 | --- | --- | --- |
-| `PORT` | `3443` | Puerto HTTPS del servidor |
+| `PORT` | `3443` | Puerto HTTPS del servidor (mando y red local) |
+| `UNITY_PORT` | `3444` | Puerto local de Unity: solo `127.0.0.1`, sin certificado |
 | `HOST_IP` | primera IP privada detectada | IP que va en la URL del QR; fijarla si la PC tiene varias (VPN, VirtualBox) |
 
 Sin `certs/key.pem` y `certs/cert.pem` arranca por HTTP y avisa: sirve para
@@ -43,20 +44,20 @@ puede descargar el QR como imagen en `GET /qr/<código>` (404 si la sala no exis
 
 ## Transporte
 
-Dos canales en el mismo puerto, con el mismo JSON de
-[protocolo-ws.md](../docs/protocolo-ws.md) y el mismo relay:
+Dos canales con el mismo JSON de [protocolo-ws.md](../docs/protocolo-ws.md) y
+el mismo relay:
 
-- **Mando:** Socket.io, un solo evento: `message` (`socket.send(obj)`).
-- **Unity:** WebSocket puro en `/unity` (un JSON por frame de texto). Si Unity
-  se atrasa, los `motion` viejos se descartan en vez de acumularse.
+- **Mando:** Socket.io en `PORT` (HTTPS), un solo evento: `message`
+  (`socket.send(obj)`).
+- **Unity:** WebSocket puro en `ws://127.0.0.1:3444/unity` (un JSON por frame de
+  texto). Unity corre en la misma PC que el servidor, así que va por loopback:
+  no necesita confiar en ningún certificado y el puerto no queda abierto a la
+  red. Si Unity se atrasa, los `motion` viejos se descartan en vez de acumularse.
+  `/unity` también existe en `PORT` para quien necesite conectarse desde otra
+  máquina (por `wss://`, confiando en el certificado de mkcert).
 
 El rol de cada conexión lo decide su primer mensaje: `create_room` → juego,
 `join` → mando.
-
-Con HTTPS, Unity se conecta por `wss://` y **tiene que confiar en el
-certificado**: con `mkcert -install` sí; con uno autofirmado de OpenSSL, no.
-Para desarrollar solo en la PC, sin celular, basta arrancar sin certificados y
-conectar Unity a `ws://localhost:3443/unity`.
 
 ## Reglas
 

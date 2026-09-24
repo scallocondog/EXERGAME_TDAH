@@ -46,8 +46,8 @@ umbrales:
    inclinación en X/Y, si está estable y cada gesto detectado.
 
 La URL del servidor se cambia en el componente `ServerConnection`
-(`ws://localhost:3443/unity` por defecto; `wss://` si el servidor tiene
-certificados de mkcert).
+(`ws://127.0.0.1:3444/unity` por defecto: el puerto local del servidor, que no
+usa certificado). Unity nunca desactiva la validación de certificados.
 
 ## Gestos (`Scripts/Gestures`, RF-05, RF-06)
 

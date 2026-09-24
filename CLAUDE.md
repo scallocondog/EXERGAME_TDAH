@@ -107,7 +107,7 @@ de los tres integrantes y actualizar** [docs/protocolo-ws.md](docs/protocolo-ws.
 { "t": "calibrate", "room": "A7K2" }
 
 // Unity → Servidor → Mando
-{ "t": "haptic", "pattern": "hit" }                      // hit | miss
+{ "t": "haptic", "pattern": "hit" }                      // hit | miss | tap
 { "t": "state", "value": "paused" }                      // playing | paused | disconnected
 ```
 
