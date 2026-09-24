@@ -18,10 +18,15 @@ namespace MoviMente.Games.AtrapaLoCorrecto
         public int Category { get; }
         public bool IsTarget { get; }
         // Campo normalizado: X de -1 a 1, Y de 1 (arriba) a 0 (línea de la canasta).
-        public float X { get; }
+        // En difícil X cambia mientras cae (Wandering); en fácil y medio cae recto.
+        public float X { get; internal set; }
         public float Y { get; internal set; }
         public float SpawnedAt { get; }
         // Primera vez que la canasta quedó debajo; base del tiempo de reacción.
         public float? AlignedAt { get; internal set; }
+
+        // Estado de Wandering: velocidad lateral y ángulo del punto sobre el círculo.
+        internal float VelocityX { get; set; }
+        internal float WanderAngle { get; set; }
     }
 }

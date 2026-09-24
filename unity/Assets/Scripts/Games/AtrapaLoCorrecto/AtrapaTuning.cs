@@ -3,16 +3,18 @@ namespace MoviMente.Games.AtrapaLoCorrecto
 {
     public sealed class AtrapaTuning
     {
-        public static readonly AtrapaTuning Easy = new AtrapaTuning(2.2f, 4.0f, 0.25f, 0.6f);
-        public static readonly AtrapaTuning Medium = new AtrapaTuning(1.6f, 3.2f, 0.20f, 0.5f);
-        public static readonly AtrapaTuning Hard = new AtrapaTuning(1.1f, 2.4f, 0.16f, 0.4f);
+        public static readonly AtrapaTuning Easy = new AtrapaTuning(2.2f, 4.0f, 0.25f, 0.6f, 0f);
+        public static readonly AtrapaTuning Medium = new AtrapaTuning(1.6f, 3.2f, 0.20f, 0.5f, 0f);
+        public static readonly AtrapaTuning Hard = new AtrapaTuning(1.1f, 2.4f, 0.16f, 0.4f, 0.25f);
 
-        private AtrapaTuning(float spawnIntervalSeconds, float fallSeconds, float basketHalfWidth, float targetRatio)
+        private AtrapaTuning(float spawnIntervalSeconds, float fallSeconds, float basketHalfWidth, float targetRatio,
+            float wanderSpeed)
         {
             SpawnIntervalSeconds = spawnIntervalSeconds;
             FallSeconds = fallSeconds;
             BasketHalfWidth = basketHalfWidth;
             TargetRatio = targetRatio;
+            WanderSpeed = wanderSpeed;
         }
 
         public float SpawnIntervalSeconds { get; }
@@ -21,6 +23,9 @@ namespace MoviMente.Games.AtrapaLoCorrecto
         public float BasketHalfWidth { get; }
         // Proporción de objetos de la categoría pedida; el resto son distractores.
         public float TargetRatio { get; }
+        // Velocidad lateral máxima del Wandering (ancho del campo = 2). 0 = cae recto:
+        // en fácil y medio no hay movimiento extra que distraiga (RNF-05).
+        public float WanderSpeed { get; }
 
         public static AtrapaTuning For(Difficulty difficulty) => difficulty switch
         {
