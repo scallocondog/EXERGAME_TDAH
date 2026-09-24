@@ -134,6 +134,10 @@ juego → fin. Además:
 2. Abrir la escena y dar Play. Si falta el mando, el HUD muestra la sala y el QR.
 3. Escanear, calibrar y tocar el botón del mando para empezar.
 
+En difícil los objetos pasean de lado a lado mientras caen (Wandering de
+Reynolds): ver [docs/tecnicas-de-movimiento.md](../docs/tecnicas-de-movimiento.md).
+La dificultad de la escena se elige en `AtrapaView`.
+
 Las categorías son forma + color (esfera, cubo, cápsula) hasta que lleguen los
 íconos definitivos. La categoría pedida se ve en el panel de arriba a la
 izquierda desde la pantalla de instrucciones. El HUD (`Diagnostics/SessionDebugHud`)

@@ -69,6 +69,10 @@ namespace MoviMente.Games.AtrapaLoCorrecto
             for (int i = items.Count - 1; i >= 0; i--)
             {
                 FallingItem item = items[i];
+                if (tuning.WanderSpeed > 0f)
+                {
+                    Wandering.Step(item, 1f / tuning.FallSeconds, tuning.WanderSpeed, SpawnMargin, deltaSeconds, random);
+                }
                 item.Y -= deltaSeconds / tuning.FallSeconds;
                 bool underBasket = Math.Abs(item.X - BasketX) <= tuning.BasketHalfWidth + ItemRadius;
                 if (underBasket && item.AlignedAt == null) item.AlignedAt = now;
@@ -103,6 +107,9 @@ namespace MoviMente.Games.AtrapaLoCorrecto
             float x = (float)(random.NextDouble() * 2.0 - 1.0) * SpawnMargin;
 
             var item = new FallingItem(nextId++, category, isTarget, x, at);
+            // Solo con Wandering se sortea el rumbo inicial: fácil y medio no gastan
+            // números del azar y siguen dando la misma partida para la misma semilla.
+            if (tuning.WanderSpeed > 0f) item.WanderAngle = (float)(random.NextDouble() * 2.0 * Math.PI);
             items.Add(item);
             ItemSpawned?.Invoke(item);
         }
