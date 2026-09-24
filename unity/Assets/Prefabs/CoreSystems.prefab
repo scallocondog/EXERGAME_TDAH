@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1169899902469509069
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 740643870948229181}
+  - component: {fileID: 4769450172937312709}
+  - component: {fileID: 1400817605168934667}
+  - component: {fileID: 7361647548488645312}
+  - component: {fileID: 508235976499181424}
+  - component: {fileID: 2437660657463246323}
+  m_Layer: 0
+  m_Name: CoreSystems
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &740643870948229181
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169899902469509069}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4769450172937312709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169899902469509069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d43eeb6b9e1624a43876501c00545350, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MoviMente.Net::MoviMente.Net.ServerConnection
+  serverUrl: ws://127.0.0.1:3444/unity
+--- !u!114 &1400817605168934667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169899902469509069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c681e6cc79ba1274bafd94009460934d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MoviMente.Gestures.Unity::MoviMente.Gestures.PadInputHub
+  connection: {fileID: 4769450172937312709}
+  settings: {fileID: 11400000, guid: a11e30829e0acd1439e77fcd3ce09813, type: 2}
+--- !u!114 &7361647548488645312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169899902469509069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08d96a75570b30443a42935ea063fe6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MoviMente.Net::MoviMente.Net.RoomQrLoader
+  connection: {fileID: 4769450172937312709}
+  target: {fileID: 0}
+--- !u!114 &508235976499181424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169899902469509069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8e3daea808794c4a918251cf6d89aa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MoviMente.Games.Unity::MoviMente.Games.GameRunner
+  connection: {fileID: 4769450172937312709}
+  input: {fileID: 1400817605168934667}
+--- !u!114 &2437660657463246323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1169899902469509069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde94d89fd147ca4abddbbf3e4fa4e58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MoviMente.Games.Unity::MoviMente.Games.CoreSystems
+  connection: {fileID: 4769450172937312709}
+  input: {fileID: 1400817605168934667}
+  qr: {fileID: 7361647548488645312}
+  runner: {fileID: 508235976499181424}

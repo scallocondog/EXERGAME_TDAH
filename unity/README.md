@@ -111,6 +111,23 @@ juego → fin. Además:
   (acierto, error u omisión, con tiempo de reacción) para métricas (Misael) y
   vibración.
 
+## Partida en Unity (`Scripts/Games/Unity`, RF-07, RF-18, RF-19)
+
+- **`Prefabs/CoreSystems`**: conexión, gestos, QR y `GameRunner` en un objeto
+  que sobrevive a los cambios de escena, para que la sala no se cierre al pasar
+  del menú al minijuego. Cada escena lleva una copia para poder abrirse sola;
+  si ya hay una viva, la copia se apaga antes de conectarse. Se accede con
+  `CoreSystems.Instance`.
+- **`GameRunner.Begin(definición, dificultad, slots)`** crea la `GameSession`
+  y la hace avanzar cada cuadro. Además:
+  - le pasa los gestos;
+  - si llega `pad_state: disconnected`, pausa; al volver el mando, retoma;
+  - manda `hit` o `miss` al mando del acierto o error (la omisión no vibra);
+  - avisa al mando `playing` o `paused`.
+- **Botones del mando:** `confirm` en instrucciones empieza la cuenta
+  regresiva; `pause` pausa y, en la pausa, reanuda. Reintentar y salir los
+  elige la UI de pausa (Santiago) llamando a `Session.Retry()` / `Quit()`.
+
 ## Reglas
 
 - Un minijuego **consume gestos ya reconocidos**; nunca lee sensores crudos (RNF-08).
