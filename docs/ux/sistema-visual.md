@@ -204,9 +204,43 @@ Volumen parejo entre pantallas y ningún sonido que sobresalte (RNF-05).
 
 ---
 
-## 8. Qué falta
+## 8. Assets
 
-- Grabar las locuciones de la tabla de arriba.
+### Audio (RNF-06)
+
+`unity/Assets/Audio/`. Todo en WAV mono de 44,1 kHz.
+
+| Archivo | Qué es | Nivel |
+| --- | --- | --- |
+| `Efectos/Acierto.wav` | Dos notas que suben (Do6 → Mi6), 0,34 s | −22 dB RMS |
+| `Efectos/Error.wav` | Una nota grave y quieta (Re4), 0,17 s: la mitad que el acierto | −28 dB RMS |
+| `Voces/*.wav` | Las locuciones de la tabla de §7 | −18 dB RMS, todas iguales |
+| `Voces/CuentaRegresiva.wav` | "Tres", "dos", "uno", una palabra por segundo | igual que las voces |
+
+**Las voces son temporales:** salen de la voz sintética de Windows (Helena,
+español de España) para poder probar ya. Se reemplazan por una grabación con los
+mismos nombres de archivo y el mismo nivel.
+
+Qué suena y cuándo lo decide `SessionSounds` (`unity/Assets/UI/Scripts/`), y lo
+reproduce `SessionAudio`, que va dentro del prefab `CoreSystems`: así todo
+minijuego tiene sonido sin agregar nada a su escena.
+
+| Momento de la partida | Suena |
+| --- | --- |
+| Acierto / error | `Acierto` / `Error`. La omisión no suena, igual que no vibra |
+| Empieza o se retoma la cuenta regresiva | `CuentaRegresiva` |
+| Arranca el juego | `Ya` |
+| Se cae el mando | `EsperandoTuMando` |
+| Pausa del jugador | Nada |
+| Termina la partida | `MuyBien` |
+
+Una voz nueva corta a la anterior: nunca hablan dos a la vez (RNF-05).
+
+---
+
+## 9. Qué falta
+
+- Grabar las locuciones y reemplazar las temporales de `Audio/Voces/`.
 - Elegir la fuente definitiva y meterla en Unity como asset de TextMeshPro.
 - Los íconos de los cuatro minijuegos: en la maqueta son emojis de relleno.
-- Pasar estas pantallas a Unity UI, cuando exista el cliente de red (`Net/`).
+- Pasar estas pantallas a Unity UI.

@@ -33,7 +33,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3158050886172601287}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4769450172937312709
@@ -107,3 +108,53 @@ MonoBehaviour:
   input: {fileID: 1400817605168934667}
   qr: {fileID: 7361647548488645312}
   runner: {fileID: 508235976499181424}
+--- !u!1 &2520163249788720403
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3158050886172601287}
+  - component: {fileID: 7864632771708311404}
+  m_Layer: 0
+  m_Name: Audio de la partida
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3158050886172601287
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2520163249788720403}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 740643870948229181}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7864632771708311404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2520163249788720403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dc3544f3b7daa0409dc5619d1e21af3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MoviMente.UI::MoviMente.UI.SessionAudio
+  hit: {fileID: 8300000, guid: 209a99e87f17e504398fd6c99322c5e1, type: 3}
+  error: {fileID: 8300000, guid: 74444ca8098f37d4a9aa865ee67ab09c, type: 3}
+  countdown: {fileID: 8300000, guid: 14370120ca7022b44ab6770ac9b9ddcd, type: 3}
+  go: {fileID: 8300000, guid: e8bea54cfc7a3384d85ffd7bfd1048ae, type: 3}
+  waitingForPad: {fileID: 8300000, guid: 73af06e2cd5249544ba7d753abd864d1, type: 3}
+  wellDone: {fileID: 8300000, guid: 9175aecb72098d74b9169861bcd00fa3, type: 3}
