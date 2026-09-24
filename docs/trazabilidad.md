@@ -37,7 +37,7 @@ Estado: ⬜ pendiente · 🟨 en progreso · ✅ hecho y probado.
 | RNF-03 | Chrome Android y Safari iOS | Misael | Prueba manual en ambos dispositivos | ⬜ |
 | RNF-04 | HTTPS, sin datos personales | Misael | Revisión de PR + inspección de red | ⬜ |
 | RNF-05 | Usabilidad TDAH | Santiago | Checklist de la sección 10 de CLAUDE.md | 🟨 aplicado en el mando y en el diseño del juego |
-| RNF-06 | Accesibilidad sin leer | Santiago | Prueba con audio y sin texto | 🟨 tamaños e íconos definidos; faltan las locuciones |
+| RNF-06 | Accesibilidad sin leer | Santiago | Prueba con audio y sin texto | 🟨 tamaños e íconos definidos; voces temporales y efectos en `unity/Assets/Audio/`, enganchados con `SessionAudio` (`SessionSoundsTests`); falta grabar las voces y oírlas en la partida |
 | RNF-07 | Desconexión no pierde la partida | Misael | Apagar Wi-Fi a mitad de partida | ⬜ |
 | RNF-08 | Minijuegos independientes | Piero | Agregar un minijuego de prueba sin tocar Net ni Gestures (`FakeRules` en `Games/Core/Tests`) | 🟨 base lista; se confirma con el primer minijuego real |
 | RNF-09 | Alcance ético | Misael | Revisión de todo texto visible al jugador | ⬜ |
