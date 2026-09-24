@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import express from 'express';
 import QRCode from 'qrcode';
 import { Server } from 'socket.io';
-import { findLanAddresses } from './lan-address.js';
+import { findLanAddresses, findRoutedAddress, pickHostAddress } from './lan-address.js';
 import { Relay } from './relay/relay.js';
 import { attachSocketIo } from './relay/socketio-transport.js';
 import { attachUnityWebSocket, UNITY_WS_PATH } from './relay/ws-transport.js';
@@ -20,7 +20,7 @@ const CERT_DIR = fileURLToPath(new URL('../certs/', import.meta.url));
 const CONTROLLER_DIR = fileURLToPath(new URL('../../controller/public/', import.meta.url));
 
 const lanAddresses = findLanAddresses();
-const hostIp = process.env.HOST_IP ?? lanAddresses[0]?.address ?? '127.0.0.1';
+const hostIp = process.env.HOST_IP ?? pickHostAddress(lanAddresses, await findRoutedAddress()) ?? '127.0.0.1';
 const credentials = loadCredentials();
 const origin = `${credentials ? 'https' : 'http'}://${hostIp}:${PORT}`;
 const joinUrl = (room) => `${origin}/?room=${room}`;
