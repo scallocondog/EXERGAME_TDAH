@@ -31,6 +31,32 @@
   var streak = 3;
   var remaining = GAME_SECONDS;
 
+  // Voces y efectos son los archivos reales del juego (unity/Assets/Audio).
+  var AUDIO_DIR = '../../../unity/Assets/Audio/';
+  var VOICES = {
+    sala: 'Voces/EscaneaElCodigo.wav',
+    menu: 'Voces/EligeUnJuego.wav',
+    dificultad: 'Voces/QueTanRapido.wav',
+    instrucciones: 'Voces/InclinaParaMoverLaCanasta.wav',
+    cuenta: 'Voces/CuentaRegresiva.wav',
+    resultados: 'Voces/MuyBien.wav',
+  };
+  // La música acompaña solo los menús: en la partida se apaga para no distraer (RNF-05).
+  var MUSIC_SCREENS = { sala: true, menu: true, dificultad: true, resultados: true };
+  var MUSIC_VOLUME = 0.55;
+  // Mientras habla una voz, la música baja: nunca compiten dos cosas por la atención.
+  var MUSIC_UNDER_VOICE = 0.15;
+
+  var music = new Audio(AUDIO_DIR + 'Musica/Menu.wav');
+  music.loop = true;
+  music.volume = MUSIC_VOLUME;
+  var voice = new Audio();
+  voice.addEventListener('ended', function () {
+    music.volume = MUSIC_VOLUME;
+  });
+  var musicOn = true;
+  var clicks = null;
+
   [].forEach.call(document.querySelectorAll('[data-screen]'), function (el) {
     screens[el.dataset.screen] = el;
   });
@@ -38,19 +64,23 @@
     layers[el.dataset.layer] = el;
   });
 
+  loadTheme();
   buildQr(document.getElementById('qr'));
   buildChrome();
   fitStage();
   window.addEventListener('resize', fitStage);
   document.addEventListener('keydown', onKey);
+  // El navegador no deja sonar nada hasta el primer toque del usuario.
+  document.addEventListener('pointerdown', unlockSound);
   stage.addEventListener('click', onClick);
-  show('sala');
+  // index.html#menu abre directo en esa pantalla; ?tema=oscuro elige el tema.
+  show(screens[location.hash.slice(1)] ? location.hash.slice(1) : 'sala');
 
   // --- escalado: la maqueta se piensa en 1920 × 1080 y se encoge a la ventana ---
   function fitStage() {
     var box = document.querySelector('.viewport').getBoundingClientRect();
     var scale = Math.min(box.width / 1920, box.height / 1080);
-    stage.style.transform = 'scale(' + scale + ')';
+    stage.style.transform = 'translate(-50%, -50%) scale(' + scale + ')';
   }
 
   // --- pantallas ---
@@ -58,9 +88,11 @@
     clearTimers();
     closeLayer();
     current = name;
+    stage.dataset.screen = name;
     for (var key in screens) screens[key].classList.toggle('is-active', key === name);
     setFocus(0);
     markChrome();
+    screenSound(name);
     if (name === 'sala') enterSala();
     if (name === 'cuenta') enterCuenta();
     if (name === 'partida') enterPartida();
@@ -77,6 +109,7 @@
     });
   }
 
+  // Un número por segundo, igual que la voz "tres, dos, uno" y GameSession.CountdownSeconds.
   function enterCuenta() {
     var el = document.getElementById('countdown');
     var n = 3;
@@ -87,12 +120,13 @@
       if (n === 0) return show('partida');
       el.textContent = n;
       restart(el, 'countdown');
-      wait(800, tick);
+      wait(1000, tick);
     };
-    wait(800, tick);
+    wait(1000, tick);
   }
 
   function enterPartida() {
+    say('Voces/Ya.wav');
     basketX = 0;
     remaining = GAME_SECONDS;
     moveBasket(0);
@@ -131,8 +165,15 @@
     });
   }
 
+  // Mover el foco suena y hace vibrar el mando con "tap" (docs/ux/sistema-visual.md §4).
   function moveFocus(step) {
+    var before = focusIndex;
     setFocus(focusIndex + step);
+    if (focusIndex === before) return;
+    blip(660, 0.09, 0.05);
+    [].forEach.call(document.querySelectorAll('.pill--pad'), function (pill) {
+      restart(pill, 'is-tap');
+    });
   }
 
   function confirm() {
@@ -145,6 +186,8 @@
   }
 
   function activate(item) {
+    blip(880, 0.1, 0.06);
+    blip(1175, 0.16, 0.05, 0.07);
     if (item.dataset.action) return runAction(item.dataset.action);
     if (item.dataset.go) show(item.dataset.go);
   }
@@ -170,6 +213,7 @@
     layers[name].classList.add('is-open');
     setFocus(0);
     markChrome();
+    if (name === 'sin-mando') say('Voces/EsperandoTuMando.wav');
   }
 
   function closeLayer() {
@@ -199,6 +243,7 @@
   }
 
   function hit() {
+    effect('Efectos/Acierto.wav');
     score += 10;
     streak += 1;
     paintHud();
@@ -213,6 +258,7 @@
 
   // El error no resta puntos ni escribe nada: solo se apaga la racha (RNF-05).
   function miss() {
+    effect('Efectos/Error.wav');
     streak = 0;
     flash('is-miss');
     document.getElementById('streak').classList.remove('is-on');
@@ -228,7 +274,10 @@
   // --- entrada ---
   function onKey(event) {
     var key = event.key.toLowerCase();
+    unlockSound();
 
+    if (key === 't') return toggleTheme();
+    if (key === 'm') return toggleMusic();
     if (key === 'arrowleft' || key === 'arrowup') return step(event, -1);
     if (key === 'arrowright' || key === 'arrowdown') return step(event, 1);
     if (key === 'enter' || key === ' ') {
@@ -269,6 +318,11 @@
     Object.keys(LAYERS).forEach(function (name) {
       host.appendChild(chromeButton(name, LAYERS[name], true));
     });
+    var theme = document.createElement('button');
+    theme.type = 'button';
+    theme.id = 'chrome-theme';
+    theme.addEventListener('click', toggleTheme);
+    host.appendChild(theme);
   }
 
   function chromeButton(name, label, isLayer) {
@@ -284,10 +338,94 @@
   }
 
   function markChrome() {
-    [].forEach.call(document.querySelectorAll('.chrome button'), function (button) {
+    [].forEach.call(document.querySelectorAll('.chrome button[data-target]'), function (button) {
       var target = button.dataset.target;
       button.classList.toggle('is-on', target === current || target === openLayer);
     });
+    document.getElementById('chrome-theme').textContent = 'Tema: ' + document.body.dataset.theme;
+  }
+
+  // --- tema: se comparan "claro" (tipo Wii U) y "oscuro" ---
+  function toggleTheme() {
+    document.body.dataset.theme = document.body.dataset.theme === 'claro' ? 'oscuro' : 'claro';
+    try {
+      localStorage.setItem('movimente-tema', document.body.dataset.theme);
+    } catch (e) {
+      // Sin almacenamiento, el tema solo dura mientras la página esté abierta.
+    }
+    markChrome();
+  }
+
+  function loadTheme() {
+    var saved = new URLSearchParams(location.search).get('tema');
+    try {
+      saved = saved || localStorage.getItem('movimente-tema');
+    } catch (e) {
+      // Sin almacenamiento se queda el tema de la dirección o el de por defecto.
+    }
+    if (saved === 'claro' || saved === 'oscuro') document.body.dataset.theme = saved;
+  }
+
+  // --- sonido ---
+  function unlockSound() {
+    if (clicks) return;
+    var Context = window.AudioContext || window.webkitAudioContext;
+    clicks = Context ? new Context() : {};
+    document.getElementById('chrome-sound').textContent = '🔊 Sonido activo';
+    screenSound(current);
+  }
+
+  function screenSound(name) {
+    if (!clicks) return;
+    var wanted = musicOn && MUSIC_SCREENS[name];
+    if (wanted && music.paused) music.play().catch(function () {});
+    if (!wanted && !music.paused) music.pause();
+    paintMusic();
+    if (VOICES[name]) say(VOICES[name]);
+  }
+
+  // Una sola voz a la vez: la nueva corta a la anterior (RNF-05).
+  function say(file) {
+    if (!clicks) return;
+    voice.pause();
+    voice.src = AUDIO_DIR + file;
+    music.volume = MUSIC_UNDER_VOICE;
+    voice.play().catch(function () {
+      music.volume = MUSIC_VOLUME;
+    });
+  }
+
+  function effect(file) {
+    if (!clicks) return;
+    new Audio(AUDIO_DIR + file).play().catch(function () {});
+  }
+
+  function toggleMusic() {
+    musicOn = !musicOn;
+    screenSound(current);
+  }
+
+  function paintMusic() {
+    [].forEach.call(document.querySelectorAll('.pill--music'), function (pill) {
+      pill.classList.toggle('is-off', !musicOn);
+    });
+  }
+
+  // Clic corto y suave, sintetizado: marca el foco sin sobresaltar.
+  function blip(frequency, seconds, volume, delay) {
+    if (!clicks || !clicks.createOscillator) return;
+    var start = clicks.currentTime + (delay || 0);
+    var tone = clicks.createOscillator();
+    var gain = clicks.createGain();
+    tone.type = 'sine';
+    tone.frequency.value = frequency;
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.exponentialRampToValueAtTime(volume, start + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + seconds);
+    tone.connect(gain);
+    gain.connect(clicks.destination);
+    tone.start(start);
+    tone.stop(start + seconds + 0.02);
   }
 
   // --- utilidades ---

@@ -1,13 +1,80 @@
-/* Maqueta de las pantallas de la TV. Tokens y tamaños de docs/ux/sistema-visual.md */
-:root {
+/* Maqueta de las pantallas de la TV. Tokens y tamaños de docs/ux/sistema-visual.md.
+   Dos temas para comparar: "oscuro" (el de siempre, con color por juego) y "claro"
+   (inspirado en el menú de Wii U). Se cambian con la tecla T. */
+:root,
+[data-theme="oscuro"] {
   --bg: #12303b;
   --bg-soft: #1b4150;
   --bg-raised: #24596b;
   --text: #f3f8f9;
   --text-soft: #b6cbd2;
   --accent: #58cfa6;
+  --accent-ink: #58cfa6;
   --warn: #efc05f;
   --alert: #e79a86;
+  --focus: #38c6ff;
+  --tile-top: #22505f;
+  --tile-bottom: #1b4150;
+  --tile-edge: rgba(255, 255, 255, 0.08);
+  --tile-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+  --layer-bg: rgba(18, 48, 59, 0.9);
+  --decor-opacity: 0.1;
+}
+
+[data-theme="claro"] {
+  --bg: #eaf1f4;
+  --bg-soft: #ffffff;
+  --bg-raised: #e4f6fe;
+  --text: #22343c;
+  --text-soft: #5f7680;
+  --accent: #58cfa6;
+  --accent-ink: #14906b;
+  --warn: #e8a92e;
+  --alert: #e0846f;
+  --focus: #1eb0f5;
+  --tile-top: #ffffff;
+  --tile-bottom: #eef4f6;
+  --tile-edge: rgba(255, 255, 255, 0.95);
+  --tile-shadow: 0 16px 32px rgba(40, 80, 100, 0.14);
+  --layer-bg: rgba(234, 241, 244, 0.92);
+  --decor-opacity: 0.16;
+}
+
+/* Un color por juego y por dificultad: ayuda a reconocerlos sin leer (RNF-06) */
+[data-game="atrapa"] {
+  --game: #f59a3e;
+  --game-soft: #ffd29e;
+  --game-deep: #b85f0e;
+}
+[data-game="secuencia"] {
+  --game: #3f9ee8;
+  --game-soft: #a9d8ff;
+  --game-deep: #1a5f99;
+}
+[data-game="corta"] {
+  --game: #8c7cf0;
+  --game-soft: #cfc6ff;
+  --game-deep: #4f3fb0;
+}
+[data-game="equilibrio"] {
+  --game: #33c08e;
+  --game-soft: #a8ecd2;
+  --game-deep: #16784f;
+}
+[data-game="facil"] {
+  --game: #33c08e;
+  --game-soft: #a8ecd2;
+  --game-deep: #16784f;
+}
+[data-game="medio"] {
+  --game: #f0b43c;
+  --game-soft: #ffe2a0;
+  --game-deep: #a86f05;
+}
+[data-game="dificil"] {
+  --game: #8c7cf0;
+  --game-soft: #cfc6ff;
+  --game-deep: #4f3fb0;
 }
 
 * {
@@ -27,19 +94,44 @@ body {
 
 .viewport {
   flex: 1;
-  display: grid;
-  place-items: center;
+  position: relative;
   overflow: hidden;
 }
 
 /* Resolución de diseño: todo se piensa en px de 1920 × 1080 */
+/* Centrada con left/top y translate: con place-items el escenario se corría a la
+   derecha cuando la ventana medía menos de 1920 px. */
 .stage {
   width: 1920px;
   height: 1080px;
-  position: relative;
+  position: absolute;
+  left: 50%;
+  top: 50%;
   overflow: hidden;
   background: var(--bg);
+  color: var(--text);
   transform-origin: center center;
+}
+
+/* Decoración de fondo: burbujas grandes, tenues y quietas. Dan color sin
+   moverse: nada animado que no sirva al juego (RNF-05). */
+.stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: var(--decor-opacity);
+  background:
+    radial-gradient(circle at 8% 14%, #f59a3e 0 150px, transparent 151px),
+    radial-gradient(circle at 92% 20%, #3f9ee8 0 210px, transparent 211px),
+    radial-gradient(circle at 86% 92%, #8c7cf0 0 170px, transparent 171px),
+    radial-gradient(circle at 12% 88%, #33c08e 0 190px, transparent 191px);
+  pointer-events: none;
+}
+
+/* En la cuenta y en la partida no hay adornos: solo el juego (RNF-05) */
+.stage[data-screen="cuenta"]::before,
+.stage[data-screen="partida"]::before {
+  opacity: 0;
 }
 
 .screen {
@@ -102,6 +194,7 @@ body {
   padding: 24px;
   border-radius: 24px;
   background: #ffffff;
+  box-shadow: var(--tile-shadow);
 }
 
 .qr svg {
@@ -122,7 +215,7 @@ body {
   font-weight: 800;
   letter-spacing: 0.12em;
   line-height: 1;
-  color: var(--accent);
+  color: var(--accent-ink);
 }
 
 .chip {
@@ -140,64 +233,145 @@ body {
 }
 
 .chip--on {
-  color: var(--accent);
+  color: var(--accent-ink);
 }
 
-/* --- 2 y 3 · Tarjetas --- */
-.cards {
+/* --- Barra superior de los menús: quién está conectado y si suena música --- */
+.topbar {
+  position: absolute;
+  top: 40px;
+  left: 96px;
+  right: 96px;
   display: flex;
-  gap: 32px;
-  width: 100%;
+  justify-content: space-between;
+  z-index: 1;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 28px;
+  border-radius: 999px;
+  background: var(--bg-soft);
+  box-shadow: var(--tile-shadow);
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--accent-ink);
+}
+
+.pill svg {
+  width: 30px;
+  height: 30px;
+  fill: currentColor;
+}
+
+/* La vibración "tap" del mando, vista en la TV de la maqueta (RF-08) */
+.pill--pad.is-tap {
+  animation: tap 0.16s ease-out;
+}
+
+.pill--music.is-off {
+  color: var(--text-soft);
+  text-decoration: line-through;
+}
+
+/* --- 2 y 3 · Mosaicos --- */
+.tiles {
+  display: flex;
+  gap: 44px;
   justify-content: center;
 }
 
-.card {
-  flex: 1;
-  max-width: 400px;
-  height: 460px;
+.tile {
+  position: relative;
+  width: 380px;
+  height: 480px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 24px;
-  padding: 32px;
-  border: 6px solid transparent;
-  border-radius: 36px;
-  background: var(--bg-soft);
+  gap: 18px;
+  padding: 24px 24px 44px;
+  border: 6px solid var(--tile-edge);
+  border-radius: 48px;
+  background: linear-gradient(180deg, var(--tile-top), var(--tile-bottom));
+  box-shadow: var(--tile-shadow);
   color: var(--text);
   font-family: inherit;
   cursor: pointer;
-  transition: transform 0.12s ease, background-color 0.12s ease, border-color 0.12s ease;
+  transition: transform 0.12s ease-out, border-color 0.12s ease, box-shadow 0.12s ease;
 }
 
-.cards--three .card {
-  max-width: 440px;
-  height: 400px;
+.tiles--three .tile {
+  width: 420px;
+  height: 420px;
 }
 
-/* El foco se marca con borde, fondo y tamaño: nunca solo con color */
-.card.is-focus,
+.tile__art {
+  width: 100%;
+  flex: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 34px;
+  background: linear-gradient(160deg, var(--game-soft), var(--game) 70%);
+  box-shadow: inset 0 -10px 0 rgba(0, 0, 0, 0.08), inset 0 3px 0 rgba(255, 255, 255, 0.45);
+}
+
+.tile__art svg {
+  width: 200px;
+  height: 200px;
+}
+
+/* Siempre dos renglones de alto: los mosaicos quedan parejos aunque un nombre sea largo */
+.tile__name {
+  min-height: 2.2em;
+  display: grid;
+  place-items: center;
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1.1;
+  text-align: center;
+}
+
+/* Como el "Start" de Wii U: solo aparece en el mosaico con foco */
+.tile__go {
+  position: absolute;
+  left: 50%;
+  bottom: -34px;
+  padding: 10px 36px;
+  border-radius: 999px;
+  background: var(--focus);
+  color: #ffffff;
+  font-size: 34px;
+  font-weight: 800;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, 12px);
+  transition: opacity 0.12s ease, transform 0.12s ease-out;
+}
+
+/* El foco se marca con borde, halo y tamaño: nunca solo con color */
+.tile.is-focus {
+  border-color: var(--focus);
+  transform: scale(1.08);
+  box-shadow: 0 0 0 8px color-mix(in srgb, var(--focus) 30%, transparent),
+    0 26px 50px color-mix(in srgb, var(--focus) 35%, transparent);
+}
+
+.tile.is-focus .tile__go {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.tile.is-press {
+  transform: scale(0.97);
+}
+
 .btn.is-focus,
 .option.is-focus {
-  border-color: var(--accent);
+  border-color: var(--focus);
   background: var(--bg-raised);
   transform: scale(1.06);
-}
-
-.card__icon {
-  font-size: 140px;
-  line-height: 1;
-}
-
-.card__name {
-  font-size: 44px;
-  font-weight: 700;
-}
-
-.card__hint {
-  font-size: 32px;
-  font-weight: 600;
-  color: var(--text-soft);
 }
 
 .pad-hint {
@@ -263,7 +437,7 @@ body {
 
 .btn.is-focus {
   background: var(--accent);
-  border-color: var(--text);
+  box-shadow: 0 0 0 8px color-mix(in srgb, var(--focus) 30%, transparent);
 }
 
 /* --- 5 · Cuenta regresiva --- */
@@ -272,7 +446,7 @@ body {
   font-size: 240px;
   font-weight: 800;
   line-height: 1;
-  color: var(--accent);
+  color: var(--accent-ink);
   animation: pop 0.6s ease-out;
 }
 
@@ -371,7 +545,7 @@ body {
   transform: translateX(-50%);
   font-size: 72px;
   font-weight: 800;
-  color: var(--accent);
+  color: var(--accent-ink);
   opacity: 0;
 }
 
@@ -388,7 +562,7 @@ body {
   text-align: center;
   font-size: 36px;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent-ink);
   opacity: 0;
   transition: opacity 0.2s ease;
 }
@@ -426,7 +600,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 48px;
-  background: rgba(18, 48, 59, 0.9);
+  background: var(--layer-bg);
 }
 
 .layer.is-open {
@@ -455,6 +629,7 @@ body {
   border: 6px solid transparent;
   border-radius: 28px;
   background: var(--bg-soft);
+  box-shadow: var(--tile-shadow);
   color: var(--text);
   font-family: inherit;
   font-size: 44px;
@@ -498,7 +673,7 @@ body {
   font-size: 140px;
   font-weight: 800;
   line-height: 1;
-  color: var(--accent);
+  color: var(--accent-ink);
 }
 
 .record {
@@ -588,6 +763,12 @@ body {
   }
 }
 
+@keyframes tap {
+  50% {
+    transform: translateX(-6px) rotate(-2deg);
+  }
+}
+
 @keyframes star-in {
   to {
     opacity: 1;
@@ -596,7 +777,10 @@ body {
 }
 
 /* --- controles de la maqueta, fuera de la pantalla del juego --- */
+/* La barra de la maqueta no cambia con el tema del juego */
 .chrome {
+  --text: #f3f8f9;
+  --text-soft: #b6cbd2;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -636,6 +820,12 @@ body {
   font-weight: 700;
 }
 
+.chrome__sound {
+  margin-left: auto;
+  font-weight: 700;
+  color: var(--warn);
+}
+
 .chrome__keys b {
   color: var(--text);
 }
@@ -646,6 +836,7 @@ body {
   .speaker,
   .fruit,
   .countdown,
+  .pill--pad.is-tap,
   .layer.is-open {
     animation: none;
   }
