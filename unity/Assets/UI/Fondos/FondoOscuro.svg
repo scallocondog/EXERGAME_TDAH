@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+  <defs>
+    <radialGradient id="luz" gradientUnits="userSpaceOnUse" cx="960" cy="0" r="864" gradientTransform="translate(960 0) scale(2.6667 1) translate(-960 0)">
+      <stop offset="0" stop-color="#1a4452"/>
+      <stop offset="0.65" stop-color="#12303b"/>
+      <stop offset="1" stop-color="#12303b"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#luz)"/>
+</svg>

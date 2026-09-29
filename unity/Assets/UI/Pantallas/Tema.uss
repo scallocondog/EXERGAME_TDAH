@@ -1,0 +1,73 @@
+/* RNF-05, RNF-06: tokens del diseño "MoviMente TV" (docs/ux/sistema-visual.md §2).
+   B oscuro por defecto; la clase tema-claro en la raíz cambia a A, que solo cambia
+   las superficies. Mismos nombres que la maqueta, en español. */
+.raiz {
+    --pad1: #1eb0f5;
+    --pad1-tinta: #06222e;
+    --accion: #6fdcb6;
+    --accion-tinta: #12302a;
+    --acierto: #58cfa6;
+    --estrella: #efc05f;
+    --error: rgba(231, 154, 134, 0.5);
+
+    --fondo: #12303b;
+    --texto: #f3f8f9;
+    --texto-suave: #a9c3cc;
+    --marca: #1eb0f5;
+    --tarjeta: #1b4250;
+    --tarjeta-borde: #2a5b6c;
+    --tarjeta-sombra: #0b222a;
+    --tarjeta-foco: #22566a;
+    /* El celeste contrasta 5,4:1 sobre petróleo */
+    --foco: #1eb0f5;
+    --foco-halo: rgba(30, 176, 245, 0.35);
+    --foco-sombra: #0a1f26;
+    --punteado: #3f6f80;
+    --barra: #0e2730;
+    --barra-borde: #1f4a59;
+    --hud: rgba(14, 39, 48, 0.92);
+    --tiempo-pista: #2a5b6c;
+    --tiempo-relleno: #7fd3f7;
+    --velo: rgba(8, 24, 30, 0.78);
+    --velo-suave: rgba(8, 24, 30, 0.45);
+    --panel: #163a47;
+    --opcion: #1f4d5d;
+    --pozo: #12303b;
+    --canasta: #f3f8f9;
+    --canasta-sombra: #cfdde3;
+    --canasta-borde: #f3f8f9;
+    --qr-borde: #ffffff;
+
+    -unity-font-definition: url("../Fuentes/Nunito-ExtraBold.ttf");
+    color: var(--texto);
+}
+
+/* Sobre perla el celeste no llega a 2,3:1: el borde se oscurece y el celeste queda de halo */
+.raiz.tema-claro {
+    --fondo: #eef3f5;
+    --texto: #22343c;
+    --texto-suave: #4d6470;
+    --marca: #0b86c7;
+    --tarjeta: #ffffff;
+    --tarjeta-borde: #d6e2e8;
+    --tarjeta-sombra: #cddbe2;
+    --tarjeta-foco: #f2fbff;
+    --foco: #0b86c7;
+    --foco-halo: rgba(30, 176, 245, 0.4);
+    --foco-sombra: #c3d6df;
+    --punteado: #a9bec8;
+    --barra: #ffffff;
+    --barra-borde: #d6e2e8;
+    --hud: rgba(255, 255, 255, 0.92);
+    --tiempo-pista: #d6e2e8;
+    --tiempo-relleno: #1eb0f5;
+    --velo: rgba(234, 241, 244, 0.82);
+    --velo-suave: rgba(234, 241, 244, 0.45);
+    --panel: #ffffff;
+    --opcion: #f2f6f8;
+    --pozo: #dfe8ec;
+    /* Canasta blanca sobre fondo claro: necesita contorno para no perderse */
+    --canasta: #ffffff;
+    --canasta-borde: #a9bec8;
+    --qr-borde: #d6e2e8;
+}

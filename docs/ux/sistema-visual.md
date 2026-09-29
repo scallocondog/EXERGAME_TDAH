@@ -29,8 +29,9 @@ celular en la mano y mirando al frente.
 | Contraste mínimo | 4.5:1; los textos de apoyo también |
 | Elementos por pantalla | Los menos posibles; una sola decisión a la vez |
 
-En Unity: `Canvas Scaler` → *Scale With Screen Size*, referencia 1920×1080,
-*Match* 0.5. Los tamaños de este documento son en px de esa referencia.
+En Unity: UI Toolkit, con el `PanelSettings` en *Scale With Screen Size*,
+referencia 1920×1080, *Match* 0.5 (§9). Los tamaños de este documento son en px
+de esa referencia.
 
 ---
 
@@ -88,8 +89,8 @@ mueva detrás del contenido.
 
 ## 3. Tipografía
 
-Una sola familia: **Nunito** en 700 y 800 (en Unity, TextMeshPro). Nada de pesos
-finos: a 3 metros desaparecen.
+Una sola familia: **Nunito** en 700 y 800 (en Unity, los TTF de
+`unity/Assets/UI/Fuentes/`). Nada de pesos finos: a 3 metros desaparecen.
 
 | Uso | Tamaño | Peso |
 | --- | --- | --- |
@@ -373,21 +374,71 @@ Una voz nueva corta a la anterior: nunca hablan dos a la vez (RNF-05).
 
 ---
 
-## 9. Qué falta
+## 9. En Unity (UI Toolkit)
+
+Las pantallas de la partida ya están en Unity, en `unity/Assets/UI/`. Se usa UI
+Toolkit y no Canvas: el UXML y el USS son texto, se revisan en el PR y pasan
+casi directo desde la maqueta (bordes redondeados, temas con variables).
+
+| Qué | Dónde |
+| --- | --- |
+| Estructura: sala, instrucciones, cuenta, HUD, pausa, sin mando y resultados | `Pantallas/Partida.uxml` |
+| Tokens de §2; la clase `tema-claro` en la raíz pasa de B a A | `Pantallas/Tema.uss` |
+| Medidas, en px de 1920 × 1080 | `Pantallas/Partida.uss` |
+| Panel: *Scale With Screen Size*, 1920 × 1080, *Match* 0.5 | `Pantallas/PanelTv.asset` |
+| Íconos y fondos, SVG importados como *Vector Image* | `Iconos/`, `Fondos/` |
+| Nunito 700 y 800, licencia OFL | `Fuentes/` |
+| Código: `SessionScreensView` y una vista por pantalla | `Scripts/` |
+
+`SessionScreensView` va en el prefab `CoreSystems`, en el hijo "Pantallas de la
+partida", junto al audio: toda escena que use `GameRunner` tiene estas pantallas
+sin agregar nada. La casilla *Light Theme* del componente pasa al tema A.
+
+Qué decide la UI y qué no:
+
+- Qué pantalla se ve sale de `SessionScreens.For`: si falta un mando antes de
+  empezar, la sala con el código y el QR; con la pausa y el mando desconectado,
+  el HUD queda detrás.
+- Inclinar el Mando 1 mueve el foco de los menús de pausa y de resultados
+  (`FocusList`) y le manda `tap` al mando.
+- Confirmar en las instrucciones y el botón de pausa los sigue resolviendo
+  `SessionControls` (Piero). Por eso, en Unity, el audio de las instrucciones es
+  un indicador y no una opción con foco: si la tuviera, el botón igual empezaría
+  la cuenta.
+- "Salir" y "Elegir otro juego" avisan con el evento `GameMenuRequested`: el
+  menú de juegos (RF-09) todavía no existe.
+- El puntaje en pantalla es provisional, 10 por acierto (`ScoreBoard`), hasta
+  que `Metrics/` (RF-15) lo calcule. Estrellas: 3 con el 80 % de aciertos o más,
+  2 con el 50 % o más y 1 si no. Solo se ven las ganadas, nunca un hueco.
+- El "+10" y "3 seguidos" salen debajo del puntaje: la UI no sabe dónde está el
+  objeto, y `AtrapaView` ya tiñe la canasta en el acierto.
+
+Diferencias con la maqueta, por lo que USS no tiene: sin bordes punteados (el
+chip "Esperando mando…" y el círculo del mando desconectado van con borde liso),
+sin `box-shadow` (la sombra y el halo son los contenedores `.sombra` y `.halo`) y
+sin números tabulares.
+
+---
+
+## 10. Qué falta
 
 - Grabar las locuciones y reemplazar las temporales de `Audio/Voces/`.
-- Meter Nunito en Unity como asset de TextMeshPro.
-- Importar los íconos en Unity tal cual, en SVG: Unity 6.3 trae el importador
-  como módulo (`com.unity.modules.vectorgraphics`, ya está en el manifest).
-  Revisar `ui-musica-off.svg`, el único que usa una máscara.
-- Pasar estas pantallas a Unity UI.
+- Que suene la frase del gesto en las instrucciones: `SessionSounds` todavía no
+  tiene esa voz, y cambia según el minijuego.
+- Los menús en Unity: sala de inicio, elegir juego y dificultad (RF-09, con
+  Piero).
+- "¡Nuevo récord!" en resultados, cuando exista el guardado de puntajes (RF-17).
+- Quitar el "HUD de prueba" (`SessionDebugHud`) de la escena de Atrapa: dibuja
+  con `OnGUI` encima de estas pantallas. Es de Piero.
+- `UiMusicaOff.svg` de Unity usa `clipPath` en vez de la máscara del original:
+  el importador de SVG de Unity 6.3 falla con máscaras.
 - El diseño anuncia secciones de componentes, tokens y movimiento, Unity y mando
   que no vinieron en la exportación: pedirlas a Claude Design antes de tocar el
   mando.
 
 ---
 
-## 10. Neon Saber: concepto, no aprobado
+## 11. Neon Saber: concepto, no aprobado
 
 La maqueta trae además [maqueta/neon-saber.html](maqueta/neon-saber.html), un
 concepto del mismo proyecto de Claude Design para un juego de cortar con sables.
