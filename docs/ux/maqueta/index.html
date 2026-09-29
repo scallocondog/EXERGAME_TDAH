@@ -6,217 +6,332 @@
     <title>Maqueta de pantallas · MoviMente</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body data-theme="claro">
+  <body data-theme="oscuro">
     <!-- Maqueta de las pantallas de la TV (RF-08, RF-10, RF-16). No es el juego:
-         sirve para revisar el diseño antes de construirlo en Unity UI. -->
+         sirve para revisar el diseño antes de construirlo en Unity UI.
+         Estilo del diseño "MoviMente TV": B oscuro por defecto, A claro con la tecla T. -->
+
+    <!-- Íconos de interfaz: los de ../iconos/ui-*.svg con currentColor, para que tomen el
+         color del tema. Van en línea porque las máscaras CSS con archivos no cargan en file://. -->
+    <svg class="sprite" aria-hidden="true">
+      <symbol id="i-audio" viewBox="0 0 64 64">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 24H20L34 12V52L20 40H8Z" fill="currentColor" stroke-width="4" />
+          <path d="M43 23C48 28 48 36 43 41M50 15C60 24 60 40 50 49" stroke-width="5.5" />
+        </g>
+      </symbol>
+      <symbol id="i-boton" viewBox="0 0 64 64">
+        <circle cx="32" cy="32" r="25" fill="none" stroke="currentColor" stroke-width="5" />
+        <circle cx="32" cy="32" r="13" fill="currentColor" />
+      </symbol>
+      <symbol id="i-celular" viewBox="0 0 64 64">
+        <rect x="18" y="5" width="28" height="54" rx="7" fill="none" stroke="currentColor" stroke-width="5" />
+        <circle cx="32" cy="48" r="4" fill="currentColor" />
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 64 64">
+        <path d="M14 33L27 46L51 19" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+      </symbol>
+      <symbol id="i-estrella" viewBox="0 0 64 64">
+        <path d="M32 6L39.6 23.2L58 25.1L44.2 37.6L48.2 56L32 46.5L15.8 56L19.8 37.6L6 25.1L24.4 23.2Z" fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linejoin="round" />
+      </symbol>
+      <symbol id="i-inclinar" viewBox="0 0 64 64">
+        <g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="23" y="22" width="18" height="36" rx="5" transform="rotate(18 32 40)" />
+          <path d="M12 22Q32 2 52 22" />
+          <path d="M52 22L42 21M52 22L52 12M12 22L22 21M12 22L12 12" />
+        </g>
+      </symbol>
+      <symbol id="i-jugar" viewBox="0 0 64 64">
+        <path d="M22 14L50 32L22 50Z" fill="currentColor" stroke="currentColor" stroke-width="6" stroke-linejoin="round" />
+      </symbol>
+      <symbol id="i-musica" viewBox="0 0 64 64">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="19" cy="47" r="9" fill="currentColor" stroke="none" />
+          <circle cx="45" cy="41" r="9" fill="currentColor" stroke="none" />
+          <path d="M27 47V16L53 10V41" stroke-width="6" />
+          <path d="M27 14L53 8V18L27 24Z" fill="currentColor" stroke-width="2" />
+        </g>
+      </symbol>
+      <symbol id="i-musica-off" viewBox="0 0 64 64">
+        <mask id="i-musica-off-corte">
+          <rect width="64" height="64" fill="#fff" />
+          <path d="M6 6L58 58" stroke="#000" stroke-width="14" />
+        </mask>
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <g mask="url(#i-musica-off-corte)">
+            <circle cx="19" cy="47" r="9" fill="currentColor" stroke="none" />
+            <circle cx="45" cy="41" r="9" fill="currentColor" stroke="none" />
+            <path d="M27 47V16L53 10V41" stroke-width="6" />
+            <path d="M27 14L53 8V18L27 24Z" fill="currentColor" stroke-width="2" />
+          </g>
+          <path d="M8 8L56 56" stroke-width="6" />
+        </g>
+      </symbol>
+      <symbol id="i-reiniciar" viewBox="0 0 64 64">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M50 34A18 18 0 1 1 42 18" stroke-width="6" />
+          <path d="M34 8L50 14L40 27Z" fill="currentColor" stroke-width="3" />
+        </g>
+      </symbol>
+      <symbol id="i-reloj" viewBox="0 0 64 64">
+        <g fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="32" cy="34" r="23" />
+          <path d="M32 21V34L41 40" />
+        </g>
+      </symbol>
+      <symbol id="i-salir" viewBox="0 0 64 64">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M34 10H14V54H34" stroke-width="5.5" />
+          <path d="M28 32H56M46 22L56 32L46 42" stroke-width="6" />
+        </g>
+      </symbol>
+    </svg>
+
     <div class="viewport">
       <div class="stage" id="stage">
         <!-- 1 · Sala y QR (RF-01) -->
-        <section class="screen" data-screen="sala">
-          <div class="safe sala">
-            <div class="qr" id="qr" aria-hidden="true"></div>
-            <div class="sala__texto">
-              <h1 class="title">Conecta tu celular</h1>
-              <p class="room-code">TCXG</p>
-              <p class="support">Escanea el código con la cámara</p>
-            </div>
+        <section class="screen" data-screen="sala" data-pad="wait">
+          <p class="logo logo--corner">Movi<span>Mente</span></p>
+          <div class="qr-card"><div class="qr" id="qr" aria-hidden="true"></div></div>
+          <div class="sala__title">
+            <h1 class="title">Conecta tu celular</h1>
+            <span class="round" aria-hidden="true"><svg class="ic"><use href="#i-audio" /></svg></span>
           </div>
-          <p class="chip chip--wait" id="pad-chip">Esperando mando…</p>
+          <p class="room-code" aria-label="Código de la sala: TCXG">
+            <span>T</span><span>C</span><span>X</span><span>G</span>
+          </p>
+          <p class="sala__support">Escanea el código con la cámara</p>
+          <p class="pad-chip pad-chip--wait">
+            <span class="pad-chip__well"><svg class="ic"><use href="#i-celular" /></svg></span>
+            Esperando mando…
+          </p>
+          <p class="pad-chip pad-chip--on">
+            <span class="pad-chip__num">1</span>
+            Mando 1 conectado
+            <svg class="ic"><use href="#i-check" /></svg>
+          </p>
         </section>
 
-        <!-- 2 · Elegir juego (RF-08, RF-09): mosaicos grandes, un color por juego -->
+        <!-- 2 · Elegir juego (RF-08, RF-09) -->
         <section class="screen" data-screen="menu">
           <header class="topbar">
-            <span class="pill pill--pad" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3" /><circle cx="12" cy="18" r="1.4" /></svg>
-              Mando 1
-            </span>
-            <span class="pill pill--music" aria-hidden="true">♪</span>
-          </header>
-          <div class="safe column">
-            <h1 class="title">Elige un juego</h1>
-            <div class="tiles">
-              <button class="tile" data-focus data-go="dificultad" data-game="atrapa" type="button">
-                <span class="tile__art" aria-hidden="true">
-                  <svg viewBox="0 0 200 200">
-                    <circle cx="100" cy="56" r="30" fill="#fff" />
-                    <path d="M101 27 q12 -16 28 -10 q-8 16 -28 10z" fill="#fff" opacity=".8" />
-                    <path d="M66 96 v14 M100 94 v18 M134 96 v14" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".55" />
-                    <path d="M30 124 h140 q-6 50 -70 50 q-64 0 -70 -50z" fill="#fff" />
-                    <path d="M42 124 h116" stroke="var(--game-deep)" stroke-width="6" stroke-linecap="round" opacity=".35" />
-                  </svg>
-                </span>
-                <span class="tile__name">Atrapa lo correcto</span>
-                <span class="tile__go">¡Jugar!</span>
-              </button>
-              <button class="tile" data-focus data-go="dificultad" data-game="secuencia" type="button">
-                <span class="tile__art" aria-hidden="true">
-                  <svg viewBox="0 0 200 200">
-                    <path d="M44 132 Q100 60 156 132" stroke="#fff" stroke-width="6" stroke-dasharray="2 14" stroke-linecap="round" fill="none" opacity=".6" />
-                    <rect x="14" y="104" width="60" height="60" rx="16" fill="#fff" />
-                    <rect x="70" y="36" width="60" height="60" rx="16" fill="#fff" />
-                    <rect x="126" y="104" width="60" height="60" rx="16" fill="#fff" />
-                    <path d="M56 134 H32 M42 123 L31 134 L42 145" stroke="var(--game-deep)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-                    <path d="M100 80 V54 M89 65 L100 54 L111 65" stroke="var(--game-deep)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-                    <path d="M144 134 H168 M158 123 L169 134 L158 145" stroke="var(--game-deep)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-                  </svg>
-                </span>
-                <span class="tile__name">Sigue la secuencia</span>
-                <span class="tile__go">¡Jugar!</span>
-              </button>
-              <button class="tile" data-focus data-go="dificultad" data-game="corta" type="button">
-                <span class="tile__art" aria-hidden="true">
-                  <svg viewBox="0 0 200 200">
-                    <path d="M58 112 a36 36 0 0 1 72 0z" fill="#fff" transform="rotate(-14 94 112) translate(-8 -10)" />
-                    <path d="M70 124 a36 36 0 0 0 72 0z" fill="#fff" transform="rotate(-14 106 124) translate(8 10)" />
-                    <path d="M24 170 Q96 58 180 34" stroke="#fff" stroke-width="12" stroke-linecap="round" fill="none" opacity=".75" />
-                  </svg>
-                </span>
-                <span class="tile__name">Corta sin fallar</span>
-                <span class="tile__go">¡Jugar!</span>
-              </button>
-              <button class="tile" data-focus data-go="dificultad" data-game="equilibrio" type="button">
-                <span class="tile__art" aria-hidden="true">
-                  <svg viewBox="0 0 200 200">
-                    <polygon points="100,142 76,178 124,178" fill="#fff" />
-                    <rect x="24" y="130" width="152" height="14" rx="7" fill="#fff" />
-                    <circle cx="100" cy="104" r="24" fill="#fff" />
-                    <path d="M40 104 h18 M142 104 h18" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".55" />
-                  </svg>
-                </span>
-                <span class="tile__name">Equilibrio</span>
-                <span class="tile__go">¡Jugar!</span>
-              </button>
+            <p class="logo">Movi<span>Mente</span></p>
+            <div class="topbar__pads">
+              <span class="pill pill--pad"><span class="pill__num">1</span>Mando 1</span>
+              <span class="pill pill--pad2">
+                <span class="pill__num">2</span>
+                <span class="pad2-off">Mando 2 · TCXG</span><span class="pad2-on">Mando 2</span>
+              </span>
+              <span class="round pill--music" aria-hidden="true">
+                <svg class="ic ic--music"><use href="#i-musica" /></svg>
+                <svg class="ic ic--music-off"><use href="#i-musica-off" /></svg>
+              </span>
             </div>
+          </header>
+          <h1 class="title title--top">Elige un juego</h1>
+          <div class="grid-games">
+            <button class="card card--game" data-focus data-go="dificultad" data-game="atrapa" type="button">
+              <img src="../iconos/juego-atrapa.svg" alt="" />
+              <span class="card__body">
+                <span class="card__name">Atrapa lo correcto</span>
+                <span class="go"><svg class="ic"><use href="#i-boton" /></svg>¡Jugar!</span>
+              </span>
+            </button>
+            <button class="card card--game" data-focus data-go="dificultad" data-game="secuencia" type="button">
+              <img src="../iconos/juego-secuencia.svg" alt="" />
+              <span class="card__body">
+                <span class="card__name">Sigue la secuencia</span>
+                <span class="go"><svg class="ic"><use href="#i-boton" /></svg>¡Jugar!</span>
+              </span>
+            </button>
+            <button class="card card--game" data-focus data-go="dificultad" data-game="corta" type="button">
+              <img src="../iconos/juego-corta.svg" alt="" />
+              <span class="card__body">
+                <span class="card__name">Corta sin fallar</span>
+                <span class="go"><svg class="ic"><use href="#i-boton" /></svg>¡Jugar!</span>
+              </span>
+            </button>
+            <button class="card card--game" data-focus data-go="dificultad" data-game="equilibrio" type="button">
+              <img src="../iconos/juego-equilibrio.svg" alt="" />
+              <span class="card__body">
+                <span class="card__name">Equilibrio</span>
+                <span class="go"><svg class="ic"><use href="#i-boton" /></svg>¡Jugar!</span>
+              </span>
+            </button>
           </div>
-          <p class="pad-hint"><b>Inclina</b> para elegir · <b>Botón</b> para entrar</p>
+          <footer class="hintbar">
+            <svg class="ic"><use href="#i-inclinar" /></svg><span>Inclina para elegir</span>
+            <span>·</span>
+            <svg class="ic"><use href="#i-boton" /></svg><span>Botón para entrar</span>
+          </footer>
         </section>
 
-        <!-- 3 · Dificultad (RF-09): la velocidad se ve en las flechas, no hace falta leer -->
+        <!-- 3 · Dificultad (RF-09): la velocidad se lee sin texto, por flechas y color -->
         <section class="screen" data-screen="dificultad">
           <header class="topbar">
-            <span class="pill pill--pad" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3" /><circle cx="12" cy="18" r="1.4" /></svg>
-              Mando 1
+            <span class="pill pill--game">
+              <img class="game-icon" src="../iconos/juego-atrapa.svg" alt="" />
+              <span class="game-name">Atrapa lo correcto</span>
             </span>
-            <span class="pill pill--music" aria-hidden="true">♪</span>
-          </header>
-          <div class="safe column">
-            <h1 class="title">¿Qué tan rápido?</h1>
-            <div class="tiles tiles--three">
-              <button class="tile" data-focus data-go="instrucciones" data-game="facil" type="button">
-                <span class="tile__art" aria-hidden="true">
-                  <svg viewBox="0 0 200 200"><path d="M80 60 L120 100 L80 140" stroke="#fff" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" fill="none" /></svg>
-                </span>
-                <span class="tile__name">Fácil</span>
-                <span class="tile__go">¡Elegir!</span>
-              </button>
-              <button class="tile" data-focus data-go="instrucciones" data-game="medio" type="button">
-                <span class="tile__art" aria-hidden="true">
-                  <svg viewBox="0 0 200 200"><path d="M56 60 L96 100 L56 140 M104 60 L144 100 L104 140" stroke="#fff" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" fill="none" /></svg>
-                </span>
-                <span class="tile__name">Medio</span>
-                <span class="tile__go">¡Elegir!</span>
-              </button>
-              <button class="tile" data-focus data-go="instrucciones" data-game="dificil" type="button">
-                <span class="tile__art" aria-hidden="true">
-                  <svg viewBox="0 0 200 200"><path d="M34 60 L74 100 L34 140 M82 60 L122 100 L82 140 M130 60 L170 100 L130 140" stroke="#fff" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" fill="none" /></svg>
-                </span>
-                <span class="tile__name">Difícil</span>
-                <span class="tile__go">¡Elegir!</span>
-              </button>
+            <div class="topbar__pads">
+              <span class="pill pill--pad"><span class="pill__num">1</span>Mando 1</span>
+              <span class="pill pill--pad2">
+                <span class="pill__num">2</span>
+                <span class="pad2-off">Mando 2 · TCXG</span><span class="pad2-on">Mando 2</span>
+              </span>
+              <span class="round pill--music" aria-hidden="true">
+                <svg class="ic ic--music"><use href="#i-musica" /></svg>
+                <svg class="ic ic--music-off"><use href="#i-musica-off" /></svg>
+              </span>
             </div>
+          </header>
+          <h1 class="title title--top">¿Qué tan rápido?</h1>
+          <div class="grid-levels">
+            <button class="card card--level" data-focus data-go="instrucciones" data-level="0" type="button">
+              <img src="../iconos/dificultad-facil.svg" alt="" />
+              <span class="card__name">Fácil</span>
+              <span class="go"><svg class="ic"><use href="#i-boton" /></svg>¡Jugar!</span>
+            </button>
+            <button class="card card--level" data-focus data-go="instrucciones" data-level="1" type="button">
+              <img src="../iconos/dificultad-medio.svg" alt="" />
+              <span class="card__name">Medio</span>
+              <span class="go"><svg class="ic"><use href="#i-boton" /></svg>¡Jugar!</span>
+            </button>
+            <button class="card card--level" data-focus data-go="instrucciones" data-level="2" type="button">
+              <img src="../iconos/dificultad-dificil.svg" alt="" />
+              <span class="card__name">Difícil</span>
+              <span class="go"><svg class="ic"><use href="#i-boton" /></svg>¡Jugar!</span>
+            </button>
           </div>
-          <p class="pad-hint"><b>Inclina</b> para elegir · <b>Botón</b> para entrar</p>
+          <footer class="hintbar">
+            <svg class="ic"><use href="#i-inclinar" /></svg><span>Inclina para elegir</span>
+            <span>·</span>
+            <svg class="ic"><use href="#i-boton" /></svg><span>Botón para entrar</span>
+          </footer>
         </section>
 
-        <!-- 4 · Instrucciones (RF-10): una frase, la demostración y el audio -->
+        <!-- 4 · Instrucciones (RF-10): una frase, la demostración y dos opciones -->
         <section class="screen" data-screen="instrucciones">
-          <div class="safe column">
-            <div class="demo" aria-hidden="true">
-              <div class="demo__phone"><span class="demo__screen"></span></div>
-            </div>
+          <span class="pill pill--game pill--corner">
+            <img class="game-icon" src="../iconos/juego-atrapa.svg" alt="" />
+            <span class="game-name">Atrapa lo correcto</span>
+          </span>
+          <div class="instr__row">
             <h1 class="instruction">Inclina para mover la canasta</h1>
-            <p class="speaker" aria-hidden="true">🔊</p>
-            <button class="btn" data-focus data-go="cuenta" type="button">
-              Toca el botón para empezar
+            <button class="round round--big" data-focus data-action="voice" type="button" aria-label="Escuchar otra vez">
+              <svg class="ic"><use href="#i-audio" /></svg>
+            </button>
+          </div>
+          <!-- Lo único que se anima en bucle: el celular se inclina y la canasta lo sigue -->
+          <div class="demo" aria-hidden="true">
+            <div class="demo__phone"><span class="demo__num">1</span><span class="demo__button"></span></div>
+            <div class="demo__basket"></div>
+          </div>
+          <div class="instr__start">
+            <button class="btn-action" data-focus data-focus-start data-go="cuenta" type="button">
+              <svg class="ic"><use href="#i-boton" /></svg>Toca el botón para empezar
             </button>
           </div>
         </section>
 
-        <!-- 5 · Cuenta regresiva -->
+        <!-- 5 · Cuenta regresiva: la canasta ya se puede mover para practicar -->
         <section class="screen" data-screen="cuenta">
-          <div class="safe column">
-            <p class="countdown" id="countdown">3</p>
-            <p class="support">Inclina para mover la canasta</p>
+          <div class="game-bg">
+            <div class="floor"></div>
+            <span class="basket basket--rest"></span>
           </div>
+          <div class="dim dim--soft"></div>
+          <p class="countdown" id="countdown">3</p>
+          <p class="count__hint"><svg class="ic"><use href="#i-inclinar" /></svg>Inclina para mover la canasta</p>
         </section>
 
         <!-- 6 · Partida y HUD (RF-15) -->
         <section class="screen" data-screen="partida">
+          <div class="game-bg">
+            <div class="floor"></div>
+            <span class="obj obj--naranja obj--a" aria-hidden="true"></span>
+            <span class="obj obj--uvas obj--b" aria-hidden="true"></span>
+            <span class="obj obj--pez obj--c" id="obj-miss" aria-hidden="true"></span>
+            <div class="catcher" id="catcher">
+              <span class="popup" id="popup">+10</span>
+              <span class="streak" id="streak">3 seguidos</span>
+              <span class="basket"></span>
+            </div>
+          </div>
+
+          <div class="hud-pill hud-time">
+            <svg class="ic"><use href="#i-reloj" /></svg>
+            <span class="time-bar"><span class="time-bar__fill" id="hud-bar"></span></span>
+            <span class="hud-time__value" id="hud-time">3:00</span>
+          </div>
+          <div class="hud-pill hud-score">
+            <img src="../iconos/estrella.svg" alt="" />
+            <span class="hud-score__value" id="hud-score">120</span>
+          </div>
+
+          <!-- Qué hay que atrapar: dibujo, palabra y audio, para no depender de leer (RNF-06) -->
+          <div class="target">
+            <span class="target__label">Atrapa</span>
+            <span class="obj obj--naranja obj--big" aria-hidden="true"></span>
+            <span class="target__name">Naranjas<svg class="ic"><use href="#i-audio" /></svg></span>
+          </div>
+
           <div class="flash" id="flash"></div>
 
-          <div class="hud">
-            <div class="hud__time">
-              <span class="hud__label">Tiempo</span>
-              <span class="hud__value" id="hud-time">3:00</span>
-              <span class="bar"><span class="bar__fill" id="hud-bar"></span></span>
-            </div>
-            <div class="hud__score">
-              <span class="hud__label">Puntaje</span>
-              <span class="hud__value" id="hud-score">120</span>
-            </div>
-          </div>
-
-          <div class="scene">
-            <span class="fruit fruit--a" aria-hidden="true">🍎</span>
-            <span class="fruit fruit--b" aria-hidden="true">🍌</span>
-            <span class="fruit fruit--c" aria-hidden="true">🧦</span>
-            <span class="basket" id="basket" aria-hidden="true">🧺</span>
-            <span class="popup" id="popup">+10</span>
-          </div>
-
-          <p class="streak" id="streak">3 seguidos</p>
-
-          <!-- Capa de pausa (RF-19): el juego sigue viéndose detrás -->
+          <!-- 7 · Capa de pausa (RF-19): el juego sigue viéndose detrás -->
           <div class="layer" data-layer="pausa">
-            <h2 class="title">Juego en pausa</h2>
-            <div class="options">
+            <div class="panel panel--pausa">
+              <h2 class="title">Juego en pausa</h2>
               <button class="option" data-focus data-action="resume" type="button">
+                <span class="option__well option__well--go"><svg class="ic"><use href="#i-jugar" /></svg></span>
                 Seguir jugando
               </button>
               <button class="option" data-focus data-action="restart" type="button">
+                <span class="option__well"><svg class="ic"><use href="#i-reiniciar" /></svg></span>
                 Volver a empezar
               </button>
-              <button class="option" data-focus data-action="exit" type="button">
-                Salir
-                <span class="option__note">no se guarda el puntaje</span>
+              <button class="option option--tall" data-focus data-action="exit" type="button">
+                <span class="option__well"><svg class="ic"><use href="#i-salir" /></svg></span>
+                <span class="option__text">Salir<span class="option__note">no se guarda el puntaje</span></span>
               </button>
             </div>
           </div>
 
-          <!-- Capa de mando desconectado (RF-07, CU-08): espera, no castiga -->
+          <!-- 9 · Capa de mando desconectado (RF-07, CU-08): espera, no castiga -->
           <div class="layer" data-layer="sin-mando">
-            <p class="layer__icon" aria-hidden="true">📡</p>
-            <h2 class="title">Esperando tu mando…</h2>
-            <p class="support">Revisa que el celular siga en la página del mando</p>
+            <div class="panel panel--wait">
+              <div class="lost">
+                <svg class="ic"><use href="#i-celular" /></svg>
+                <span class="lost__num">1</span>
+              </div>
+              <h2 class="title">Esperando tu mando…</h2>
+              <p class="panel__help">Revisa que el celular siga en la página del mando</p>
+            </div>
           </div>
         </section>
 
-        <!-- 7 · Resultados (RF-16, RF-17) -->
+        <!-- 8 · Resultados (RF-16, RF-17): siempre hay al menos una estrella -->
         <section class="screen" data-screen="resultados">
-          <div class="safe column">
-            <p class="stars" id="stars" aria-hidden="true">
-              <span class="star">★</span><span class="star">★</span><span class="star">★</span>
-            </p>
-            <h1 class="title">¡Muy bien!</h1>
-            <p class="score">340</p>
-            <p class="record">¡Nuevo récord! Antes: 280</p>
-            <p class="metrics">18 aciertos · respondiste en 0,6 s</p>
-            <div class="options options--row">
-              <button class="option" data-focus data-go="cuenta" type="button">Jugar otra vez</button>
-              <button class="option" data-focus data-go="menu" type="button">Elegir otro juego</button>
-            </div>
+          <span class="pill pill--game pill--corner">
+            <img class="game-icon" src="../iconos/juego-atrapa.svg" alt="" />
+            <span class="game-name">Atrapa lo correcto</span>
+          </span>
+          <p class="stars" aria-hidden="true">
+            <img class="star" src="../iconos/estrella.svg" alt="" />
+            <img class="star star--mid" src="../iconos/estrella.svg" alt="" />
+            <img class="star" src="../iconos/estrella.svg" alt="" />
+          </p>
+          <h1 class="title res__title">¡Muy bien!</h1>
+          <p class="res__score"><span class="res__points">180</span><span class="res__unit">puntos</span></p>
+          <p class="record"><svg class="ic"><use href="#i-estrella" /></svg>¡Nuevo récord!</p>
+          <p class="metrics">18 aciertos · respondiste en 0,6 s</p>
+          <div class="res__actions">
+            <button class="btn-action" data-focus data-go="cuenta" type="button">
+              <svg class="ic"><use href="#i-reiniciar" /></svg>Jugar otra vez
+            </button>
+            <button class="btn-card" data-focus data-go="menu" type="button">
+              <svg class="ic"><use href="#i-jugar" /></svg>Elegir otro juego
+            </button>
           </div>
         </section>
       </div>
@@ -226,9 +341,10 @@
     <nav class="chrome">
       <span class="chrome__title">Maqueta · no es el juego</span>
       <span class="chrome__buttons" id="chrome-buttons"></span>
+      <a class="chrome__link" href="./neon-saber.html">Concepto Neon Saber (no cumple §10)</a>
       <span class="chrome__keys">
         <b>← →</b> inclinar · <b>Enter</b> confirmar · <b>P</b> pausa · <b>A</b> acierto ·
-        <b>E</b> error · <b>D</b> sin mando · <b>T</b> tema · <b>M</b> música
+        <b>E</b> error · <b>D</b> sin mando · <b>2</b> mando 2 · <b>T</b> tema · <b>M</b> música
       </span>
       <span class="chrome__sound" id="chrome-sound">🔇 Toca una tecla para activar el sonido</span>
     </nav>

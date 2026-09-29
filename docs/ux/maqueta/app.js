@@ -10,13 +10,24 @@
     instrucciones: '4 · Instrucciones',
     cuenta: '5 · Cuenta',
     partida: '6 · Partida',
-    resultados: '7 · Resultados',
+    resultados: '8 · Resultados',
   };
-  var LAYERS = { pausa: '· Pausa', 'sin-mando': '· Sin mando' };
+  var LAYERS = { pausa: '7 · Pausa', 'sin-mando': '9 · Sin mando' };
+
+  var GAMES = {
+    atrapa: { name: 'Atrapa lo correcto', icon: 'juego-atrapa.svg' },
+    secuencia: { name: 'Sigue la secuencia', icon: 'juego-secuencia.svg' },
+    corta: { name: 'Corta sin fallar', icon: 'juego-corta.svg' },
+    equilibrio: { name: 'Equilibrio', icon: 'juego-equilibrio.svg' },
+  };
+  var ICON_DIR = '../iconos/';
 
   var GAME_SECONDS = 180;
   var BASKET_STEP = 90;
   var BASKET_LIMIT = 700;
+  var STREAK_SHOWN_FROM = 3;
+  var SCORE_COUNT_MS = 200;
+  var MISS_FADE_MS = 600;
 
   var stage = document.getElementById('stage');
   var screens = {};
@@ -24,6 +35,7 @@
   var current = '';
   var openLayer = '';
   var focusIndex = 0;
+  var levelIndex = 0;
   var timers = [];
 
   var basketX = 0;
@@ -73,8 +85,11 @@
   // El navegador no deja sonar nada hasta el primer toque del usuario.
   document.addEventListener('pointerdown', unlockSound);
   stage.addEventListener('click', onClick);
-  // index.html#menu abre directo en esa pantalla; ?tema=oscuro elige el tema.
-  show(screens[location.hash.slice(1)] ? location.hash.slice(1) : 'sala');
+  // index.html#menu abre directo en esa pantalla (#pausa y #sin-mando, en la capa);
+  // ?tema=claro elige el tema.
+  var startAt = location.hash.slice(1);
+  if (layers[startAt]) toggleLayer(startAt);
+  else show(screens[startAt] ? startAt : 'sala');
 
   // --- escalado: la maqueta se piensa en 1920 × 1080 y se encoge a la ventana ---
   function fitStage() {
@@ -90,7 +105,7 @@
     current = name;
     stage.dataset.screen = name;
     for (var key in screens) screens[key].classList.toggle('is-active', key === name);
-    setFocus(0);
+    setFocus(initialFocus(name));
     markChrome();
     screenSound(name);
     if (name === 'sala') enterSala();
@@ -100,12 +115,9 @@
   }
 
   function enterSala() {
-    var chip = document.getElementById('pad-chip');
-    chip.textContent = 'Esperando mando…';
-    chip.className = 'chip chip--wait';
+    screens.sala.dataset.pad = 'wait';
     wait(1800, function () {
-      chip.textContent = 'Mando 1 conectado';
-      chip.className = 'chip chip--on';
+      screens.sala.dataset.pad = 'on';
     });
   }
 
@@ -114,12 +126,12 @@
     var el = document.getElementById('countdown');
     var n = 3;
     el.textContent = n;
-    restart(el, 'countdown');
+    restart(el, 'is-in');
     var tick = function () {
       n -= 1;
       if (n === 0) return show('partida');
       el.textContent = n;
-      restart(el, 'countdown');
+      restart(el, 'is-in');
       wait(1000, tick);
     };
     wait(1000, tick);
@@ -155,6 +167,17 @@
     return root ? [].slice.call(root.querySelectorAll('[data-focus]')) : [];
   }
 
+  // Al entrar siempre hay un foco puesto: en Dificultad, la última elegida; en
+  // Instrucciones, "empezar" y no el audio.
+  function initialFocus(name) {
+    if (name === 'dificultad') return levelIndex;
+    var items = focusables();
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].hasAttribute('data-focus-start')) return i;
+    }
+    return 0;
+  }
+
   function setFocus(index) {
     var items = focusables();
     if (!items.length) return;
@@ -188,11 +211,25 @@
   function activate(item) {
     blip(880, 0.1, 0.06);
     blip(1175, 0.16, 0.05, 0.07);
+    if (item.dataset.game) chooseGame(item.dataset.game);
+    if (item.dataset.level) levelIndex = Number(item.dataset.level);
     if (item.dataset.action) return runAction(item.dataset.action);
     if (item.dataset.go) show(item.dataset.go);
   }
 
+  // Las pantallas siguientes muestran arriba el juego elegido.
+  function chooseGame(key) {
+    var game = GAMES[key];
+    [].forEach.call(document.querySelectorAll('.game-icon'), function (img) {
+      img.src = ICON_DIR + game.icon;
+    });
+    [].forEach.call(document.querySelectorAll('.game-name'), function (el) {
+      el.textContent = game.name;
+    });
+  }
+
   function runAction(action) {
+    if (action === 'voice') return say(VOICES[current]);
     if (action === 'resume') return closeLayer();
     if (action === 'restart') {
       closeLayer();
@@ -236,32 +273,48 @@
     bar.classList.toggle('is-low', left < 0.25);
   }
 
+  // El "+10" y la racha van con la canasta: aparecen donde se atrapó.
   function moveBasket(step) {
     basketX = Math.min(Math.max(basketX + step, -BASKET_LIMIT), BASKET_LIMIT);
-    document.getElementById('basket').style.transform =
-      'translateX(calc(-50% + ' + basketX + 'px))';
+    document.getElementById('catcher').style.transform = 'translateX(' + basketX + 'px)';
   }
 
   function hit() {
     effect('Efectos/Acierto.wav');
+    countScore(score, score + 10);
     score += 10;
     streak += 1;
-    paintHud();
     flash('is-hit');
-    var popup = document.getElementById('popup');
-    popup.textContent = '+10';
-    restart(popup, 'is-on');
+    restart(document.getElementById('popup'), 'is-on');
+    if (streak < STREAK_SHOWN_FROM) return;
     var el = document.getElementById('streak');
     el.textContent = streak + ' seguidos';
-    el.classList.toggle('is-on', streak >= 2);
+    restart(el, 'is-on');
   }
 
-  // El error no resta puntos ni escribe nada: solo se apaga la racha (RNF-05).
+  // El error no resta puntos ni escribe nada: el objeto se apaga y la racha vuelve
+  // a contar en silencio (RNF-05).
   function miss() {
     effect('Efectos/Error.wav');
     streak = 0;
     flash('is-miss');
-    document.getElementById('streak').classList.remove('is-on');
+    var wrong = document.getElementById('obj-miss');
+    wrong.classList.add('is-gone');
+    wait(MISS_FADE_MS, function () {
+      wrong.classList.remove('is-gone');
+    });
+  }
+
+  // El puntaje sube contando, no salta.
+  function countScore(from, to) {
+    var el = document.getElementById('hud-score');
+    var start = performance.now();
+    var frame = function (now) {
+      var t = Math.min((now - start) / SCORE_COUNT_MS, 1);
+      el.textContent = Math.round(from + (to - from) * t);
+      if (t < 1) requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
   }
 
   function flash(kind) {
@@ -278,6 +331,7 @@
 
     if (key === 't') return toggleTheme();
     if (key === 'm') return toggleMusic();
+    if (key === '2') return togglePad2();
     if (key === 'arrowleft' || key === 'arrowup') return step(event, -1);
     if (key === 'arrowright' || key === 'arrowdown') return step(event, 1);
     if (key === 'enter' || key === ' ') {
@@ -345,7 +399,12 @@
     document.getElementById('chrome-theme').textContent = 'Tema: ' + document.body.dataset.theme;
   }
 
-  // --- tema: se comparan "claro" (tipo Wii U) y "oscuro" ---
+  // El Mando 2 se une en cualquier momento con el mismo código (RF-20).
+  function togglePad2() {
+    stage.dataset.pad2 = stage.dataset.pad2 === 'on' ? 'off' : 'on';
+  }
+
+  // --- tema: "oscuro" (B, el recomendado) y "claro" (A, tipo Wii U) ---
   function toggleTheme() {
     document.body.dataset.theme = document.body.dataset.theme === 'claro' ? 'oscuro' : 'claro';
     try {
@@ -489,7 +548,7 @@
           '<rect x="' + i * cell + '" y="' + j * cell + '" width="' + cell + '" height="' + cell + '"/>';
       }
     }
-    host.innerHTML = '<svg viewBox="0 0 100 100" fill="#12303b">' + rects + '</svg>';
+    host.innerHTML = '<svg viewBox="0 0 100 100" fill="currentColor">' + rects + '</svg>';
   }
 
   function inFinder(i, j, N) {
