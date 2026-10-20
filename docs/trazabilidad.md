@@ -19,7 +19,7 @@ Estado: ⬜ pendiente · 🟨 en progreso · ✅ hecho y probado.
 | RF-10 | Instrucciones visuales y de audio | Santiago | `docs/ux/`, `unity/Assets/UI/` | CU-06 | 🟨 pantalla diseñada; faltan las locuciones y Unity UI |
 | RF-11 | Atrapa lo correcto | Piero | `unity/.../Games/AtrapaLoCorrecto/` | CU-06 (`AtrapaLoCorrectoTests`, `AtrapaSceneTests`, `WanderingTests`) | 🟨 reglas, escena 3D y Wandering en difícil ([técnicas de movimiento](tecnicas-de-movimiento.md)); probada con celular; modelos 3D de `unity/Assets/Art/AtrapaLoCorrecto/` en lugar de las formas primitivas; falta probar los modelos con celular |
 | RF-12 | Sigue la secuencia | Piero | `unity/.../Games/SigueLaSecuencia/` | CU-06 | ⬜ |
-| RF-13 | Corta sin fallar | Piero | `unity/.../Games/CortaSinFallar/` | CU-06 | ⬜ |
+| RF-13 | Corta sin fallar | Piero | `unity/.../Games/CortaSinFallar/` | CU-06 (`CortaSinFallarTests`, `ProjectileTests`, `WaypointFollowerTests`) | 🟨 reglas con física predictiva y waypoints ([técnicas de movimiento](tecnicas-de-movimiento.md)); falta la escena y probar el swing con celular |
 | RF-14 | Equilibrio (opcional) | Piero | `unity/.../Games/Equilibrio/` | CU-06 | ⬜ |
 | RF-15 | Métricas por partida | Misael | `unity/.../Metrics/` | CU-06 | ⬜ |
 | RF-16 | Resumen con puntaje y estrellas | Santiago | `docs/ux/`, `unity/Assets/UI/` | CU-09 | 🟨 pantalla diseñada; falta construirla en Unity UI |
