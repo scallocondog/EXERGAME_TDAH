@@ -100,6 +100,14 @@ correcto.
 - Cortar al prohibido es error; dejarlo pasar no cuenta.
 - Solo el *swing* corta; en pausa no se mueve ni se corta nada; la misma semilla
   da la misma partida.
+- PlayMode (`CortaSceneTests`): la escena real lanza frutas y un *swing* en la
+  zona corta la fruta y registra el acierto.
+
+## Cómo verlo en Unity
+
+Escena `Scenes/Game_CortaSinFallar` → servidor corriendo → Play → escanear el
+QR. La dificultad se elige en el objeto **Corta** → componente `CortaView` →
+**Difficulty**.
 
 # Atrapa lo correcto: wandering
 
