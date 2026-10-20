@@ -143,6 +143,13 @@ Las categorías son forma + color (esfera, cubo, cápsula) hasta que lleguen los
 izquierda desde la pantalla de instrucciones. El HUD (`Diagnostics/SessionDebugHud`)
 es de prueba: lo reemplaza la UI de `Assets/UI/`.
 
+**Escena `Scenes/Game_CortaSinFallar`** (RF-13), igual de jugable: servidor,
+Play y escanear. Se juega con *swing*: corta todo lo que esté en la franja
+(zona de corte). Las frutas (mismos modelos que Atrapa) salen en tiro
+parabólico y la piedra gris es el prohibido, que cruza siguiendo waypoints.
+Física predictiva y rutas: [docs/tecnicas-de-movimiento.md](../docs/tecnicas-de-movimiento.md).
+La dificultad se elige en `CortaView`.
+
 ## Reglas
 
 - Un minijuego **consume gestos ya reconocidos**; nunca lee sensores crudos (RNF-08).
