@@ -1,0 +1,17 @@
+{
+    "name": "MoviMente.Games.CortaSinFallar",
+    "rootNamespace": "MoviMente.Games.CortaSinFallar",
+    "references": [
+        "MoviMente.Gestures",
+        "MoviMente.Games.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}
