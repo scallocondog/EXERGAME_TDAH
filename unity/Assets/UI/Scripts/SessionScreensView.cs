@@ -152,6 +152,7 @@ namespace MoviMente.UI
             root.AddToClassList(gameClass);
             root.Query<Label>(className: "nombre-juego").ForEach(label => label.text = card.Name);
             root.Query<Label>(className: "frase-juego").ForEach(label => label.text = card.Instruction);
+            instructions.Show(card.Demo);
         }
 
         private void Detach()

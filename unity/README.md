@@ -140,15 +140,19 @@ La dificultad de la escena se elige en `AtrapaView`.
 
 Las categorías son forma + color (esfera, cubo, cápsula) hasta que lleguen los
 íconos definitivos. La categoría pedida se ve en el panel de arriba a la
-izquierda desde la pantalla de instrucciones. El HUD (`Diagnostics/SessionDebugHud`)
-es de prueba: lo reemplaza la UI de `Assets/UI/`.
+izquierda desde la pantalla de instrucciones. Las pantallas (sala, instrucciones,
+cuenta, HUD, pausa y resultados) son las de `Assets/UI/`, que vienen en el prefab
+`CoreSystems`; el HUD de prueba (`Diagnostics/SessionDebugHud`) ya no está en la escena.
 
 **Escena `Scenes/Game_CortaSinFallar`** (RF-13), igual de jugable: servidor,
 Play y escanear. Se juega con *swing*: corta todo lo que esté en la franja
 (zona de corte). Las frutas (mismos modelos que Atrapa) salen en tiro
 parabólico y la piedra gris es el prohibido, que cruza siguiendo waypoints.
 Física predictiva y rutas: [docs/tecnicas-de-movimiento.md](../docs/tecnicas-de-movimiento.md).
-La dificultad se elige en `CortaView`.
+La dificultad se elige en `CortaView`. Al estilo Fruit Ninja, `CortaEffects` parte
+la fruta cortada en dos mitades con jugo y dibuja un tajo en cada latigazo; lo
+prohibido no explota, se desvanece (RNF-05). Sus colores y tiempos se ajustan en
+el Inspector, sin tocar las reglas.
 
 ## Reglas
 

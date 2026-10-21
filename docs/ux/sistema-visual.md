@@ -159,6 +159,9 @@ Reglas de navegación, para quien lo implemente en Unity:
 | Error: el objeto | 150 ms, se desvanece sin caer ni rebotar |
 | Aparición de cada estrella | 300 ms, una tras otra |
 | Demostración del gesto | 2,4 s en bucle: el celular ±18° y la canasta ±170 px |
+| Corta: tajo de cada latigazo | 0,22 s, cruza la franja y se afina |
+| Corta: fruta cortada | 0,7 s, dos mitades que salen volando con jugo |
+| Corta: lo prohibido cortado | 0,15 s, se desvanece; nunca explota |
 
 Lo único que se anima en bucle es la **demostración del gesto** en la pantalla de
 instrucciones. Todo lo demás se queda quieto cuando termina de entrar: RNF-05
@@ -218,8 +221,9 @@ La más importante y la más fácil de arruinar. Lleva exactamente esto:
 
 1. Una frase de una línea con el gesto.
 2. Al lado, el botón de audio, que repite la locución (RNF-06).
-3. La demostración del gesto, en bucle y sin texto encima: el celular del
-   Mando 1 se inclina y la canasta lo sigue.
+3. La demostración del gesto, en bucle y sin texto encima. En Atrapa, el
+   celular del Mando 1 se inclina y la canasta lo sigue; en Corta, el celular da
+   un latigazo, cruza un tajo y la fruta de la franja se parte en dos.
 4. Un botón: "Toca el botón para empezar".
 
 Hay dos opciones con foco, audio y empezar, y el foco empieza en empezar. Sin
@@ -313,7 +317,7 @@ Volumen parejo entre pantallas y ningún sonido que sobresalte (RNF-05).
 | `juego-atrapa.svg`, `juego-secuencia.svg`, `juego-corta.svg`, `juego-equilibrio.svg` | Ícono de cada juego, con su color (naranja, azul, violeta, verde) |
 | `dificultad-facil.svg`, `dificultad-medio.svg`, `dificultad-dificil.svg` | 1, 2 y 3 flechas sobre verde, amarillo y violeta |
 | `estrella.svg` | Estrella de resultados y del puntaje del HUD |
-| `ui-*.svg` | Íconos de interfaz de un color (audio, botón, celular, check, estrella, inclinar, jugar, música, música apagada, pausa, reiniciar, reloj, salir) |
+| `ui-*.svg` | Íconos de interfaz de un color (audio, botón, celular, check, estrella, inclinar, jugar, música, música apagada, pausa, reiniciar, reloj, salir, swing) |
 
 Los `ui-*` son blancos para teñirlos con el color del tema: en Unity, con el
 tinte de la imagen. La maqueta los lleva copiados en línea en `index.html` con
@@ -456,8 +460,9 @@ sin números tabulares.
 - Los menús en Unity: sala de inicio, elegir juego y dificultad (RF-09, con
   Piero).
 - "¡Nuevo récord!" en resultados, cuando exista el guardado de puntajes (RF-17).
-- Quitar el "HUD de prueba" (`SessionDebugHud`) de la escena de Atrapa: dibuja
-  con `OnGUI` encima de estas pantallas. Es de Piero.
+- `Diagnostics/SessionDebugHud` (de Piero) ya no está en ninguna escena: las de
+  Atrapa y Corta lo traían y dibujaba con `OnGUI` encima de estas pantallas. Si
+  no se usa en otra, se puede borrar.
 - `UiMusicaOff.svg` de Unity usa `clipPath` en vez de la máscara del original:
   el importador de SVG de Unity 6.3 falla con máscaras.
 - El diseño anuncia secciones de componentes, tokens y movimiento, Unity y mando
