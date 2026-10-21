@@ -46,6 +46,7 @@ en red local y es lo que permite al navegador entregar los sensores.
 | [docs/requisitos-y-casos-de-uso.md](docs/requisitos-y-casos-de-uso.md) | Los 20 RF, los 9 RNF y los 9 casos de uso |
 | [docs/arquitectura.md](docs/arquitectura.md) | Capas, módulos y decisiones |
 | [docs/protocolo-ws.md](docs/protocolo-ws.md) | Contrato de mensajes entre mando, servidor y Unity |
+| [docs/juego-y-servidor.md](docs/juego-y-servidor.md) | Cómo funcionan por dentro las salas, la red, los gestos y los minijuegos |
 | [docs/equipo-y-responsabilidades.md](docs/equipo-y-responsabilidades.md) | Quién hace qué y quién es dueño de cada carpeta |
 | [docs/ux/sistema-visual.md](docs/ux/sistema-visual.md) | Diseño de las pantallas del juego, con maqueta navegable |
 | [docs/trazabilidad.md](docs/trazabilidad.md) | Estado de cada requisito |
