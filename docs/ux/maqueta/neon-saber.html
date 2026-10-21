@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Neon Saber · concepto · MoviMente</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: #05030c;
+      }
+
+      .root {
+        position: fixed;
+        inset: 0;
+        background: #05030c;
+        cursor: crosshair;
+        font-family: "Chakra Petch", "Segoe UI", system-ui, sans-serif;
+        color: #fff;
+        user-select: none;
+      }
+
+      canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .hud {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: start;
+        gap: 24px;
+        padding: 28px 40px;
+        pointer-events: none;
+      }
+
+      .box {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 12px 22px;
+      }
+
+      .box--combo {
+        justify-self: start;
+        border: 1px solid rgba(255, 59, 92, 0.55);
+        background: rgba(20, 6, 18, 0.55);
+        box-shadow: 0 0 18px rgba(255, 59, 92, 0.35), inset 0 0 12px rgba(255, 59, 92, 0.15);
+        clip-path: polygon(0 0, 100% 0, 100% 70%, 88% 100%, 0 100%);
+      }
+
+      .box--score {
+        align-items: flex-end;
+        justify-self: end;
+        border: 1px solid rgba(79, 243, 255, 0.55);
+        background: rgba(4, 14, 24, 0.55);
+        box-shadow: 0 0 18px rgba(79, 243, 255, 0.35), inset 0 0 12px rgba(79, 243, 255, 0.15);
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 12% 100%, 0 70%);
+      }
+
+      .box__label {
+        font-size: 13px;
+        letter-spacing: 0.35em;
+      }
+
+      .box--combo .box__label {
+        color: #ff8fa3;
+      }
+
+      .box--score .box__label {
+        color: #9ff8ff;
+      }
+
+      .box__value {
+        font-size: 48px;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .box--combo .box__value {
+        text-shadow: 0 0 14px rgba(255, 59, 92, 0.9);
+      }
+
+      .box--score .box__value {
+        font-variant-numeric: tabular-nums;
+        text-shadow: 0 0 14px rgba(79, 243, 255, 0.9);
+      }
+
+      .mult {
+        position: relative;
+        width: 112px;
+        height: 112px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .mult svg {
+        position: absolute;
+        inset: 0;
+        transform: rotate(-90deg);
+        overflow: visible;
+      }
+
+      .mult__ring {
+        filter: drop-shadow(0 0 6px #4ff3ff);
+        transition: stroke-dashoffset 0.2s;
+      }
+
+      .mult__value {
+        position: relative;
+        display: flex;
+        align-items: baseline;
+        font-weight: 700;
+        text-shadow: 0 0 12px rgba(79, 243, 255, 0.9);
+      }
+
+      .mult__x {
+        font-size: 22px;
+        color: #9ff8ff;
+      }
+
+      .mult__n {
+        font-size: 44px;
+        line-height: 1;
+      }
+
+      .hint {
+        position: absolute;
+        bottom: 18px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 12px;
+        letter-spacing: 0.3em;
+        color: rgba(200, 190, 255, 0.75);
+        pointer-events: none;
+      }
+
+      /* Lo único agregado al diseño: avisar que no es una pantalla aprobada */
+      .concept {
+        position: absolute;
+        left: 16px;
+        bottom: 12px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: #efc05f;
+        color: #3a2a06;
+        font: 700 13px "Segoe UI", system-ui, sans-serif;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Concepto "Neon Saber" del diseño de Claude Design, copiado tal cual como
+         referencia visual. NO cumple CLAUDE.md §10: fondo animado (láseres, rejilla,
+         arcos), neón saturado, el fallo reinicia el combo y baja el multiplicador,
+         texto en inglés y de 12–13 px. Tampoco cumple RF-13: no hay objetos prohibidos
+         y usa dos sables. No se construye en Unity sin rediseñarlo. -->
+    <div class="root" id="root">
+      <canvas id="canvas"></canvas>
+      <div class="hud">
+        <div class="box box--combo">
+          <div class="box__label">COMBO</div>
+          <div class="box__value" id="combo"></div>
+        </div>
+        <div class="mult">
+          <svg width="112" height="112" viewBox="0 0 112 112">
+            <circle cx="56" cy="56" r="48" fill="rgba(8,6,24,0.6)" stroke="rgba(120,110,200,0.25)" stroke-width="6" />
+            <circle
+              class="mult__ring"
+              id="ring"
+              cx="56"
+              cy="56"
+              r="48"
+              fill="none"
+              stroke="#4ff3ff"
+              stroke-width="6"
+              stroke-linecap="round"
+              stroke-dasharray="301.6"
+            />
+          </svg>
+          <div class="mult__value"><span class="mult__x">x</span><span class="mult__n" id="mult"></span></div>
+        </div>
+        <div class="box box--score">
+          <div class="box__label">SCORE</div>
+          <div class="box__value" id="score"></div>
+        </div>
+      </div>
+      <div class="hint" id="hint"></div>
+      <a class="concept" href="./index.html">Concepto de referencia · no cumple CLAUDE.md §10 · volver a la maqueta</a>
+    </div>
+
+    <script src="./neon-saber.js"></script>
+  </body>
+</html>
