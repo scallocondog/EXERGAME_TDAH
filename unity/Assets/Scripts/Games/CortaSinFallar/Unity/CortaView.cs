@@ -1,5 +1,6 @@
 // RF-13: escena de Corta sin fallar; dibuja lo que exponen las reglas
 using System.Collections.Generic;
+using MoviMente.Gestures;
 using UnityEngine;
 
 namespace MoviMente.Games.CortaSinFallar
@@ -32,6 +33,9 @@ namespace MoviMente.Games.CortaSinFallar
         private Material bandMaterial;
         private Material fruitMaterial;
         private Material forbiddenMaterial;
+        private CortaEffects effects;
+        private Vector3 slashCenter;
+        private float slashWidth;
         private CortaSinFallarRules rules;
         private float flashUntil;
         private Color flashColor;
@@ -52,6 +56,14 @@ namespace MoviMente.Games.CortaSinFallar
             CreateBlock("Zona de corte", bandMaterial,
                 new Vector3(0f, (bandBottom + bandTop) / 2f, 1f), new Vector3(fieldHalfWidth * 2.3f, bandTop - bandBottom, 0.1f));
 
+            // El tajo pasa justo delante de las frutas y a lo ancho del campo: más cerca
+            // de la cámara que la franja, se vería más ancho que ella.
+            effects = GetComponent<CortaEffects>();
+            if (effects == null) effects = gameObject.AddComponent<CortaEffects>();
+            slashCenter = new Vector3(0f, (bandBottom + bandTop) / 2f, -0.05f);
+            slashWidth = fieldHalfWidth * 2f;
+            CoreSystems.Instance.PadInput.GestureDetected += OnGesture;
+
             CoreSystems.Instance.Runner.Begin(CortaSinFallarGame.CreateDefinition(onRulesCreated: Bind), difficulty,
                 CortaSinFallarRules.PlayerSlot);
         }
@@ -59,7 +71,11 @@ namespace MoviMente.Games.CortaSinFallar
         private void OnDestroy()
         {
             Unbind();
-            if (CoreSystems.Instance != null) CoreSystems.Instance.Runner.End();
+            if (CoreSystems.Instance != null)
+            {
+                CoreSystems.Instance.PadInput.GestureDetected -= OnGesture;
+                CoreSystems.Instance.Runner.End();
+            }
             foreach (Material material in materials) Destroy(material);
         }
 
@@ -110,10 +126,23 @@ namespace MoviMente.Games.CortaSinFallar
             views.Add(target.Id, view);
         }
 
+        // Cada latigazo deja un tajo, corte o no algo: el niño ve que su gesto llegó.
+        private void OnGesture(GestureEvent gesture)
+        {
+            if (gesture.Slot != CortaSinFallarRules.PlayerSlot || gesture.Type != GestureType.Swing) return;
+            if (CoreSystems.Instance.Runner.Session?.State != GameState.Playing) return;
+            effects.Slash(slashCenter, slashWidth);
+        }
+
+        // La fruta se parte en dos; lo prohibido se desvanece, sin explotar (RNF-05).
         private void OnCut(FlyingObject target)
         {
-            RemoveView(target);
             bool valid = target.Kind == FlyingKind.Valid;
+            if (views.Remove(target.Id, out GameObject view))
+            {
+                if (valid) effects.Slice(view, target.Category);
+                else effects.Fade(view);
+            }
             flashColor = valid ? hitColor : Color.Lerp(bandColor, errorColor, 0.5f);
             flashUntil = Time.time + (valid ? hitFlashSeconds : errorFlashSeconds);
         }

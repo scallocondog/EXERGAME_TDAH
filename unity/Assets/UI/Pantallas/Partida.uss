@@ -70,6 +70,10 @@
 .icono--reloj { background-image: url("../Iconos/UiReloj.svg"); }
 .icono--salir { background-image: url("../Iconos/UiSalir.svg"); }
 
+/* El gesto de cada juego: inclinar por defecto, latigazo en Corta */
+.icono--gesto { background-image: url("../Iconos/UiInclinar.svg"); }
+.juego--corta-sin-fallar .icono--gesto { background-image: url("../Iconos/UiSwing.svg"); }
+
 .icono--suave {
     -unity-background-image-tint-color: var(--texto-suave);
 }
@@ -93,6 +97,10 @@
 
 .juego--atrapa-lo-correcto .icono-juego {
     background-image: url("../Iconos/JuegoAtrapa.svg");
+}
+
+.juego--corta-sin-fallar .icono-juego {
+    background-image: url("../Iconos/JuegoCorta.svg");
 }
 
 .estrella {
@@ -434,6 +442,71 @@
     border-bottom-left-radius: 130px;
     border-bottom-right-radius: 130px;
     background-color: var(--canasta);
+}
+
+/* Demostración de swing: el celular da un latigazo desde abajo a la izquierda y
+   la fruta que está en la franja se parte en dos */
+.demo .solo-swing {
+    display: none;
+}
+
+.demo--swing .solo-swing {
+    display: flex;
+}
+
+.demo--swing .solo-inclinar {
+    display: none;
+}
+
+.demo--swing .demo__celular {
+    left: 170px;
+    top: 214px;
+}
+
+.demo__banda {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100px;
+    height: 150px;
+    background-color: var(--tarjeta);
+}
+
+.demo__fruta {
+    position: absolute;
+    left: 610px;
+    top: 120px;
+    width: 55px;
+    height: 110px;
+    background-color: #f59a3e;
+}
+
+/* La cara del corte, más clara, para que se lea "partida" */
+.demo__fruta--izquierda {
+    border-top-left-radius: 55px;
+    border-bottom-left-radius: 55px;
+    border-right-width: 8px;
+    border-right-color: #ffd29e;
+}
+
+.demo__fruta--derecha {
+    left: 665px;
+    border-top-right-radius: 55px;
+    border-bottom-right-radius: 55px;
+    border-left-width: 8px;
+    border-left-color: #ffd29e;
+}
+
+.demo__tajo {
+    position: absolute;
+    left: 330px;
+    top: 170px;
+    width: 640px;
+    height: 12px;
+    border-radius: 6px;
+    background-color: #f3f8f9;
+    rotate: -6deg;
+    opacity: 0;
 }
 
 .instr__empezar {

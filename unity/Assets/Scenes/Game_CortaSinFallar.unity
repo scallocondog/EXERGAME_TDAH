@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 494257961}
   - component: {fileID: 494257960}
+  - component: {fileID: 494257962}
   m_Layer: 0
   m_Name: Corta
   m_TagString: Untagged
@@ -152,7 +153,7 @@ MonoBehaviour:
   - {fileID: 4041269467150759699, guid: eba9853ff2121d843a6b689d51a38862, type: 3}
   - {fileID: 6085847102903875556, guid: e763dfbfb26fa2243810463eb8e614a0, type: 3}
   - {fileID: 431193623298508355, guid: 239e237e895f473429a5288d342017fc, type: 3}
-  forbiddenModel: {fileID: 0}
+  forbiddenModel: {fileID: 2304909314587463729, guid: a0e438371a53f804c85dd338d032a5bd, type: 3}
   difficulty: 0
   fieldHalfWidth: 6
   fieldHeight: 7
@@ -181,50 +182,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &576028122
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 576028124}
-  - component: {fileID: 576028123}
-  m_Layer: 0
-  m_Name: HUD de prueba
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &576028123
+--- !u!114 &494257962
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 576028122}
+  m_GameObject: {fileID: 494257959}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fba3f8b63587f114084df0bd007a3b68, type: 3}
+  m_Script: {fileID: 11500000, guid: ca578b6885080984f9eecb0fa3ced4f5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: MoviMente.Diagnostics::MoviMente.Diagnostics.SessionDebugHud
---- !u!4 &576028124
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 576028122}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_EditorClassIdentifier: MoviMente.Games.CortaSinFallar.Unity::MoviMente.Games.CortaSinFallar.CortaEffects
+  juiceColors:
+  - {r: 0.9607843, g: 0.6039216, b: 0.24313726, a: 1}
+  - {r: 0.6117647, g: 0.78039217, b: 0.8784314, a: 1}
+  - {r: 0.60784316, g: 0.41568628, b: 0.8392157, a: 1}
+  slashColor: {r: 0.9529412, g: 0.972549, b: 0.9764706, a: 1}
+  halfSeconds: 0.7
+  halfSpeed: 3
+  halfSpinDegrees: 420
+  juiceDrops: 22
+  fadeSeconds: 0.15
+  slashSeconds: 0.22
+  slashThickness: 0.14
 --- !u!1 &865636048
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,4 +490,3 @@ SceneRoots:
   - {fileID: 1378881642}
   - {fileID: 1197790643}
   - {fileID: 494257961}
-  - {fileID: 576028124}

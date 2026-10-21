@@ -51,13 +51,18 @@
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
-            <!-- Lo único que se anima en bucle: el celular se inclina y la canasta lo sigue -->
-            <ui:VisualElement class="demo">
+            <!-- Lo único que se anima en bucle. Inclinar: el celular se inclina y la
+                 canasta lo sigue. Swing: latigazo y la fruta de la franja se parte. -->
+            <ui:VisualElement name="demo" class="demo">
+                <ui:VisualElement class="demo__banda solo-swing" />
+                <ui:VisualElement name="demo-fruta-izquierda" class="demo__fruta demo__fruta--izquierda solo-swing" />
+                <ui:VisualElement name="demo-fruta-derecha" class="demo__fruta demo__fruta--derecha solo-swing" />
+                <ui:VisualElement name="demo-tajo" class="demo__tajo solo-swing" />
                 <ui:VisualElement name="demo-celular" class="demo__celular">
                     <ui:Label class="demo__numero" text="1" />
                     <ui:VisualElement class="demo__boton" />
                 </ui:VisualElement>
-                <ui:VisualElement name="demo-canasta" class="demo__canasta" />
+                <ui:VisualElement name="demo-canasta" class="demo__canasta solo-inclinar" />
             </ui:VisualElement>
             <ui:VisualElement class="instr__empezar">
                 <ui:VisualElement class="halo halo--accion foco">
@@ -76,7 +81,7 @@
                 <ui:Label name="cuenta-numero" class="cuenta__numero" text="3" />
             </ui:VisualElement>
             <ui:VisualElement class="cuenta__pista">
-                <ui:VisualElement class="icono icono--inclinar icono--suave icono--pista" />
+                <ui:VisualElement class="icono icono--gesto icono--suave icono--pista" />
                 <ui:Label class="instruccion frase-juego" text="Inclina para mover la canasta" />
             </ui:VisualElement>
         </ui:VisualElement>

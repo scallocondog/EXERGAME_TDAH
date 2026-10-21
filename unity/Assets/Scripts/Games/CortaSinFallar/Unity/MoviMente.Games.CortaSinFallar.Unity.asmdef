@@ -4,7 +4,9 @@
     "references": [
         "MoviMente.Games.CortaSinFallar",
         "MoviMente.Games.Core",
-        "MoviMente.Games.Unity"
+        "MoviMente.Games.Unity",
+        "MoviMente.Gestures",
+        "MoviMente.Gestures.Unity"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
