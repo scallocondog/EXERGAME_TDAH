@@ -1,0 +1,14 @@
+{
+    "name": "MoviMente.Metrics",
+    "rootNamespace": "MoviMente.Metrics",
+    "references": ["MoviMente.Games.Core"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

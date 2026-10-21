@@ -4,6 +4,7 @@
     "references": [
         "MoviMente.Games.Core",
         "MoviMente.Games.Unity",
+        "MoviMente.Metrics",
         "MoviMente.Gestures",
         "MoviMente.Gestures.Unity",
         "MoviMente.Net"

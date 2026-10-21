@@ -1,0 +1,14 @@
+{
+    "name": "MoviMente.Metrics.Tests",
+    "rootNamespace": "MoviMente.Metrics.Tests",
+    "references": ["UnityEngine.TestRunner", "UnityEditor.TestRunner", "MoviMente.Games.Core", "MoviMente.Metrics"],
+    "includePlatforms": ["Editor"],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": ["nunit.framework.dll"],
+    "autoReferenced": false,
+    "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
