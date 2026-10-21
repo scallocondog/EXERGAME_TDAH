@@ -58,6 +58,20 @@ entrega.
 | P-25 | Enviar a 200 Hz | Se aplica throttling a ≤ 80 Hz |
 | P-26 | Cerrar Unity con el mando conectado | El mando recibe `state: disconnected` y reintenta |
 
+## Comprobación de swing en celular (RF-13)
+
+1. Arrancar el servidor y abrir `Scenes/Diagnostico` en Unity 6000.3.24f1.
+2. Conectar y calibrar un celular físico por QR; hacer varios latigazos naturales.
+3. Confirmar que aparece `Swing` y que el servidor no registra `bad_message` por `acc`.
+4. Jugar `Scenes/Game_CortaSinFallar`: cortar frutas en la franja y dejar pasar la piedra.
+5. Si no se detecta el gesto, ajustar `SwingThreshold` en
+   `unity/Assets/Settings/Gestures/GestureSettings.asset` con las lecturas reales.
+   Si el servidor descarta aceleraciones válidas, documentar los valores y acordar
+   cualquier cambio de rango del protocolo antes de modificar la validación.
+
+El test `npm run test:latency` mide solo el relay en memoria. P-15 sigue
+requiriendo las 100 muestras de gesto a pantalla en la LAN.
+
 ---
 
 ## Registro de ejecución
@@ -66,4 +80,4 @@ Cada corrida completa se anota aquí con fecha, versión y resultado.
 
 | Fecha | Versión | Pruebas ejecutadas | Fallos | Notas |
 | --- | --- | --- | --- | --- |
-| — | — | — | — | Pendiente de la primera corrida |
+| 2026-10-21 | `dev` 827b48f + cambios locales RF-15/RF-17 | Servidor 30, validación 32, latencia de relay 1, mando 9, Unity EditMode 208, PlayMode 2; HTTPS local respondió 200 | 0 en esas pruebas | P-09, P-13, P-15 y P-17 siguen pendientes con celulares físicos y Wi-Fi real. La prueba de latencia no mide aún gesto a pantalla. |

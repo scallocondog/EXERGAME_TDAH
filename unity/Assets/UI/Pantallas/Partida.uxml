@@ -170,7 +170,9 @@
                 <ui:Label name="res-puntos" class="res__puntos" text="0" />
                 <ui:Label class="res__unidad apoyo" text="puntos" />
             </ui:VisualElement>
+            <ui:Label name="res-record" class="res__record" text="¡Nuevo récord!" />
             <ui:Label name="res-resumen" class="res__resumen apoyo" text="0 aciertos" />
+            <ui:Label name="res-mejor" class="res__mejor apoyo" text="Mejor puntaje: 0" />
             <ui:VisualElement class="res__acciones">
                 <ui:VisualElement class="halo halo--accion">
                     <ui:VisualElement class="boton-accion">

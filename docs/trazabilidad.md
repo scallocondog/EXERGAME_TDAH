@@ -21,9 +21,9 @@ Estado: ⬜ pendiente · 🟨 en progreso · ✅ hecho y probado.
 | RF-12 | Sigue la secuencia | Piero | `unity/.../Games/SigueLaSecuencia/` | CU-06 | ⬜ |
 | RF-13 | Corta sin fallar | Piero | `unity/.../Games/CortaSinFallar/` | CU-06 (`CortaSinFallarTests`, `ProjectileTests`, `WaypointFollowerTests`) | 🟨 reglas con física predictiva y waypoints ([técnicas de movimiento](tecnicas-de-movimiento.md)) y escena 3D (`CortaSceneTests`); falta probar el swing con celular |
 | RF-14 | Equilibrio (opcional) | Piero | `unity/.../Games/Equilibrio/` | CU-06 | ⬜ |
-| RF-15 | Métricas por partida | Misael | `unity/.../Metrics/` | CU-06 | ⬜ |
-| RF-16 | Resumen con puntaje y estrellas | Santiago | `docs/ux/`, `unity/Assets/UI/` | CU-09 (`ScoreBoardTests`, `HudTextTests`) | 🟨 pantalla de resultados en Unity (estrellas, puntaje, resumen); el puntaje es provisional hasta RF-15 y falta "¡Nuevo récord!" (RF-17) |
-| RF-17 | Guardado local de puntajes | Misael | `unity/.../Storage/` | CU-09 | ⬜ |
+| RF-15 | Métricas por partida | Misael | `unity/Assets/Scripts/Metrics/`, `unity/Assets/UI/Scripts/ScoreBoard.cs` | CU-06 (`SessionMetricsTests`, `ScoreBoardTests`) | 🟨 aciertos, errores, omisiones, promedio de reacción, duración y puntaje implementados; falta verificar una partida completa con celular |
+| RF-16 | Resumen con puntaje y estrellas | Santiago | `docs/ux/`, `unity/Assets/UI/` | CU-09 (`ScoreBoardTests`, `HudTextTests`) | 🟨 pantalla de resultados en Unity con estrellas, puntaje, resumen, mejor puntaje y aviso de nuevo récord; falta prueba visual con celular |
+| RF-17 | Guardado local de puntajes | Misael | `unity/Assets/Scripts/Storage/` | CU-09 (`ScoreStoreTests`) | 🟨 mejores puntajes por juego y dificultad y dificultad máxima desbloqueada en PlayerPrefs; falta usar el desbloqueo en el menú RF-09 y verificar persistencia en una partida real |
 | RF-18 | Vibración en aciertos y errores | Santiago | `controller/public/js/haptics.js` | CU-06 | 🟨 el mando vibra al recibir `haptic`; `GameRunner` manda `hit`/`miss` en cada acierto o error; falta probarlo con celular |
 | RF-19 | Pausar, reanudar, reintentar, salir | Piero | `unity/.../Games/Core/`, `controller/public/js/main.js` | CU-06 (`GameSessionTests`) | 🟨 lógica en `GameSession`, botón `pause` conectado en `GameRunner`; menú de pausa en la TV (`SessionScreensView`: seguir, volver a empezar, salir); "Salir" espera el menú de juegos (RF-09) |
 | RF-20 | Dos mandos (deseable) | Piero | `server/src/rooms/`, `unity/.../Net/` | CU-02 (`room-registry.test.js`) | 🟨 slots 1 y 2 en servidor y mando; falta Unity |
@@ -32,12 +32,12 @@ Estado: ⬜ pendiente · 🟨 en progreso · ✅ hecho y probado.
 
 | ID | Requisito | Responsable | Cómo se verifica | Estado |
 | --- | --- | --- | --- | --- |
-| RNF-01 | < 100 ms de latencia | Misael | `npm run test:latency` + medición en LAN | ⬜ |
+| RNF-01 | < 100 ms de latencia | Misael | `npm run test:latency` + medición en LAN | 🟨 relay local probado; falta medición de gesto a pantalla en Wi-Fi real |
 | RNF-02 | 60 fps (30 mínimo) | Piero | Unity Profiler en la escena más pesada | ⬜ |
 | RNF-03 | Chrome Android y Safari iOS | Misael | Prueba manual en ambos dispositivos | ⬜ |
-| RNF-04 | HTTPS, sin datos personales | Misael | Revisión de PR + inspección de red | ⬜ |
+| RNF-04 | HTTPS, sin datos personales | Misael | Revisión de PR + inspección de red | 🟨 servidor local respondió por HTTPS y récords usan PlayerPrefs sin cuentas; falta inspección de tráfico con celular |
 | RNF-05 | Usabilidad TDAH | Santiago | Checklist de la sección 10 de CLAUDE.md | 🟨 aplicado en el mando, en el diseño y en las pantallas de la partida en Unity |
 | RNF-06 | Accesibilidad sin leer | Santiago | Prueba con audio y sin texto | 🟨 tamaños e íconos definidos; voces temporales y efectos en `unity/Assets/Audio/`, enganchados con `SessionAudio` (`SessionSoundsTests`); falta grabar las voces y oírlas en la partida |
-| RNF-07 | Desconexión no pierde la partida | Misael | Apagar Wi-Fi a mitad de partida | ⬜ |
+| RNF-07 | Desconexión no pierde la partida | Misael | Apagar Wi-Fi a mitad de partida | 🟨 lógica de pausa y reconexión cubierta por pruebas automáticas; falta apagar Wi-Fi en una partida real |
 | RNF-08 | Minijuegos independientes | Piero | Agregar un minijuego de prueba sin tocar Net ni Gestures (`FakeRules` en `Games/Core/Tests`) | 🟨 base lista; se confirma con el primer minijuego real |
-| RNF-09 | Alcance ético | Misael | Revisión de todo texto visible al jugador | ⬜ |
+| RNF-09 | Alcance ético | Misael | Revisión de todo texto visible al jugador | 🟨 búsqueda en textos de mando y UI sin lenguaje clínico; falta revisión visual de todas las escenas |

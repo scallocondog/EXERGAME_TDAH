@@ -5,6 +5,7 @@
         "MoviMente.Games.Core",
         "MoviMente.Games.Unity",
         "MoviMente.Metrics",
+        "MoviMente.Storage",
         "MoviMente.Gestures",
         "MoviMente.Gestures.Unity",
         "MoviMente.Net"

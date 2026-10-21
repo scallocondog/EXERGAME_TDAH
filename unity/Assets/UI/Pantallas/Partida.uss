@@ -875,6 +875,27 @@
     -unity-text-align: middle-center;
 }
 
+.res__record {
+    position: absolute;
+    align-self: center;
+    top: 660px;
+    padding: 8px 28px;
+    border-radius: 24px;
+    background-color: var(--estrella);
+    color: #3a2a06;
+    font-size: 32px;
+    -unity-text-align: middle-center;
+}
+
+.res__mejor {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 752px;
+    font-size: 30px;
+    -unity-text-align: middle-center;
+}
+
 .res__acciones {
     position: absolute;
     left: 0;

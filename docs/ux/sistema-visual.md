@@ -439,11 +439,13 @@ Qué decide la UI y qué no:
   la cuenta.
 - "Salir" y "Elegir otro juego" avisan con el evento `GameMenuRequested`: el
   menú de juegos (RF-09) todavía no existe.
-- El puntaje en pantalla es provisional, 10 por acierto (`ScoreBoard`), hasta
-  que `Metrics/` (RF-15) lo calcule. Estrellas: 3 con el 80 % de aciertos o más,
+- El puntaje en pantalla usa `Metrics/` (RF-15): 10 por acierto. Estrellas: 3 con el 80 % de aciertos o más,
   2 con el 50 % o más y 1 si no. Solo se ven las ganadas, nunca un hueco.
 - El "+10" y "3 seguidos" salen debajo del puntaje: la UI no sabe dónde está el
   objeto, y `AtrapaView` ya tiñe la canasta en el acierto.
+- Los récords se guardan por juego y dificultad en la PC. Dos estrellas en fácil
+  desbloquean medio; dos en medio desbloquean difícil. El menú de selección
+  (RF-09) aún debe leer ese dato.
 
 Diferencias con la maqueta, por lo que USS no tiene: sin bordes punteados (el
 chip "Esperando mando…" y el círculo del mando desconectado van con borde liso),
@@ -459,7 +461,8 @@ sin números tabulares.
   tiene esa voz, y cambia según el minijuego.
 - Los menús en Unity: sala de inicio, elegir juego y dificultad (RF-09, con
   Piero).
-- "¡Nuevo récord!" en resultados, cuando exista el guardado de puntajes (RF-17).
+- Probar en una partida real la lectura del mejor puntaje y la píldora
+  "¡Nuevo récord!" del guardado local (RF-17).
 - `Diagnostics/SessionDebugHud` (de Piero) ya no está en ninguna escena: las de
   Atrapa y Corta lo traían y dibujaba con `OnGUI` encima de estas pantallas. Si
   no se usa en otra, se puede borrar.

@@ -15,18 +15,24 @@ namespace MoviMente.UI
         private readonly Pulse[] pulses = { new Pulse(), new Pulse(), new Pulse() };
         private readonly Label points;
         private readonly Label summary;
+        private readonly Label record;
+        private readonly Label best;
 
         public ResultsView(VisualElement results)
         {
             stars = new[] { results.Q("estrella-izquierda"), results.Q("estrella-centro"), results.Q("estrella-derecha") };
             points = results.Q<Label>("res-puntos");
             summary = results.Q<Label>("res-resumen");
+            record = results.Q<Label>("res-record");
+            best = results.Q<Label>("res-mejor");
         }
 
-        public void Show(ScoreBoard board, float now)
+        public void Show(ScoreBoard board, bool newRecord, int bestScore, float now)
         {
             points.text = board.Score.ToString();
             summary.text = HudText.Summary(board.Hits, board.AverageReactionSeconds);
+            record.style.display = newRecord ? DisplayStyle.Flex : DisplayStyle.None;
+            best.text = $"Mejor puntaje: {bestScore}";
 
             // Solo se ven las estrellas ganadas: nunca un hueco que marque lo que faltó (RNF-05).
             bool[] earned = Earned(board.Stars);

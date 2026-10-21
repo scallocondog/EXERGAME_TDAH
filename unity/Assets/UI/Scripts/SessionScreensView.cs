@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using MoviMente.Games;
 using MoviMente.Gestures;
 using MoviMente.Net;
+using MoviMente.Storage;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -32,6 +33,7 @@ namespace MoviMente.UI
         [SerializeField] private bool lightTheme;
 
         private readonly ScoreBoard score = new ScoreBoard();
+        private readonly ScoreStore scores = new ScoreStore(new PlayerPrefsScorePreferences());
         private readonly Dictionary<SessionScreen, VisualElement> screens = new Dictionary<SessionScreen, VisualElement>();
         private readonly Pulse enter = new Pulse();
 
@@ -43,6 +45,7 @@ namespace MoviMente.UI
         private Label missingPad;
         private SessionScreen current = SessionScreen.None;
         private string gameClass;
+        private bool newRecord;
 
         private RoomView room;
         private InstructionsView instructions;
@@ -142,7 +145,9 @@ namespace MoviMente.UI
             if (session == null) return;
 
             session.TrialReported += OnTrialReported;
+            session.StateChanged += OnSessionStateChanged;
             score.Reset();
+            newRecord = false;
             hud.Reset();
 
             string id = session.Definition.Id;
@@ -159,6 +164,7 @@ namespace MoviMente.UI
         {
             if (session == null) return;
             session.TrialReported -= OnTrialReported;
+            session.StateChanged -= OnSessionStateChanged;
             session = null;
         }
 
@@ -202,7 +208,8 @@ namespace MoviMente.UI
                     break;
                 case SessionScreen.Results:
                     resultsMenu.Reset((int)ResultsOption.PlayAgain);
-                    results.Show(score, now);
+                    results.Show(score, newRecord,
+                        scores.BestScore(session.Definition.Id, session.Difficulty), now);
                     break;
             }
             StartEnter(next, now);
@@ -248,6 +255,14 @@ namespace MoviMente.UI
         {
             score.Add(trial);
             hud.Feedback(trial.Outcome, score, Time.unscaledTime);
+        }
+
+        private void OnSessionStateChanged(GameState state)
+        {
+            if (state != GameState.Finished || !session.ShouldSaveScore) return;
+            var result = score.Result(session.ElapsedSeconds);
+            newRecord = scores.SaveCompleted(session.Definition.Id, session.Difficulty,
+                result.Score, result.Stars);
         }
 
         // Inclinar mueve el foco del menú que está a la vista, y el mando vibra "tap".
@@ -299,6 +314,7 @@ namespace MoviMente.UI
         private void Restart()
         {
             score.Reset();
+            newRecord = false;
             hud.Reset();
             session.Retry();
         }
