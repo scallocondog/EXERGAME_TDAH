@@ -342,6 +342,34 @@ TV, se corrige en su prefab, sin tocar código. `AtrapaView` los centra y los
 lleva al mismo tamaño que las formas primitivas, que siguen de respaldo si falta
 algún modelo.
 
+### Modelos de Corta sin fallar (RF-13)
+
+Las frutas son las mismas de Atrapa lo correcto. Lo prohibido es una piedra, en
+`unity/Assets/Art/CortaSinFallar/`:
+
+| Qué | Modelo | Color | Silueta |
+| --- | --- | --- | --- |
+| Prohibido | `Modelos/Piedra.fbx` (`stone_largeD` del [Nature Kit de Kenney](https://kenney.nl/assets/nature-kit), CC0) | gris cálido `#a39e96` | bloque redondeado |
+
+El kit trae la piedra en celeste helado, que se confundía con el pez y con los
+celestes de la interfaz. Por eso el prefab `Prefabs/Piedra.prefab` le pone el
+material `Materiales/Piedra.mat` (URP Lit, gris cálido, casi mate): contrasta con
+el fondo petróleo y no se parece a ninguna fruta. Es un bloque sin puntas: lo que
+no se corta no tiene que parecer una amenaza (RNF-05). Va en el campo *Forbidden
+Model* de `CortaView`, en la escena `Game_CortaSinFallar`; el cubo gris sigue de
+respaldo.
+
+### Cómo agregar un modelo
+
+1. Solo licencias CC0 (Kenney, Quaternius) o CC-BY con el crédito en el
+   `License.txt`: el repo es público. Nada del Asset Store ni sin licencia clara.
+2. El mismo estilo que lo que ya hay: low-poly, colores planos y suaves.
+3. Distinguible a 3 m por silueta **y** color; nada amenazante; FBX liviano.
+4. El FBX en `Art/<Minijuego>/Modelos/` con su `License.txt`, un prefab en
+   `Art/<Minijuego>/Prefabs/` que corrija orientación y color, y el prefab en el
+   campo de la vista del minijuego. Sin tocar código.
+5. Una fila en la tabla de esta sección.
+
 ### Audio (RNF-06)
 
 `unity/Assets/Audio/`. Todo en WAV mono de 44,1 kHz.

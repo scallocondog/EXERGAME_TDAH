@@ -152,7 +152,7 @@ MonoBehaviour:
   - {fileID: 4041269467150759699, guid: eba9853ff2121d843a6b689d51a38862, type: 3}
   - {fileID: 6085847102903875556, guid: e763dfbfb26fa2243810463eb8e614a0, type: 3}
   - {fileID: 431193623298508355, guid: 239e237e895f473429a5288d342017fc, type: 3}
-  forbiddenModel: {fileID: 0}
+  forbiddenModel: {fileID: 2304909314587463729, guid: a0e438371a53f804c85dd338d032a5bd, type: 3}
   difficulty: 0
   fieldHalfWidth: 6
   fieldHeight: 7
