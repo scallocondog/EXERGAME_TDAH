@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Igual que docs/ux/iconos/ui-musica-off.svg, con clipPath en vez de mask:
+       el importador de SVG de Unity 6.3 falla con máscaras. -->
+  <defs>
+    <clipPath id="fuera-de-la-barra">
+      <polygon points="9.9,0 64,0 64,54.1"/>
+      <polygon points="0,9.9 0,64 54.1,64"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#fuera-de-la-barra)">
+    <circle cx="19" cy="47" r="9" fill="#fff" stroke="none"/>
+    <circle cx="45" cy="41" r="9" fill="#fff" stroke="none"/>
+    <path d="M27 47V16L53 10V41" stroke-width="6"/>
+    <path d="M27 14L53 8V18L27 24Z" fill="#fff" stroke-width="2"/>
+  </g>
+  <path d="M8 8L56 56" stroke-width="6"/>
+</svg>

@@ -1,0 +1,187 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <!-- RF-08, RF-10, RF-16, RF-19, CU-08: pantallas de la TV durante la partida.
+         Diseño "MoviMente TV" (docs/ux/sistema-visual.md §6); maqueta en docs/ux/maqueta/. -->
+    <Style src="Tema.uss" />
+    <Style src="Partida.uss" />
+    <ui:VisualElement name="raiz" class="raiz" picking-mode="Ignore">
+
+        <!-- 1 · Sala: todavía falta un mando (RF-01) -->
+        <ui:VisualElement name="sala" class="pantalla fondo" picking-mode="Ignore">
+            <ui:VisualElement class="logo">
+                <ui:Label text="Movi" />
+                <ui:Label class="logo__mente" text="Mente" />
+            </ui:VisualElement>
+            <ui:VisualElement class="sombra qr-sombra">
+                <ui:VisualElement class="qr-tarjeta">
+                    <ui:VisualElement name="qr" class="qr" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="sala__titulo">
+                <ui:Label class="titulo" text="Conecta tu celular" />
+                <ui:VisualElement class="redondo">
+                    <ui:VisualElement class="icono icono--audio" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="codigo" class="codigo">
+                <ui:VisualElement class="sombra tecla-sombra"><ui:Label class="tecla" text="–" /></ui:VisualElement>
+                <ui:VisualElement class="sombra tecla-sombra"><ui:Label class="tecla" text="–" /></ui:VisualElement>
+                <ui:VisualElement class="sombra tecla-sombra"><ui:Label class="tecla" text="–" /></ui:VisualElement>
+                <ui:VisualElement class="sombra tecla-sombra"><ui:Label class="tecla" text="–" /></ui:VisualElement>
+            </ui:VisualElement>
+            <ui:Label class="sala__apoyo apoyo" text="Escanea el código con la cámara" />
+            <ui:VisualElement class="chip-mando">
+                <ui:VisualElement class="chip-mando__pozo">
+                    <ui:VisualElement class="icono icono--celular icono--suave" />
+                </ui:VisualElement>
+                <ui:Label class="chip-mando__texto" text="Esperando mando…" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <!-- 4 · Instrucciones (RF-10): la frase, la demostración y el botón -->
+        <ui:VisualElement name="instrucciones" class="pantalla fondo" picking-mode="Ignore">
+            <ui:VisualElement class="pildora pildora--juego pildora--esquina">
+                <ui:VisualElement class="icono-juego" />
+                <ui:Label class="nombre-juego" text="Atrapa lo correcto" />
+            </ui:VisualElement>
+            <ui:VisualElement class="instr__fila">
+                <ui:Label class="instruccion frase-juego" text="Inclina para mover la canasta" />
+                <ui:VisualElement class="sombra redondo-sombra">
+                    <ui:VisualElement class="redondo redondo--grande">
+                        <ui:VisualElement class="icono icono--audio icono--grande" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <!-- Lo único que se anima en bucle: el celular se inclina y la canasta lo sigue -->
+            <ui:VisualElement class="demo">
+                <ui:VisualElement name="demo-celular" class="demo__celular">
+                    <ui:Label class="demo__numero" text="1" />
+                    <ui:VisualElement class="demo__boton" />
+                </ui:VisualElement>
+                <ui:VisualElement name="demo-canasta" class="demo__canasta" />
+            </ui:VisualElement>
+            <ui:VisualElement class="instr__empezar">
+                <ui:VisualElement class="halo halo--accion foco">
+                    <ui:VisualElement class="boton-accion">
+                        <ui:VisualElement class="icono icono--boton icono--accion" />
+                        <ui:Label text="Toca el botón para empezar" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <!-- 5 · Cuenta regresiva: el juego se ve detrás, atenuado -->
+        <ui:VisualElement name="cuenta" class="pantalla" picking-mode="Ignore">
+            <ui:VisualElement class="velo velo--suave" picking-mode="Ignore" />
+            <ui:VisualElement name="cuenta-circulo" class="sombra cuenta-sombra">
+                <ui:Label name="cuenta-numero" class="cuenta__numero" text="3" />
+            </ui:VisualElement>
+            <ui:VisualElement class="cuenta__pista">
+                <ui:VisualElement class="icono icono--inclinar icono--suave icono--pista" />
+                <ui:Label class="instruccion frase-juego" text="Inclina para mover la canasta" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <!-- 6 · HUD (RF-15): solo tiempo y puntaje -->
+        <ui:VisualElement name="hud" class="pantalla" picking-mode="Ignore">
+            <ui:VisualElement class="hud-pildora hud-tiempo">
+                <ui:VisualElement class="icono icono--reloj icono--suave icono--hud" />
+                <ui:VisualElement class="barra">
+                    <ui:VisualElement name="barra-relleno" class="barra__relleno" />
+                </ui:VisualElement>
+                <ui:Label name="reloj" class="hud-tiempo__valor" text="3:00" />
+            </ui:VisualElement>
+            <ui:VisualElement class="hud-pildora hud-puntaje">
+                <ui:VisualElement class="estrella estrella--hud" />
+                <ui:Label name="puntaje" class="hud-puntaje__valor" text="0" />
+            </ui:VisualElement>
+            <ui:Label name="mas-diez" class="mas-diez" text="+10" />
+            <ui:Label name="racha" class="racha" text="3 seguidos" />
+            <ui:VisualElement name="destello" class="destello" picking-mode="Ignore" />
+        </ui:VisualElement>
+
+        <!-- 7 · Pausa (RF-19): capa encima del juego; el foco empieza en "Seguir jugando" -->
+        <ui:VisualElement name="pausa" class="pantalla capa" picking-mode="Ignore">
+            <ui:VisualElement class="sombra panel-sombra panel-sombra--pausa">
+                <ui:VisualElement class="panel panel--pausa">
+                    <ui:Label class="titulo panel__titulo" text="Juego en pausa" />
+                    <ui:VisualElement class="halo halo--opcion">
+                        <ui:VisualElement class="opcion">
+                            <ui:VisualElement class="opcion__pozo opcion__pozo--seguir">
+                                <ui:VisualElement class="icono icono--jugar icono--oscuro" />
+                            </ui:VisualElement>
+                            <ui:Label text="Seguir jugando" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="halo halo--opcion">
+                        <ui:VisualElement class="opcion">
+                            <ui:VisualElement class="opcion__pozo">
+                                <ui:VisualElement class="icono icono--reiniciar" />
+                            </ui:VisualElement>
+                            <ui:Label text="Volver a empezar" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="halo halo--opcion">
+                        <ui:VisualElement class="opcion opcion--alta">
+                            <ui:VisualElement class="opcion__pozo">
+                                <ui:VisualElement class="icono icono--salir" />
+                            </ui:VisualElement>
+                            <ui:VisualElement>
+                                <ui:Label text="Salir" />
+                                <ui:Label class="opcion__nota apoyo" text="no se guarda el puntaje" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <!-- 9 · Mando desconectado (RF-07, CU-08): espera, sin alarma ni opciones -->
+        <ui:VisualElement name="sin-mando" class="pantalla capa" picking-mode="Ignore">
+            <ui:VisualElement class="sombra panel-sombra panel-sombra--espera">
+                <ui:VisualElement class="panel panel--espera">
+                    <ui:VisualElement class="perdido">
+                        <ui:VisualElement class="icono icono--celular icono--perdido" />
+                        <ui:Label name="mando-perdido" class="perdido__numero" text="1" />
+                    </ui:VisualElement>
+                    <ui:Label class="titulo" text="Esperando tu mando…" />
+                    <ui:Label class="panel__ayuda apoyo" text="Revisa que el celular siga en la página del mando" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <!-- 8 · Resultados (RF-16): siempre hay al menos una estrella -->
+        <ui:VisualElement name="resultados" class="pantalla fondo" picking-mode="Ignore">
+            <ui:VisualElement class="pildora pildora--juego pildora--esquina">
+                <ui:VisualElement class="icono-juego" />
+                <ui:Label class="nombre-juego" text="Atrapa lo correcto" />
+            </ui:VisualElement>
+            <ui:VisualElement class="estrellas">
+                <ui:VisualElement name="estrella-izquierda" class="estrella estrella--lado" />
+                <ui:VisualElement name="estrella-centro" class="estrella estrella--centro" />
+                <ui:VisualElement name="estrella-derecha" class="estrella estrella--lado" />
+            </ui:VisualElement>
+            <ui:Label class="titulo res__titulo" text="¡Muy bien!" />
+            <ui:VisualElement class="res__puntaje">
+                <ui:Label name="res-puntos" class="res__puntos" text="0" />
+                <ui:Label class="res__unidad apoyo" text="puntos" />
+            </ui:VisualElement>
+            <ui:Label name="res-resumen" class="res__resumen apoyo" text="0 aciertos" />
+            <ui:VisualElement class="res__acciones">
+                <ui:VisualElement class="halo halo--accion">
+                    <ui:VisualElement class="boton-accion">
+                        <ui:VisualElement class="icono icono--reiniciar icono--accion" />
+                        <ui:Label text="Jugar otra vez" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement class="halo halo--accion">
+                    <ui:VisualElement class="sombra sombra--boton">
+                        <ui:VisualElement class="boton-tarjeta">
+                            <ui:VisualElement class="icono icono--jugar icono--accion-tarjeta" />
+                            <ui:Label text="Elegir otro juego" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

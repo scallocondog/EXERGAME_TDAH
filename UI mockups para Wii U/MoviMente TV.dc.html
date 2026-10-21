@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&amp;display=swap" rel="stylesheet"><style>body{margin:0;background:#e6eaec;font-family:Nunito,system-ui,sans-serif;color:#22343c}a{color:#0b86c7}a:hover{color:#086a9e}.dv-turn{padding:48px 56px 40px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}.dv-thd{display:flex;align-items:baseline;gap:12px;margin:0 0 24px}.dv-tid{font:600 11px ui-monospace,Menlo,monospace;padding:3px 8px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}.dv-tname{font:800 22px/1.2 Nunito,sans-serif;color:#1a1a1a}.dv-opts{display:flex;flex-wrap:wrap;gap:40px 32px;align-items:flex-start}.dv-opt{flex:none;display:flex;flex-direction:column;gap:10px;scroll-margin-top:16px}.dv-oid{font:600 11px ui-monospace,Menlo,monospace;padding:3px 8px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none}.dv-olabel{display:flex;align-items:baseline;gap:10px;font:700 14px/1.3 Nunito,sans-serif;color:rgba(0,0,0,.7)}.dv-card{max-width:100%;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}.dv-opt:target .dv-oid{background:#0b86c7;color:#fff}.dv-next{margin:28px 0 0;font:600 13px/1.5 Nunito,sans-serif;color:rgba(0,0,0,.5)}@keyframes mmTilt{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(18deg)}}@keyframes mmSlide{0%,100%{transform:translateX(-170px)}50%{transform:translateX(170px)}}</style></helmet>
+
+<section class="dv-turn" id="t0" style="background:#f7f8f8">
+  <div style="max-width:1180px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:48px">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="font:700 13px ui-monospace,Menlo,monospace;color:#6a7c84">MOVIMENTE · INTERFAZ DE TV · v1</div>
+      <div style="font-size:44px;font-weight:800;line-height:1.05;letter-spacing:-0.5px">Pantallas, componentes, íconos y tokens</div>
+      <div style="font-size:17px;font-weight:600;line-height:1.5;color:#44565e;text-wrap:pretty">Los frames miden 1920 × 1080 y se ven al 50 %. Todas las medidas anotadas son px reales del frame. Hay dos direcciones en las pantallas 2, 1 y 9; el resto está en B, que es la que recomiendo.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:14px;font-weight:700">
+        <a href="#t1" style="padding:6px 12px;border-radius:20px;background:#fff;border:1px solid #d6dde0;text-decoration:none;color:#22343c">A vs B</a>
+        <a href="#t2" style="padding:6px 12px;border-radius:20px;background:#fff;border:1px solid #d6dde0;text-decoration:none;color:#22343c">Flujo completo (B)</a>
+        <a href="#t3" style="padding:6px 12px;border-radius:20px;background:#fff;border:1px solid #d6dde0;text-decoration:none;color:#22343c">Componentes</a>
+        <a href="#t4" style="padding:6px 12px;border-radius:20px;background:#fff;border:1px solid #d6dde0;text-decoration:none;color:#22343c">Íconos</a>
+        <a href="#t5" style="padding:6px 12px;border-radius:20px;background:#fff;border:1px solid #d6dde0;text-decoration:none;color:#22343c">Tokens y movimiento</a>
+        <a href="#t6" style="padding:6px 12px;border-radius:20px;background:#fff;border:1px solid #d6dde0;text-decoration:none;color:#22343c">Unity</a>
+        <a href="#t7" style="padding:6px 12px;border-radius:20px;background:#fff;border:1px solid #d6dde0;text-decoration:none;color:#22343c">Mando (extra)</a>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;font-size:15px;font-weight:600;line-height:1.5;color:#33454d">
+      <div style="padding:20px 22px;border-radius:14px;background:#12303b;color:#f3f8f9">
+        <div style="font-size:18px;font-weight:800;margin-bottom:6px">Recomiendo B · Oscuro con color</div>
+        <div>1. El foco es la señal más importante. El celeste #1eb0f5 contrasta 5,4:1 sobre petróleo, pero apenas 2,3:1 sobre perla; en A tuve que oscurecer el borde.<br>2. A 3 m, una pantalla mayormente clara es mucha luz: cansa más y estimula más.<br>3. Los colores de cada juego y el HUD se separan mejor de la escena 3D.<br><span style="color:#a9c3cc">Excepción: con proyector en una sala muy iluminada, A se ve mejor. Los tokens son los mismos; solo cambian las superficies.</span></div>
+      </div>
+      <div><b>Colores que cambié:</b> el borde del foco en A pasa a <b>#0b86c7</b> (el #1eb0f5 queda como halo). El texto sobre el verde de acción es <b>#12302a</b>, porque el blanco no alcanza contraste. Agregué el rosa <b>#f08cbf</b> para el Mando 2. Los nombres de juego nunca van en blanco sobre su color.</div>
+      <div><b>Supuestos:</b> la pausa y la música se controlan desde el celular, así la píldora de música es solo un indicador y no una quinta opción. El Mando 2 se une en cualquier momento con el mismo código, que se ve en la barra. Los menús los maneja el Mando 1. Siempre hay al menos 1 estrella. El QR y el arte 3D son placeholders.</div>
+    </div>
+  </div>
+</section>
+
+<section class="dv-turn" id="t1">
+  <div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">A vs B: pantallas 2, 1 y 9</span></div>
+  <div class="dv-opts">
+
+    <div class="dv-opt" id="2a"><div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>Elegir juego · A Claro</div>
+      <div class="dv-card" style="width:960px;height:540px"><div style="position:relative;width:1920px;height:1080px;overflow:hidden;transform:scale(.5);transform-origin:0 0;font-family:Nunito,sans-serif;color:#22343c;background:repeating-linear-gradient(180deg,#f4f7f9 0 6px,#ebf0f3 6px 12px)">
+        <div style="position:absolute;left:96px;right:96px;top:54px;height:80px;display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:48px;font-weight:800;letter-spacing:-0.5px">Movi<span style="color:#0b86c7">Mente</span></div>
+          <div style="display:flex;gap:16px;align-items:center">
+            <div style="height:72px;box-sizing:border-box;padding:0 28px 0 12px;border-radius:36px;background:#fff;border:3px solid #d6e2e8;display:flex;align-items:center;gap:14px;font-size:32px;font-weight:800"><span style="width:48px;height:48px;border-radius:24px;background:#1eb0f5;color:#06222e;display:flex;align-items:center;justify-content:center">1</span>Mando 1</div>
+            <div style="height:72px;box-sizing:border-box;padding:0 28px 0 12px;border-radius:36px;border:3px dashed #a9bec8;display:flex;align-items:center;gap:14px;font-size:32px;font-weight:700;color:#4d6470"><span style="width:42px;height:42px;border-radius:24px;border:4px solid #f08cbf;color:#22343c;display:flex;align-items:center;justify-content:center">2</span>Mando 2 · TCXG</div>
+            <div style="width:72px;height:72px;box-sizing:border-box;border-radius:36px;background:#fff;border:3px solid #d6e2e8;display:flex;align-items:center;justify-content:center"><span style="width:40px;height:40px;background:#22343c;-webkit-mask:url(icons/ui-musica.svg) center/contain no-repeat;mask:url(icons/ui-musica.svg) center/contain no-repeat"></span></div>
+          </div>
+        </div>
+        <div style="position:absolute;left:0;right:0;top:170px;text-align:center;font-size:72px;font-weight:800;line-height:1.1">Elige un juego</div>
+        <div style="position:absolute;left:216px;top:300px;width:720px;height:280px;box-sizing:border-box;border-radius:40px;background:#f2fbff;border:8px solid #0b86c7;box-shadow:0 0 0 14px rgba(30,176,245,.4),0 16px 0 #c3d6df;transform:scale(1.07);z-index:2;display:flex;align-items:center;gap:36px;padding:0 36px 0 20px">
+          <img src="icons/juego-atrapa.svg" style="width:224px;height:224px;flex:none"><div style="display:flex;flex-direction:column;gap:18px"><div style="font-size:44px;font-weight:800;line-height:1.1">Atrapa lo correcto</div><div style="align-self:flex-start;height:64px;padding:0 28px 0 12px;border-radius:32px;background:#1eb0f5;color:#06222e;font-size:36px;font-weight:800;display:flex;align-items:center;gap:12px"><span style="width:40px;height:40px;background:#06222e;-webkit-mask:url(icons/ui-boton.svg) center/contain no-repeat;mask:url(icons/ui-boton.svg) center/contain no-repeat"></span>¡Jugar!</div></div>
+        </div>
+        <div style="position:absolute;left:984px;top:300px;width:720px;height:280px;box-sizing:border-box;border-radius:40px;background:#fff;border:4px solid #d6e2e8;box-shadow:0 10px 0 #cddbe2;display:flex;align-items:center;gap:36px;padding:0 40px 0 24px"><img src="icons/juego-secuencia.svg" style="width:224px;height:224px;flex:none"><div style="font-size:44px;font-weight:800;line-height:1.1">Sigue la secuencia</div></div>
+        <div style="position:absolute;left:216px;top:620px;width:720px;height:280px;box-sizing:border-box;border-radius:40px;background:#fff;border:4px solid #d6e2e8;box-shadow:0 10px 0 #cddbe2;display:flex;align-items:center;gap:36px;padding:0 40px 0 24px"><img src="icons/juego-corta.svg" style="width:224px;height:224px;flex:none"><div style="font-size:44px;font-weight:800;line-height:1.1">Corta sin fallar</div></div>
+        <div style="position:absolute;left:984px;top:620px;width:720px;height:280px;box-sizing:border-box;border-radius:40px;background:#fff;border:4px solid #d6e2e8;box-shadow:0 10px 0 #cddbe2;display:flex;align-items:center;gap:36px;padding:0 40px 0 24px"><img src="icons/juego-equilibrio.svg" style="width:224px;height:224px;flex:none"><div style="font-size:44px;font-weight:800;line-height:1.1">Equilibrio</div></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:150px;box-sizing:border-box;background:#fff;border-top:4px solid #d6e2e8;display:flex;justify-content:center;align-items:flex-start;padding-top:36px;gap:18px;font-size:36px;font-weight:700;color:#4d6470">
+          <span style="width:48px;height:48px;background:#4d6470;-webkit-mask:url(icons/ui-inclinar.svg) center/contain no-repeat;mask:url(icons/ui-inclinar.svg) center/contain no-repeat"></span><span>Inclina para elegir</span><span>·</span><span style="width:48px;height:48px;background:#4d6470;-webkit-mask:url(icons/ui-boton.svg) center/contain no-repeat;mask:url(icons/ui-boton.svg) center/contain no-repeat"></span><span>Botón para entrar</span>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="2b"><div class="dv-olabel"><a class="dv-oid" href="#2b">2b</a>Elegir juego · B Oscuro (recomendada)</div>
+      <div class="dv-card" style="width:960px;height:540px"><div style="position:relative;width:1920px;height:1080px;overflow:hidden;transform:scale(.5);transform-origin:0 0;font-family:Nunito,sans-serif;color:#f3f8f9;background:radial-gradient(ellipse 120% 80% at 50% 0%,#1a4452 0%,#12303b 65%)">
+        <div style="position:absolute;left:96px;right:96px;top:54px;height:80px;display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:48px;font-weight:800;letter-spacing:-0.5px">Movi<span style="color:#1eb0f5">Mente</span></div>
+          <div style="display:flex;gap:16px;align-items:center">
+            <div style="height:72px;box-sizing:border-box;padding:0 28px 0 12px;border-radius:36px;background:#1b4250;border:3px solid #2a5b6c;display:flex;align-items:center;gap:14px;font-size:32px;font-weight:800"><span style="width:48px;height:48px;border-radius:24px;background:#1eb0f5;color:#06222e;display:flex;align-items:center;justify-content:center">1</span>Mando 1</div>
+            <div style="height:72px;box-sizing:border-box;padding:0 28px 0 12px;border-radius:36px;border:3px dashed #3f6f80;display:flex;align-items:center;gap:14px;font-size:32px;font-weight:700;color:#a9c3cc"><span style="width:42px;height:42px;border-radius:24px;border:4px solid #f08cbf;color:#f3f8f9;display:flex;align-items:center;justify-content:center">2</span>Mando 2 · TCXG</div>
+            <div style="width:72px;height:72px;box-sizing:border-box;border-radius:36px;background:#1b4250;border:3px solid #2a5b6c;display:flex;align-items:center;justify-content:center"><span style="width:40px;height:40px;background:#f3f8f9;-webkit-mask:url(icons/ui-musica.svg) center/contain no-repeat;mask:url(icons/ui-musica.svg) center/contain no-repeat"></span></div>
+          </div>
+        </div>
+        <div style="position:absolute;left:0;right:0;top:170px;text-align:center;font-size:72px;font-weight:800;line-height:1.1">Elige un juego</div>
+        <div style="position:absolute;left:216px;top:300px;width:720px;height:280px;box-sizing:border-box;border-radius:40px;background:#22566a;border:8px solid #1eb0f5;box-shadow:0 0 0 14px rgba(30,176,245,.35),0 16px 0 #0a1f26;transform:scale(1.07);z-index:2;display:flex;align-items:center;gap:36px;padding:0 36px 0 20px">
+          <img src="icons/juego-atrapa.svg" style="width:224px;height:224px;flex:none"><div style="display:flex;flex-direction:column;gap:18px"><div style="font-size:44px;font-weight:800;line-height:1.1">Atrapa lo correcto</div><div style="align-self:flex-start;height:64px;padding:0 28px 0 12px;border-radius:32px;background:#1eb0f5;color:#06222e;font-size:36px;font-weight:800;display:flex;align-items:center;gap:12px"><span style="width:40px;height:40px;background:#06222e;-webkit-mask:url(icons/ui-boton.svg) center/contain no-repeat;mask:url(icons/ui-boton.svg) center/contain no-repeat"></span>¡Jugar!</div></div>
+        </div>
+        <div style="position:absolute;left:984px;top:300px;width:720px;height:280px;box-sizing:border-box;border-radius:40px;background:#1b4250;border:4px solid #2a5b6c;box-shadow:0 10px 0 #0b222a;display:flex;align-items:center;gap:36px;padding:0 40px 0 24px"><img src="icons/juego-secuencia.svg" style="width:224px;height:224px;flex:none"><div style="font-size:44px;font-weight:800;line-height:1.1">Sigue la secuencia</div></div>
+        <div style="position:absolute;left:216px;top:620px;width:720px;height:280px;box-sizing:border-box;border-radius:40px;background:#1b4250;border:4px solid #2a5b6c;box-shadow:0 10px 0 #0b222a;display:flex;align-items:center;gap:36px;padding:0 40px 0 24px"><img src="icons/juego-corta.svg" style="width:224px;height:224px;flex:none"><div style="font-size:44px;font-weight:800;line-height:1.1">Corta sin fallar</div></div>
+        <div style="position:absolute;left:984px;top:620px;width:720px;height:280px;box-sizing:border-box;border-radius:40px;background:#1b4250;border:4px solid #2a5b6c;box-shadow:0 10px 0 #0b222a;display:flex;align-items:center;gap:36px;padding:0 40px 0 24px"><img src="icons/juego-equilibrio.svg" style="width:224px;height:224px;flex:none"><div style="font-size:44px;font-weight:800;line-height:1.1">Equilibrio</div></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:150px;box-sizing:border-box;background:#0e2730;border-top:4px solid #1f4a59;display:flex;justify-content:center;align-items:flex-start;padding-top:36px;gap:18px;font-size:36px;font-weight:700;color:#a9c3cc">
+          <span style="width:48px;height:48px;background:#a9c3cc;-webkit-mask:url(icons/ui-inclinar.svg) center/contain no-repeat;mask:url(icons/ui-inclinar.svg) center/contain no-repeat"></span><span>Inclina para elegir</span><span>·</span><span style="width:48px;height:48px;background:#a9c3cc;-webkit-mask:url(icons/ui-boton.svg) center/contain no-repeat;mask:url(icons/ui-boton.svg) center/contain no-repeat"></span><span>Botón para entrar</span>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="1a"><div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Sala y QR · A Claro · esperando</div>
+      <div class="dv-card" style="width:960px;height:540px"><div style="position:relative;width:1920px;height:1080px;overflow:hidden;transform:scale(.5);transform-origin:0 0;font-family:Nunito,sans-serif;color:#22343c;background:repeating-linear-gradient(180deg,#f4f7f9 0 6px,#ebf0f3 6px 12px)">
+        <div style="position:absolute;left:96px;top:54px;height:80px;display:flex;align-items:center;font-size:48px;font-weight:800;letter-spacing:-0.5px">Movi<span style="color:#0b86c7">Mente</span></div>
+        <div style="position:absolute;left:200px;top:196px;width:600px;height:600px;box-sizing:border-box;border-radius:44px;background:#fff;border:4px solid #d6e2e8;box-shadow:0 12px 0 #cddbe2;padding:40px">
+          <div style="position:relative;width:512px;height:512px;border-radius:8px;background:repeating-linear-gradient(135deg,#e6edf0 0 14px,#f5f8f9 14px 28px);display:flex;align-items:center;justify-content:center">
+            <div style="position:absolute;left:0;top:0;width:112px;height:112px;box-sizing:border-box;border:18px solid #22343c;padding:18px"><div style="width:100%;height:100%;background:#22343c"></div></div>
+            <div style="position:absolute;right:0;top:0;width:112px;height:112px;box-sizing:border-box;border:18px solid #22343c;padding:18px"><div style="width:100%;height:100%;background:#22343c"></div></div>
+            <div style="position:absolute;left:0;bottom:0;width:112px;height:112px;box-sizing:border-box;border:18px solid #22343c;padding:18px"><div style="width:100%;height:100%;background:#22343c"></div></div>
+            <div style="font:600 24px/1.4 ui-monospace,Menlo,monospace;color:#4d6470;text-align:center;background:#fff;padding:10px 16px;border-radius:8px">QR · 512 × 512<br>se genera en Unity</div>
+          </div>
+        </div>
+        <div style="position:absolute;left:900px;top:210px;display:flex;align-items:center;gap:24px"><div style="font-size:72px;font-weight:800;line-height:1.1">Conecta tu celular</div><div style="width:72px;height:72px;border-radius:36px;background:#fff;border:3px solid #d6e2e8;box-sizing:border-box;display:flex;align-items:center;justify-content:center"><span style="width:40px;height:40px;background:#22343c;-webkit-mask:url(icons/ui-audio.svg) center/contain no-repeat;mask:url(icons/ui-audio.svg) center/contain no-repeat"></span></div></div>
+        <div style="position:absolute;left:900px;top:340px;display:flex;gap:20px">
+          <div style="width:180px;height:220px;box-sizing:border-box;border-radius:32px;background:#fff;border:4px solid #d6e2e8;box-shadow:0 10px 0 #cddbe2;display:flex;align-items:center;justify-content:center;font-size:160px;font-weight:800;line-height:1">T</div>
+          <div style="width:180px;height:220px;box-sizing:border-box;border-radius:32px;background:#fff;border:4px solid #d6e2e8;box-shadow:0 10px 0 #cddbe2;display:flex;align-items:center;justify-content:center;font-size:160px;font-weight:800;line-height:1">C</div>
+          <div style="width:180px;height:220px;box-sizing:border-box;border-radius:32px;background:#fff;border:4px solid #d6e2e8;box-shadow:0 10px 0 #cddbe2;display:flex;align-items:center;justify-content:center;font-size:160px;font-weight:800;line-height:1">X</div>
+          <div style="width:180px;height:220px;box-sizing:border-box;border-radius:32px;background:#fff;border:4px solid #d6e2e8;box-shadow:0 10px 0 #cddbe2;display:flex;align-items:center;justify-content:center;font-size:160px;font-weight:800;line-height:1">G</div>
+        </div>
+        <div style="position:absolute;left:900px;top:600px;font-size:44px;font-weight:700;color:#4d6470">Escanea el código con la cámara</div>
+        <div style="position:absolute;left:900px;top:700px;height:104px;box-sizing:border-box;padding:0 44px 0 20px;border-radius:52px;border:4px dashed #9fb6c1;display:flex;align-items:center;gap:20px;font-size:40px;font-weight:800;color:#4d6470"><span style="width:64px;height:64px;border-radius:32px;background:#dfe8ec;display:flex;align-items:center;justify-content:center"><span style="width:40px;height:40px;background:#4d6470;-webkit-mask:url(icons/ui-celular.svg) center/contain no-repeat;mask:url(icons/ui-celular.svg) center/contain no-repeat"></span></span>Esperando mando…</div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="1b"><div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Sala y QR · B Oscuro · conectado</div>
+      <div class="dv-card" style="width:960px;height:540px"><div style="position:relative;width:1920px;height:1080px;overflow:hidden;transform:scale(.5);transform-origin:0 0;font-family:Nunito,sans-serif;color:#f3f8f9;background:radial-gradient(ellipse 120% 80% at 50% 0%,#1a4452 0%,#12303b 65%)">
+        <div style="position:absolute;left:96px;top:54px;height:80px;display:flex;align-items:center;font-size:48px;font-weight:800;letter-spacing:-0.5px">Movi<span style="color:#1eb0f5">Mente</span></div>
+        <div style="position:absolute;left:200px;top:196px;width:600px;height:600px;box-sizing:border-box;border-radius:44px;background:#fff;box-shadow:0 12px 0 #0b222a;padding:44px">
+          <div style="position:relative;width:512px;height:512px;border-radius:8px;background:repeating-linear-gradient(135deg,#e6edf0 0 14px,#f5f8f9 14px 28px);display:flex;align-items:center;justify-content:center">
+            <div style="position:absolute;left:0;top:0;width:112px;height:112px;box-sizing:border-box;border:18px solid #12303b;padding:18px"><div style="width:100%;height:100%;background:#12303b"></div></div>
+            <div style="position:absolute;right:0;top:0;width:112px;height:112px;box-sizing:border-box;border:18px solid #12303b;padding:18px"><div style="width:100%;height:100%;background:#12303b"></div></div>
+            <div style="position:absolute;left:0;bottom:0;width:112px;height:112px;box-sizing:border-box;border:18px solid #12303b;padding:18px"><div style="width:100%;height:100%;background:#12303b"></div></div>
+            <div style="font:600 24px/1.4 ui-monospace,Menlo,monospace;color:#4d6470;text-align:center;background:#fff;padding:10px 16px;border-radius:8px">QR · 512 × 512<br>se genera en Unity</div>
+          </div>
+        </div>
+        <div style="position:absolute;left:900px;top:210px;display:flex;align-items:center;gap:24px"><div style="font-size:72px;font-weight:800;line-height:1.1">Conecta tu celular</div><div style="width:72px;height:72px;border-radius:36px;background:#1b4250;border:3px solid #2a5b6c;box-sizing:border-box;display:flex;align-items:center;justify-content:center"><span style="width:40px;height:40px;background:#f3f8f9;-webkit-mask:url(icons/ui-audio.svg) center/contain no-repeat;mask:url(icons/ui-audio.svg) center/contain no-repeat"></span></div></div>
+        <div style="position:absolute;left:900px;top:340px;display:flex;gap:20px">
+          <div style="width:180px;height:220px;box-sizing:border-box;border-radius:32px;background:#1b4250;border:4px solid #2a5b6c;box-shadow:0 10px 0 #0b222a;display:flex;align-items:center;justify-content:center;font-size:160px;font-weight:800;line-height:1">T</div>
+          <div style="width:180px;height:220px;box-sizing:border-box;border-radius:32px;background:#1b4250;border:4px solid #2a5b6c;box-shadow:0 10px 0 #0b222a;display:flex;align-items:center;justify-content:center;font-size:160px;font-weight:800;line-height:1">C</div>
+          <div style="width:180px;height:220px;box-sizing:border-box;border-radius:32px;background:#1b4250;border:4px solid #2a5b6c;box-shadow:0 10px 0 #0b222a;display:flex;align-items:center;justify-content:center;font-size:160px;font-weight:800;line-height:1">X</div>
+          <div style="width:180px;height:220px;box-sizing:border-box;border-radius:32px;background:#1b4250;border:4px solid #2a5b6c;box-shadow:0 10px 0 #0b222a;display:flex;align-items:center;justify-content:center;font-size:160px;font-weight:800;line-height:1">G</div>
+        </div>
+        <div style="position:absolute;left:900px;top:600px;font-size:44px;font-weight:700;color:#a9c3cc">Escanea el código con la cámara</div>
+        <div style="position:absolute;left:900px;top:700px;height:104px;box-sizing:border-box;padding:0 44px 0 20px;border-radius:52px;background:#1eb0f5;display:flex;align-items:center;gap:20px;font-size:40px;font-weight:800;color:#06222e"><span style="width:64px;height:64px;border-radius:32px;background:#f3f8f9;display:flex;align-items:center;justify-content:center;font-size:40px">1</span>Mando 1 conectado<span style="width:44px;height:44px;background:#06222e;-webkit-mask:url(icons/ui-check.svg) center/contain no-repeat;mask:url(icons/ui-check.svg) center/contain no-repeat"></span></div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="9a"><div class="dv-olabel"><a class="dv-oid" href="#9a">9a</a>Resultados · A Claro</div>
+      <div class="dv-card" style="width:960px;height:540px"><div style="position:relative;width:1920px;height:1080px;overflow:hidden;transform:scale(.5);transform-origin:0 0;font-family:Nunito,sans-serif;color:#22343c;background:repeating-linear-gradient(180deg,#f4f7f9 0 6px,#ebf0f3 6px 12px)">
+        <div style="position:absolute;left:96px;top:54px;height:72px;box-sizing:border-box;padding:0 28px 0 8px;border-radius:36px;background:#fff;border:3px solid #d6e2e8;display:flex;align-items:center;gap:14px;font-size:32px;font-weight:800"><img src="icons/juego-atrapa.svg" style="width:56px;height:56px;border-radius:14px">Atrapa lo correcto</div>
+        <div style="position:absolute;left:0;right:0;top:96px;display:flex;justify-content:center;align-items:flex-end;gap:24px"><img src="icons/estrella.svg" style="width:210px;height:210px"><img src="icons/estrella.svg" style="width:260px;height:260px;margin-bottom:40px"><img src="icons/estrella.svg" style="width:210px;height:210px"></div>
+        <div style="position:absolute;left:0;right:0;top:410px;text-align:center;font-size:72px;font-weight:800;line-height:1.1">¡Muy bien!</div>
+        <div style="position:absolute;left:0;right:0;top:500px;display:flex;justify-content:center;align-items:baseline;gap:20px"><span style="font-size:144px;font-weight:800;line-height:1">180</span><span style="font-size:40px;font-weight:700;color:#4d6470">puntos</span></div>
+        <div style="position:absolute;left:0;right:0;top:664px;display:flex;justify-content:center"><div style="height:72px;padding:0 32px 0 20px;border-radius:36px;background:#efc05f;color:#3a2a06;display:flex;align-items:center;gap:12px;font-size:36px;font-weight:800"><span style="width:40px;height:40px;background:#3a2a06;-webkit-mask:url(icons/ui-estrella.svg) center/contain no-repeat;mask:url(icons/ui-estrella.svg) center/contain no-repeat"></span>¡Nuevo récord!</div></div>
+        <div style="position:absolute;left:0;right:0;top:764px;text-align:center;font-size:32px;font-weight:700;color:#4d6470">18 aciertos · respondiste en 0,6 s</div>
+        <div style="position:absolute;left:0;right:0;top:860px;display:flex;justify-content:center;gap:56px">
+          <div style="height:120px;padding:0 56px 0 40px;border-radius:60px;background:#6fdcb6;color:#12302a;font-size:44px;font-weight:800;display:flex;align-items:center;gap:18px;box-shadow:0 0 0 8px #0b86c7,0 0 0 22px rgba(30,176,245,.4);transform:scale(1.06)"><span style="width:48px;height:48px;background:#12302a;-webkit-mask:url(icons/ui-reiniciar.svg) center/contain no-repeat;mask:url(icons/ui-reiniciar.svg) center/contain no-repeat"></span>Jugar otra vez</div>
+          <div style="height:120px;box-sizing:border-box;padding:0 56px 0 40px;border-radius:60px;background:#fff;border:4px solid #d6e2e8;box-shadow:0 10px 0 #cddbe2;color:#22343c;font-size:44px;font-weight:800;display:flex;align-items:center;gap:18px"><span style="width:48px;height:48px;background:#22343c;-webkit-mask:url(icons/ui-jugar.svg) center/contain no-repeat;mask:url(icons/ui-jugar.svg) center/contain no-repeat"></span>Elegir otro juego</div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="dv-opt" id="9b"><div class="dv-olabel"><a class="dv-oid" href="#9b">9b</a>Resultados · B Oscuro</div>
+      <div class="dv-card" style="width:960px;height:540px"><div style="position:relative;width:1920px;height:1080px;overflow:hidden;transform:scale(.5);transform-origin:0 0;font-family:Nunito,sans-serif;color:#f3f8f9;background:radial-gradient(ellipse 120% 80% at 50% 0%,#1a4452 0%,#12303b 65%)">
+        <div style="position:absolute;left:96px;top:54px;height:72px;box-sizing:border-box;padding:0 28px 0 8px;border-radius:36px;background:#1b4250;border:3px solid #2a5b6c;display:flex;align-items:center;gap:14px;font-size:32px;font-weight:800"><img src="icons/juego-atrapa.svg" style="width:56px;height:56px;border-radius:14px">Atrapa lo correcto</div>
+        <div style="position:absolute;left:0;right:0;top:96px;display:flex;justify-content:center;align-items:flex-end;gap:24px"><img src="icons/estrella.svg" style="width:210px;height:210px"><img src="icons/estrella.svg" style="width:260px;height:260px;margin-bottom:40px"><img src="icons/estrella.svg" style="width:210px;height:210px"></div>
+        <div style="position:absolute;left:0;right:0;top:410px;text-align:center;font-size:72px;font-weight:800;line-height:1.1">¡Muy bien!</div>
+        <div style="position:absolute;left:0;right:0;top:500px;display:flex;justify-content:center;align-items:baseline;gap:20px"><span style="font-size:144px;font-weight:800;line-height:1">180</span><span style="font-size:40px;font-weight:700;color:#a9c3cc">puntos</span></div>
+        <div style="position:absolute;left:0;right:0;top:664px;display:flex;justify-content:center"><div style="height:72px;padding:0 32px 0 20px;border-radius:36px;background:#efc05f;color:#3a2a06;display:flex;align-items:center;gap:12px;font-size:36px;font-weight:800"><span style="width:40px;height:40px;background:#3a2a06;-webkit-mask:url(icons/ui-estrella.svg) center/contain no-repeat;mask:url(icons/ui-estrella.svg) center/contain no-repeat"></span>¡Nuevo récord!</div></div>
+        <div style="position:absolute;left:0;right:0;top:764px;text-align:center;font-size:32px;font-weight:700;color:#a9c3cc">18 aciertos · respondiste en 0,6 s</div>
+        <div style="position:absolute;left:0;right:0;top:860px;display:flex;justify-content:center;gap:56px">
+          <div style="height:120px;padding:0 56px 0 40px;border-radius:60px;background:#6fdcb6;color:#12302a;font-size:44px;font-weight:800;display:flex;align-items:center;gap:18px;box-shadow:0 0 0 8px #1eb0f5,0 0 0 22px rgba(30,176,245,.35);transform:scale(1.06)"><span style="width:48px;height:48px;background:#12302a;-webkit-mask:url(icons/ui-reiniciar.svg) center/contain no-repeat;mask:url(icons/ui-reiniciar.svg) center/contain no-repeat"></span>Jugar otra vez</div>
+          <div style="height:120px;box-sizing:border-box;padding:0 56px 0 40px;border-radius:60px;background:#1b4250;border:4px solid #2a5b6c;box-shadow:0 10px 0 #0b222a;color:#f3f8f9;font-size:44px;font-weight:800;display:flex;align-items:center;gap:18px"><span style="width:48px;height:48px;background:#f3f8f9;-webkit-mask:url(icons/ui-jugar.svg) center/contain no-repeat;mask:url(icons/ui-jugar.svg) center/contain no-repeat"></span>Elegir otro juego</div>
+        </div>
+      </div></div>
+    </div>
+
+  </div>
+  <p class="dv-next">Prueba: "A pero con la barra inferior de B" · "mosaicos de <a class="dv-oid" href="#2b">2b</a> con el arte más grande" · "sigue todo en A"</p>
+</section>
+
+
+<section class="dv-turn" id="t2">
+  <div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Flujo completo en B: pantallas 3 a 8</span></div>
+  <div class="dv-opts">
+
+    <div class="dv-opt" id="3b"><div class="dv-olabel"><a class="dv-oid" href="#3b">3b</a>Dificultad</div>
+      <div class="dv-card" style="width:960px;height:540px"><div style="position:relative;width:1920px;height:1080px;overflow:hidden;transform:scale(.5);transform-origin:0 0;font-family:Nunito,sans-serif;color:#f3f8f9;background:radial-gradient(ellipse 120% 80% at 50% 0%,#1a4452 0%,#12303b 65%)">
+        <div style="position:absolute;left:96px;right:96px;top:54px;height:80px;display:flex;align-items:center;justify-content:space-between">
+          <div style="height:72px;box-sizing:border-box;padding:0 28px 0 8px;border-radius:36px;background:#1b4250;border:3px solid #2a5b6c;display:flex;align-items:center;gap:14px;font-size:32px;font-weight:800"><img src="icons/juego-atrapa.svg" style="width:56px;height:56px;border-radius:14px">Atrapa lo correcto</div>
+          <div style="display:flex;gap:16px;align-items:center">
+            <div style="height:72px;box-sizing:border-box;padding:0 28px 0 12px;border-radius:36px;background:#1b4250;border:3px solid #2a5b6c;display:flex;align-items:center;gap:14px;font-size:32px;font-weight:800"><span style="width:48px;height:48px;border-radius:24px;background:#1eb0f5;color:#06222e;display:flex;align-items:center;justify-content:center">1</span>Mando 1</div>
+            <div style="height:72px;box-sizing:border-box;padding:0 28px 0 12px;border-radius:36px;background:#1b4250;border:3px solid #2a5b6c;display:flex;align-items:center;gap:14px;font-size:32px;font-weight:800"><span style="width:48px;height:48px;border-radius:24px;background:#f08cbf;color:#3a0f24;display:flex;align-items:center;justify-content:center">2</span>Mando 2</div>
+            <div style="width:72px;height:72px;box-sizing:border-box;border-radius:36px;background:#1b4250;border:3px solid #2a5b6c;display:flex;align-items:center;justify-content:center"><span style="width:40px;height:40px;background:#a9c3cc;-webkit-mask:url(icons/ui-musica-off.svg) center/contain no-repeat;mask:url(icons/ui-musica-off.svg) center/contain no-repeat"></span></div>
+          </div>
+        </div>
+        <div style="position:absolute;left:0;right:0;top:170px;text-align:center;font-size:72px;font-weight:800;line-height:1.1">¿Qué tan rápido?</div>
+        <div style="position:absolute;left:176px;top:300px;display:flex;gap:64px;align-items:center">
+          <div style="width:480px;height:540px;box-sizing:border-box;border-radius:44px;background:#1b4250;border:4px solid #2a5b6c;box-shadow:0 10px 0 #0b222a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px"><img src="icons/dificultad-facil.svg" style="width:288px;height:288px"><div style="font-size:52px;font-weight:800">Fácil</div></div>
+          <div style="width:480px;height:540px;box-sizing:border-box;border-radius:44px;background:#22566a;border:8px solid #1eb0f5;box-shadow:0 0 0 14px rgba(30,176,245,.35),0 16px 0 #0a1f26;transform:scale(1.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px"><img src="icons/dificultad-medio.svg" style="width:288px;height:288px"><div style="font-size:52px;font-weight:800">Medio</div><div style="height:64px;padding:0 28px 0 12px;border-radius:32px;background:#1eb0f5;color:#06222e;font-size:36px;font-weight:800;display:flex;align-items:center;gap:12px"><span style="width:40px;height:40px;background:#06222e;-webkit-mask:url(icons/ui-boton.svg) center/contain no-repeat;mask:url(icons/ui-boton.svg) center/contain no-repeat"></span>¡Jugar!</div></div>
+          <div style="width:480px;height:540px;box-sizing:border-box;border-radius:44px;background:#1b4250;border:4px solid #2a5b6c;box-shadow:0 10px 0 #0b222a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px"><img src="icons/dificultad-dificil.svg" style="width:288px;height:288px"><div style="font-size:52px;font-weight:800">Difícil</div></div>
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:150px;box-sizing:border-box;background:#0e2730;border-top:4px solid #1f4a59;display:flex;justify-content:center;align-items:flex-start;padding-top:36px;gap:18px;font-size:36px;font-weight:700;color:#a9c3cc">
+          <span style="width:48px;height:48px;background:#a9c3cc;-webkit-mask:url(icons/ui-inclinar.svg) center/contain no-repeat;mask:url(icons/ui-inclinar.svg) center/contain no-repeat"></span><span>Inclina para elegir</span><span>·</span><span style="width:48px;height:48px;background:#a9c3cc;-webkit-mask:url(icons/ui-boton.svg) center/contain no-repeat;mask:url(icons/ui-boton.svg) center/contain no-repeat"></span><span>Botón para entrar</span>
+        </div>
+      </div></div>
+      <div style="max-width:960px;font-size:14px;font-weight:600;line-height:1.5;color:#44565e">La velocidad se lee sin texto: 1, 2 o 3 flechas y el color. La barra muestra los dos mandos conectados y la música apagada. Al volver a esta pantalla, el foco empieza en la última dificultad elegida.</div>
+    </div>
+
+    <div class="dv-opt" id="4b"><div class="dv-olabel"><a class="dv-oid" href="#4b">4b</a>Instrucciones · la demo se anima en bucle</div>
+      <div class="dv-card" style="width:960px;height:540px"><div style="position:relative;width:1920px;height:1080px;overflow:hidden;transform:scale(.5);transform-origin:0 0;font-family:Nunito,sans-serif;color:#f3f8f9;background:radial-gradient(ellipse 120% 80% at 50% 0%,#1a4452 0%,#12303b 65%)">
+        <div style="position:absolute;left:96px;top:54px;height:72px;box-sizing:border-box;padding:0 28px 0 8px;border-radius:36px;background:#1b4250;border:3px solid #2a5b6c;display:flex;align-items:center;gap:14px;font-size:32px;font-weight:800"><img src="icons/juego-atrapa.svg" style="width:56px;height:56px;border-radius:14px">Atrapa lo correcto</div>
+        <div style="position:absolute;left:0;right:0;top:150px;display:flex;justify-content:center;align-items:center;gap:32px"><div style="font-size:56px;font-weight:800">Inclina para mover la canasta</div><div style="width:104px;height:104px;box-sizing:border-box;border-radius:52px;background:#1b4250;border:4px solid #2a5b6c;box-shadow:0 8px 0 #0b222a;display:flex;align-items:center;justify-content:center"><span style="width:52px;height:52px;background:#f3f8f9;-webkit-mask:url(icons/ui-audio.svg) center/contain no-repeat;mask:url(icons/ui-audio.svg) center/contain no-repeat"></span></div></div>
+        <div style="position:absolute;left:410px;top:290px;width:1100px;height:520px;border-radius:48px;background:#0e2730;border:4px solid #1f4a59;box-sizing:border-box;overflow:hidden">{{ demo }}</div>
+        <div style="position:absolute;left:0;right:0;top:872px;display:flex;justify-content:center">
+          <div style="height:120px;padding:0 56px 0 40px;border-radius:60px;background:#6fdcb6;color:#12302a;font-size:44px;font-weight:800;display:flex;align-items:center;gap:18px;box-shadow:0 0 0 8px #1eb0f5,0 0 0 22px rgba(30,176,245,.35);transform:scale(1.06)"><span style="width:52px;height:52px;background:#12302a;-webkit-mask:url(icons/ui-boton.svg) center/contain no-repeat;mask:url(icons/ui-boton.svg) center/contain no-repeat"></span>Toca el botón para empezar</div>
+        </div>
+      </div></div>
+      <div style="max-width:960px;font-size:14px;font-weight:600;line-height:1.5;color:#44565e">Es lo único que se anima en bucle: el celular se inclina ±18° y la canasta se mueve ±170 px, en un ciclo de 2,4 s ease-in-out. Hay 2 opciones: audio (repite la locución) y empezar, que tiene el foco al entrar.</div>
+    </div>
+
+    <div class="dv-opt" id="5b"><div class="dv-olabel"><a class="dv-oid" href="#5b">5b</a>Cuenta regresiva</div>
+      <div class="dv-card" style="width:960px;height:540px"><div style="position:relative;width:1920px;height:1080px;overflow:hidden;transform:scale(.5);transform-origin:0 0;font-family:Nunito,sans-serif;color:#f3f8f9;background:linear-gradient(#173d4a,#12303b 70%)">
+        <div style="position:absolute;left:0;right:0;bottom:0;height:200px;background:#1c4757"></div>
+        <div style="position:absolute;left:810px;top:840px;width:300px;height:140px;box-sizing:border-box;border-radius:0 0 150px 150px;background:#f3f8f9;display:flex;align-items:center;justify-content:center;font:600 22px ui-monospace,Menlo,monospace;color:#4d6470">canasta 3D</div>
+        <div style="position:absolute;inset:0;background:rgba(8,24,30,.45)"></div>
+        <div style="position:absolute;left:740px;top:180px;width:440px;height:440px;box-sizing:border-box;border-radius:220px;background:#1b4250;border:8px solid #2a5b6c;box-shadow:0 14px 0 #0b222a;display:flex;align-items:center;justify-content:center;font-size:240px;font-weight:800;line-height:1">3</div>
+        <div style="position:absolute;left:0;right:0;top:680px;display:flex;justify-content:center;align-items:center;gap:24px"><span style="width:64px;height:64px;background:#a9c3cc;-webkit-mask:url(icons/ui-inclinar.svg) center/contain no-repeat;mask:url(icons/ui-inclinar.svg) center/contain no-repeat"></span><span style="font-size:56px;font-weight:800">Inclina para mover la canasta</span></div>
+      </div></div>
+      <div style="max-width:960px;font-size:14px;font-weight:600;line-height:1.5;color:#44565e">3 → 2 → 1, un segundo cada número. Cada número entra con escala de 0,9 a 1 y fundido en 220 ms; no hay "¡YA!" con destello. La canasta ya se puede mover para practicar.</div>
+    </div>
+
+    <div class="dv-opt" id="6a-ok"><div class="dv-olabel"><a class="dv-oid" href="#6a-ok">6·ok</a>Partida · acierto</div>
+      <div class="dv-card" style="width:960px;height:540px"><div style="position:relative;width:1920px;height:1080px;overflow:hidden;transform:scale(.5);transform-origin:0 0;font-family:Nunito,sans-serif;color:#f3f8f9;background:linear-gradient(#173d4a,#12303b 70%)">
+        <div style="position:absolute;left:0;right:0;bottom:0;height:200px;background:#1c4757"></div>
+        <div style="position:absolute;left:1180px;top:240px;width:150px;height:150px;box-sizing:border-box;border-radius:75px;background:repeating-linear-gradient(135deg,rgba(255,255,255,.16) 0 10px,rgba(255,255,255,.05) 10px 20px);border:3px dashed rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font:600 22px ui-monospace,Menlo,monospace;color:#d7e6ea">uva</div>
+        <div style="position:absolute;left:1420px;top:470px;width:220px;height:130px;box-sizing:border-box;border-radius:65px;background:repeating-linear-gradient(135deg,rgba(255,255,255,.16) 0 10px,rgba(255,255,255,.05) 10px 20px);border:3px dashed rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font:600 22px ui-monospace,Menlo,monospace;color:#d7e6ea">pez</div>
+        <div style="position:absolute;left:640px;top:150px;width:160px;height:160px;box-sizing:border-box;border-radius:80px;background:repeating-linear-gradient(135deg,rgba(245,154,62,.45) 0 10px,rgba(245,154,62,.2) 10px 20px);border:3px dashed rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font:600 22px ui-monospace,Menlo,monospace;color:#fff">naranja</div>
+        <div style="position:absolute;left:880px;top:780px;width:120px;height:120px;border-radius:60px;background:repeating-linear-gradient(135deg,rgba(245,154,62,.6) 0 10px,rgba(245,154,62,.35) 10px 20px)"></div>
+        <div style="position:absolute;left:790px;top:840px;width:340px;height:150px;box-sizing:border-box;border-radius:0 0 170px 170px;background:#f3f8f9;display:flex;align-items:center;justify-content:center;font:600 22px ui-monospace,Menlo,monospace;color:#4d6470">canasta 3D</div>
+        <div style="position:absolute;left:96px;top:200px;width:320px;height:470px;box-sizing:border-box;border-radius:40px;background:rgba(14,39,48,.92);border:4px solid #2a5b6c;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px"><div style="font-size:36px;font-weight:700;color:#a9c3cc">Atrapa</div><div style="width:200px;height:200px;box-sizing:border-box;border-radius:100px;background:repeating-linear-gradient(135deg,rgba(245,154,62,.6) 0 10px,rgba(245,154,62,.3) 10px 20px);border:3px dashed rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font:600 22px ui-monospace,Menlo,monospace;color:#fff">naranja</div><div style="display:flex;align-items:center;gap:14px"><span style="font-size:48px;font-weight:800">Naranjas</span><span style="width:40px;height:40px;background:#a9c3cc;-webkit-mask:url(icons/ui-audio.svg) center/contain no-repeat;mask:url(icons/ui-audio.svg) center/contain no-repeat"></span></div></div>
+        <div style="position:absolute;left:96px;top:54px;height:96px;box-sizing:border-box;padding:0 32px 0 24px;border-radius:48px;background:rgba(14,39,48,.92);border:3px solid #2a5b6c;display:flex;align-items:center;gap:20px"><span style="width:48px;height:48px;background:#a9c3cc;-webkit-mask:url(icons/ui-reloj.svg) center/contain no-repeat;mask:url(icons/ui-reloj.svg) center/contain no-repeat"></span><div style="width:340px;height:28px;border-radius:14px;background:#2a5b6c;overflow:hidden"><div style="width:62%;height:100%;border-radius:14px;background:#7fd3f7"></div></div><span style="font-size:56px;font-weight:800;min-width:72px;text-align:right">42</span></div>
+        <div style="position:absolute;right:96px;top:54px;height:96px;box-sizing:border-box;padding:0 36px 0 24px;border-radius:48px;background:rgba(14,39,48,.92);border:3px solid #2a5b6c;display:flex;align-items:center;gap:16px"><img src="icons/estrella.svg" style="width:60px;height:60px"><span style="font-size:64px;font-weight:800;line-height:1">130</span></div>
+        <div style="position:absolute;left:900px;top:620px;font-size:80px;font-weight:800;color:#58cfa6;text-shadow:0 5px 0 #0b222a;opacity:.25">+10</div>
+        <div style="position:absolute;left:900px;top:560px;font-size:80px;font-weight:800;color:#58cfa6;text-shadow:0 5px 0 #0b222a">+10</div>
+        <div style="position:absolute;left:1080px;top:588px;height:56px;padding:0 22px;border-radius:28px;background:#58cfa6;color:#12302a;font-size:32px;font-weight:800;display:flex;align-items:center">3 seguidos</div>
+        <div style="position:absolute;inset:0;box-shadow:inset 0 0 0 16px #58cfa6"></div>
+      </div></div>
+      <div style="max-width:960px;font-size:14px;font-weight:600;line-height:1.5;color:#44565e">Acierto: el borde verde de 16 px entra y sale en 200 ms. El "+10" sube 60 px y se desvanece en 600 ms (la copia fantasma marca de dónde sale). "3 seguidos" aparece desde 3 y dura 900 ms. El puntaje cuenta hacia arriba en 200 ms. Si juegan 2, el panel de categoría muestra el color del mando.</div>
+    </div>
+
+    <div class="dv-opt" id="6b-err"><div class="dv-olabel"><a class="dv-oid" href="#6b-err">6·err</a>Partida · error (suave, sin texto)</div>
+      <div class="dv-card" style="width:960px;height:540px"><div style="position:relative;width:1920px;height:1080px;overflow:hidden;transform:scale(.5);transform-origin:0 0;font-family:Nunito,sans-serif;color:#f3f8f9;background:linear-gradient(#173d4a,#12303b 70%)">
+        <div style="position:absolute;left:0;right:0;bottom:0;height:200px;background:#1c4757"></div>
+        <div style="position:absolute;left:1200px;top:200px;width:160px;height:160px;box-sizing:border-box;border-radius:80px;background:repeating-linear-gradient(135deg,rgba(245,154,62,.45) 0 10px,rgba(245,154,62,.2) 10px 20px);border:3px dashed rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font:600 22px ui-monospace,Menlo,monospace;color:#fff">naranja</div>
+        <div style="position:absolute;left:560px;top:330px;width:150px;height:150px;box-sizing:border-box;border-radius:75px;background:repeating-linear-gradient(135deg,rgba(255,255,255,.16) 0 10px,rgba(255,255,255,.05) 10px 20px);border:3px dashed rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font:600 22px ui-monospace,Menlo,monospace;color:#d7e6ea">uva</div>
+        <div style="position:absolute;left:850px;top:700px;width:220px;height:130px;box-sizing:border-box;border-radius:65px;background:repeating-linear-gradient(135deg,rgba(255,255,255,.16) 0 10px,rgba(255,255,255,.05) 10px 20px);border:3px dashed rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font:600 22px ui-monospace,Menlo,monospace;color:#d7e6ea;opacity:.35">pez</div>
+        <div style="position:absolute;left:790px;top:840px;width:340px;height:150px;box-sizing:border-box;border-radius:0 0 170px 170px;background:#f3f8f9;display:flex;align-items:center;justify-content:center;font:600 22px ui-monospace,Menlo,monospace;color:#4d6470">canasta 3D</div>
+        <div style="position:absolute;left:96px;top:200px;width:320px;height:470px;box-sizing:border-box;border-radius:40px;background:rgba(14,39,48,.92);border:4px solid #2a5b6c;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px"><div style="font-size:36px;font-weight:700;color:#a9c3cc">Atrapa</div><div style="width:200px;height:200px;box-sizing:border-box;border-radius:100px;background:repeating-linear-gradient(135deg,rgba(245,154,62,.6) 0 10px,rgba(245,154,62,.3) 10px 20px);border:3px dashed rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font:600 22px ui-monospace,Menlo,monospace;color:#fff">naranja</div><div style="display:flex;align-items:center;gap:14px"><span style="font-size:48px;font-weight:800">Naranjas</span><span style="width:40px;height:40px;background:#a9c3cc;-webkit-mask:url(icons/ui-audio.svg) center/contain no-repeat;mask:url(icons/ui-audio.svg) center/contain no-repeat"></span></div></div>
+        <div style="position:absolute;left:96px;top:54px;height:96px;box-sizing:border-box;padding:0 32px 0 24px;border-radius:48px;background:rgba(14,39,48,.92);border:3px solid #2a5b6c;display:flex;align-items:center;gap:20px"><span style="width:48px;height:48px;background:#a9c3cc;-webkit-mask:url(icons/ui-reloj.svg) center/contain no-repeat;mask:url(icons/ui-reloj.svg) center/contain no-repeat"></span><div style="width:340px;height:28px;border-radius:14px;background:#2a5b6c;overflow:hidden"><div style="width:55%;height:100%;border-radius:14px;background:#7fd3f7"></div></div><span style="font-size:56px;font-weight:800;min-width:72px;text-align:right">37</span></div>
+        <div style="position:absolute;right:96px;top:54px;height:96px;box-sizing:border-box;padding:0 36px 0 24px;border-radius:48px;background:rgba(14,39,48,.92);border:3px solid #2a5b6c;display:flex;align-items:center;gap:16px"><img src="icons/estrella.svg" style="width:60px;height:60px"><span style="font-size:64px;font-weight:800;line-height:1">130</span></div>
+        <div style="position:absolute;inset:0;box-shadow:inset 0 0 0 10px rgba(231,154,134,.5)"></div>
+      </div></div>
+      <div style="max-width:960px;font-size:14px;font-weight:600;line-height:1.5;color:#44565e">Error: el objeto se desvanece a 0 en 150 ms, sin caer ni rebotar. El borde es coral de 10 px al 50 % y dura 150 ms, más fino y más corto que el acierto. No hay texto ni sonido fuerte, y el puntaje no baja.</div>
+    </div>
+
+    <div class="dv-opt" id="7b"><div class="dv-olabel"><a class="dv-oid" href="#7b">7b</a>Capa de pausa</div>
+      <div class="dv-card" style="width:960px;height:540px"><div style="position:relative;width:1920px;height:1080px;overflow:hidden;transform:scale(.5);transform-origin:0 0;font-family:Nunito,sans-serif;color:#f3f8f9;background:linear-gradient(#173d4a,#12303b 70%)">
+        <div style="position:absolute;left:0;right:0;bottom:0;height:200px;background:#1c4757"></div>
+        <div style="position:absolute;left:790px;top:840px;width:340px;height:150px;border-radius:0 0 170px 170px;background:#f3f8f9"></div>
+        <div style="position:absolute;left:96px;top:54px;width:520px;height:96px;border-radius:48px;background:rgba(14,39,48,.92)"></div>
+        <div style="position:absolute;right:96px;top:54px;width:260px;height:96px;border-radius:48px;background:rgba(14,39,48,.92)"></div>
+        <div style="position:absolute;left:96px;top:200px;width:320px;height:470px;border-radius:40px;background:rgba(14,39,48,.92)"></div>
+        <div style="position:absolute;inset:0;background:rgba(8,24,30,.78)"></div>
+        <div style="position:absolute;left:520px;top:200px;width:880px;height:680px;box-sizing:border-box;border-radius:56px;background:#163a47;border:4px solid #2a5b6c;box-shadow:0 16px 0 #0a1f26;padding:56px 80px;display:flex;flex-direction:column;align-items:stretch;gap:24px">
+          <div style="text-align:center;font-size:72px;font-weight:800;line-height:1.1;margin-bottom:24px">Juego en pausa</div>
+          <div style="height:120px;box-sizing:border-box;border-radius:40px;background:#22566a;border:8px solid #1eb0f5;box-shadow:0 0 0 14px rgba(30,176,245,.35);transform:scale(1.06);display:flex;align-items:center;gap:24px;padding:0 28px;font-size:44px;font-weight:800"><span style="width:72px;height:72px;border-radius:36px;background:#58cfa6;display:flex;align-items:center;justify-content:center"><span style="width:40px;height:40px;background:#12302a;-webkit-mask:url(icons/ui-jugar.svg) center/contain no-repeat;mask:url(icons/ui-jugar.svg) center/contain no-repeat"></span></span>Seguir jugando</div>
+          <div style="height:120px;box-sizing:border-box;border-radius:40px;background:#1f4d5d;border:4px solid #2a5b6c;display:flex;align-items:center;gap:24px;padding:0 32px;font-size:44px;font-weight:800"><span style="width:72px;height:72px;border-radius:36px;background:#12303b;display:flex;align-items:center;justify-content:center"><span style="width:40px;height:40px;background:#f3f8f9;-webkit-mask:url(icons/ui-reiniciar.svg) center/contain no-repeat;mask:url(icons/ui-reiniciar.svg) center/contain no-repeat"></span></span>Volver a empezar</div>
+          <div style="height:140px;box-sizing:border-box;border-radius:40px;background:#1f4d5d;border:4px solid #2a5b6c;display:flex;align-items:center;gap:24px;padding:0 32px"><span style="width:72px;height:72px;flex:none;border-radius:36px;background:#12303b;display:flex;align-items:center;justify-content:center"><span style="width:40px;height:40px;background:#f3f8f9;-webkit-mask:url(icons/ui-salir.svg) center/contain no-repeat;mask:url(icons/ui-salir.svg) center/contain no-repeat"></span></span><div style="display:flex;flex-direction:column"><span style="font-size:44px;font-weight:800;line-height:1.1">Salir</span><span style="font-size:32px;font-weight:700;color:#a9c3cc">no se guarda el puntaje</span></div></div>
+        </div>
+      </div></div>
+      <div style="max-width:960px;font-size:14px;font-weight:600;line-height:1.5;color:#44565e">Se abre con el botón de pausa del celular. El juego queda detrás con una capa de #081820 al 78 %. El panel entra en 220 ms (fundido y 24 px hacia arriba). El foco empieza en "Seguir jugando" y la lista no da la vuelta.</div>
+    </div>
+
+    <div class="dv-opt" id="8b"><div class="dv-olabel"><a class="dv-oid" href="#8b">8b</a>Capa de mando desconectado</div>
+      <div class="dv-card" style="width:960px;height:540px"><div style="position:relative;width:1920px;height:1080px;overflow:hidden;transform:scale(.5);transform-origin:0 0;font-family:Nunito,sans-serif;color:#f3f8f9;background:linear-gradient(#173d4a,#12303b 70%)">
+        <div style="position:absolute;left:0;right:0;bottom:0;height:200px;background:#1c4757"></div>
+        <div style="position:absolute;left:790px;top:840px;width:340px;height:150px;border-radius:0 0 170px 170px;background:#f3f8f9"></div>
+        <div style="position:absolute;left:96px;top:54px;width:520px;height:96px;border-radius:48px;background:rgba(14,39,48,.92)"></div>
+        <div style="position:absolute;right:96px;top:54px;width:260px;height:96px;border-radius:48px;background:rgba(14,39,48,.92)"></div>
+        <div style="position:absolute;inset:0;background:rgba(8,24,30,.78)"></div>
+        <div style="position:absolute;left:400px;top:250px;width:1120px;height:580px;box-sizing:border-box;border-radius:56px;background:#163a47;border:4px solid #2a5b6c;box-shadow:0 16px 0 #0a1f26;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:0 80px;text-align:center">
+          <div style="position:relative;width:200px;height:200px;box-sizing:border-box;border-radius:100px;border:6px dashed #3f6f80;display:flex;align-items:center;justify-content:center;margin-bottom:8px"><span style="width:112px;height:112px;background:#f3f8f9;-webkit-mask:url(icons/ui-celular.svg) center/contain no-repeat;mask:url(icons/ui-celular.svg) center/contain no-repeat"></span><span style="position:absolute;right:0;top:4px;width:64px;height:64px;border-radius:32px;background:#1eb0f5;color:#06222e;font-size:36px;font-weight:800;display:flex;align-items:center;justify-content:center">1</span></div>
+          <div style="font-size:72px;font-weight:800;line-height:1.1">Esperando tu mando…</div>
+          <div style="font-size:40px;font-weight:700;color:#a9c3cc;line-height:1.3;text-wrap:pretty">Revisa que el celular siga en la página del mando</div>
+        </div>
+      </div></div>
+      <div style="max-width:960px;font-size:14px;font-weight:600;line-height:1.5;color:#44565e">Sin alarma, sin cuenta atrás y sin opciones. El juego se congela. Al reconectar, la capa se va en 220 ms y vuelve la pausa, así el niño decide cuándo seguir. El número indica qué mando falta.</div>
+    </div>
+
+  </div>
+  <p class="dv-next">Prueba: "panel de categoría más grande" · "la pausa en A" · "resultado con 2 jugadores"</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const h = React.createElement;
+    const demo = h('div', { style: { position: 'relative', width: 1100, height: 520 } },
+      h('div', { style: { position: 'absolute', left: 475, top: 20, width: 150, height: 270, boxSizing: 'border-box', borderRadius: 30, background: '#f3f8f9', border: '10px solid #0b1f26', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', padding: '18px 0 26px', transformOrigin: '50% 85%', animation: 'mmTilt 2.4s ease-in-out infinite' } },
+        h('div', { style: { width: 40, height: 40, borderRadius: 20, background: '#1eb0f5', color: '#06222e', font: '800 26px Nunito', display: 'flex', alignItems: 'center', justifyContent: 'center' } }, '1'),
+        h('div', { style: { width: 76, height: 76, borderRadius: 38, background: '#58cfa6' } })),
+      h('div', { style: { position: 'absolute', left: 420, top: 380, width: 260, height: 120, borderRadius: '0 0 130px 130px', background: '#f3f8f9', boxShadow: 'inset 0 -14px 0 #cfdde3', animation: 'mmSlide 2.4s ease-in-out infinite' } }));
+    return { demo };
+  }
+}
+
+</script>
+</body>
+</html>
